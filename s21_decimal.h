@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 /**
  * Структура для представления десятичного значения.
@@ -10,7 +11,7 @@
  * @field bits Массив из четырех целых чисел, представляющих десятичное значение.
  */
 typedef struct {
-    int bits[4];
+  int bits[4];
 } s21_decimal;
 
 /**
@@ -219,3 +220,5 @@ bool get_sign(s21_decimal dec);
  * @param sign Знак числа (0 — положительный, 1 — отрицательный).
  */
 void set_sign(s21_decimal *dec, bool sign);
+
+void print_decimal_bin(s21_decimal value);
