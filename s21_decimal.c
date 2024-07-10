@@ -1,19 +1,19 @@
 #include "s21_decimal.h"
 
+enum sign { plus, minus };
+
 void set_sign(s21_decimal *dec, bool sign) {
-  if (sign == 0) {
-    dec->bits[3] &= ~(1 << 30);
+  if (sign == plus) {
+    dec->bits[3] &= ~(1 << 31);
   } else {
-    dec->bits[3] |= (1 << 30);
+    dec->bits[3] |= (1 << 31);
   }
 }
 
-bool get_sign(s21_decimal dec){
-  return ((dec.bits[3] >> 30) & 1);
-}
+bool get_sign(s21_decimal dec) { return ((dec.bits[3] >> 31) & 1); }
 
 void uint_binary(unsigned int value) {
-  int bits = 30;
+  int bits = 31;
 
   // value = abs(value);
   while (value != 0) {
@@ -36,13 +36,13 @@ void uint_binary(unsigned int value) {
 void print_0b_decimal(s21_decimal value) {
   if (get_sign(value))
     printf("-");
-  else 
+  else
     printf("+");
   uint_binary(value.bits[2]);
   uint_binary(value.bits[1]);
   uint_binary(value.bits[0]);
 }
 
-int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
-  return 0;
-}
+// int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
+//   return 0;
+// }
