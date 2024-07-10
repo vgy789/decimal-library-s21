@@ -30,21 +30,20 @@ void print_0b_big(big_decimal value) {
 void ulong_binary(unsigned long value) {
   int bits = 63;
 
-  value = abs(value);
+  value = labs(value);
   while (value != 0) {
-    int buf = value - (1 << bits);
+    long buf = value - (1l << bits);
 
     if (buf >= 0) {
       value = buf;
       printf("1");
-      printf("(%d)", bits);
     } else {
       printf("0");
     }
     --bits;
   }
   while (bits >= 0) {
-    printf("|");
+    printf("0");
     --bits;
   }
 }

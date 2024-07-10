@@ -1,15 +1,15 @@
 #include <stdint.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 /**
  * Структура для представления десятичного значения.
  * 
- * bits[0], bits[1], и bits[2] содержат младшие, средние и старшие 32 бита 96-разрядного целого числа соответственно.
- * bits[3] содержит коэффициент масштабирования и знак.
+ * bits[0], bits[1] содержат младшие, старшие 64 бита.
+ * bits[2] содержит коэффициент масштабирования и знак.
  * 
- * @field bits Массив из четырех целых чисел, представляющих десятичное значение.
+ * @field bits Массив из 3 длинных целых чисел, представляющих десятичное значение.
  */
 typedef struct {
   long int bits[3];
@@ -67,7 +67,6 @@ int mul_big(big_decimal value_1, big_decimal value_2, big_decimal *result);
  *         3 - деление на 0).
  */
 int div_big(big_decimal value_1, big_decimal value_2, big_decimal *result);
-
 
 /**
  * Изменяет знак десятичного значения на противоположный.
