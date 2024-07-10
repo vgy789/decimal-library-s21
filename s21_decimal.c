@@ -12,14 +12,38 @@ bool get_sign(s21_decimal dec){
   return ((dec.bits[3] >> 30) & 1);
 }
 
-int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
-  bool overflow = __builtin_sadd_overflow(value_1.bits[0], value_2.bits[0], &result->bits[0]);
-  
-  return 0;
+void uint_binary(unsigned int value) {
+  int bits = 30;
+
+  value = abs(value);
+  while (value != 0) {
+    int buf = value - (1 << bits);
+
+    if (buf >= 0) {
+      value = buf;
+      printf("1");
+    } else {
+      printf("0");
+    }
+    --bits;
+  }
+  while (bits >= 0) {
+    printf("0");
+    --bits;
+  }
 }
 
-void print_decimal_bin(s21_decimal value) {
-  // 2000000000
-  // 0x77359400
-  // printf("%#x %#x", value.bits[1], value.bits[0]);
+void print_0b_decimal(s21_decimal value) {
+  if (get_sign(value)) 
+    printf("-");
+  else 
+    printf("+");
+  uint_binary(value.bits[2]);
+  uint_binary(value.bits[1]);
+  uint_binary(value.bits[0]);
+}
+
+int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
+
+  return 0;
 }

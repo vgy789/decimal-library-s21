@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 /**
  * Структура для представления десятичного значения.
@@ -221,4 +222,6 @@ bool get_sign(s21_decimal dec);
  */
 void set_sign(s21_decimal *dec, bool sign);
 
-void print_decimal_bin(s21_decimal value);
+void print_0b_decimal(s21_decimal value);
+
+void uint_binary(unsigned int value);
