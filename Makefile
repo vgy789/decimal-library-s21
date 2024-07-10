@@ -1,14 +1,17 @@
-SRCMODULES = ???.c
-OBJMODULES = $(SRCMODULES:.c=.o)
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -std=c11
-TEST_EXEC = test_s21_decimal
-LIBS = `pkg-config --cflags --libs check`
+SRCMODULES = big_decimal.c s21_decimal.c
+OBJMODULES = $(SRCMODULES:.c=.o)
+CFLAGS = -g -Wall -Werror -Wextra -std=c11
+LDFLAGS = `pkg-config --cflags --libs check`
+
+TEST_EXEC = run_test
+REPORT_DIR = ./report
 
 all: s21_decimal.a
 
-test:
-	$(CC) $(FLAGS) --coverage -lm -o $(TEST_EXEC) tests/*.c tests/test_suites/*.c s21_decimal.c $(LIBS)
+test: clean s21_decimal.a
+	checkmk test/in > test/test.c
+	$(CC) $(FLAGS) --coverage -o $(TEST_EXEC) test/test.c $(SRCMODULES) $(LDFLAGS)
 	./$(TEST_EXEC)
 
 gcov_report: test
@@ -21,19 +24,20 @@ gcov_report: test
 s21_decimal.a: s21_decimal.o $(OBJMODULES)
 	ar rcs $@ $<
 
-FORMAT = clang-format --style="{BasedOnStyle: Google}"
+FORMAT = clang-format --style="{CommentPragmas: Insert, BasedOnStyle: Google}"
 
-cf_check:
+format_check:
 	find ./ -name '*.c' -or -name '*.h' -print0 | xargs -0 $(FORMAT) -n 
 
-cf_apply:
+format:
 	find ./ -name '*.c' -or -name '*.h' -print0 | xargs -0 $(FORMAT) -i
 
 clean:
-	rm -f *.o *.a *.gcno *.gcda $(REPORT_DIR)/ report.info $(TEST_EXEC)
+	rm -f *.o *.a *.gcno *.gcda report.info $(TEST_EXEC) test/test.c
+	rm -rf $(REPORT_DIR)/ 
 
 valgrind:
-	valgrind --tool=memcheck --leak-check=yes  ./test_s21_decimal
+	valgrind --tool=memcheck --leak-check=yes $(TEST_EXEC)
 
 leaks:
-	leaks --atExit -- ./test_s21_decimal
+	leaks --atExit -- $(TEST_EXEC)

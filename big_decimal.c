@@ -12,10 +12,9 @@ bool get_sign_big(big_decimal dec){
   return ((dec.bits[2] >> 30) & 1);
 }
 
-int s21_add_big(big_decimal value_1, big_decimal value_2, big_decimal *result) {
-
-  return 0;
-}
+// int s21_add_big(big_decimal value_1, big_decimal value_2, big_decimal *result) {
+//   return 0;
+// }
 
 void print_0b_big(big_decimal value) {
   if (get_sign_big(value)) 
@@ -30,7 +29,7 @@ void print_0b_big(big_decimal value) {
 void ulong_binary(unsigned long value) {
   int bits = 63;
 
-  value = labs(value);
+  // value = labs(value);
   while (value != 0) {
     long buf = value - (1l << bits);
 

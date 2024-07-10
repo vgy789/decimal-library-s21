@@ -15,7 +15,7 @@ bool get_sign(s21_decimal dec){
 void uint_binary(unsigned int value) {
   int bits = 30;
 
-  value = abs(value);
+  // value = abs(value);
   while (value != 0) {
     int buf = value - (1 << bits);
 
@@ -34,7 +34,7 @@ void uint_binary(unsigned int value) {
 }
 
 void print_0b_decimal(s21_decimal value) {
-  if (get_sign(value)) 
+  if (get_sign(value))
     printf("-");
   else 
     printf("+");
@@ -44,6 +44,5 @@ void print_0b_decimal(s21_decimal value) {
 }
 
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
-
   return 0;
 }

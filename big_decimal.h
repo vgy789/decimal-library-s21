@@ -1,15 +1,16 @@
-#include <stdint.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 /**
  * Структура для представления десятичного значения.
- * 
+ *
  * bits[0], bits[1] содержат младшие, старшие 64 бита.
  * bits[2] содержит коэффициент масштабирования и знак.
- * 
- * @field bits Массив из 3 длинных целых чисел, представляющих десятичное значение.
+ *
+ * @field bits Массив из 3 длинных целых чисел, представляющих десятичное
+ * значение.
  */
 typedef struct {
   long int bits[3];
@@ -17,7 +18,7 @@ typedef struct {
 
 /**
  * Складывает два big_decimal.
- * 
+ *
  * Оператор '+'
  *
  * @param value_1 Первое десятичное значение.
@@ -30,7 +31,7 @@ int add_big(big_decimal value_1, big_decimal value_2, big_decimal *result);
 
 /**
  * Вычитает одно десятичное значение из другого.
- * 
+ *
  * Оператор '-'
  *
  * @param value_1 Первое десятичное значение.
@@ -43,7 +44,7 @@ int sub_big(big_decimal value_1, big_decimal value_2, big_decimal *result);
 
 /**
  * Умножает два десятичных значения.
- * 
+ *
  * Оператор '*'
  *
  * @param value_1 Первое десятичное значение.
@@ -56,7 +57,7 @@ int mul_big(big_decimal value_1, big_decimal value_2, big_decimal *result);
 
 /**
  * Делит одно десятичное значение на другое.
- * 
+ *
  * Оператор '/'
  *
  * @param value_1 Первое десятичное значение.
@@ -79,7 +80,7 @@ int s21_negate_big(big_decimal value, big_decimal *result);
 
 /**
  * Возварщает знак числа.
- * 
+ *
  * @param dec Проверяемое число.
  * @return 0 — положительный, 1 — отрицательный.
  */
@@ -87,12 +88,15 @@ bool get_sign_big(big_decimal dec);
 
 /**
  * Устанавливает знак числа.
- * 
+ *
  * @param *dec Указатель на изменяемое число.
  * @param sign Знак числа (0 — положительный, 1 — отрицательный).
  */
 void set_sign_big(big_decimal *dec, bool sign);
 
+/**
+ * Печатает big_decimal в двоичном предствалении.
+ */
 void print_0b_big(big_decimal value);
 
 void ulong_binary(unsigned long value);
