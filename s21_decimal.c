@@ -43,6 +43,6 @@ void print_0b_decimal(s21_decimal value) {
   uint_binary(value.bits[0]);
 }
 
-int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
-  return 0;
-}
+// int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
+//   return 0;
+// }
