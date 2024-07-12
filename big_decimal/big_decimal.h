@@ -1,3 +1,6 @@
+#ifndef BIG_DECIMAL_H
+#define BIG_DECIMAL_H
+
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -23,7 +26,7 @@ typedef struct {
  *
  * @param value_1 Первое десятичное значение.
  * @param value_2 Второе десятичное значение.
- * @param result Указатель на результат вычитания.
+ * @param result Указатель на результат сложения.
  * @return Код ошибки (0 - ок, 1 - число слишком велико или равно бесконечности,
  *         2 - число слишком мало или равно отрицательной бесконечности).
  */
@@ -78,25 +81,4 @@ int div_big(big_decimal value_1, big_decimal value_2, big_decimal *result);
  */
 int s21_negate_big(big_decimal value, big_decimal *result);
 
-/**
- * Возварщает знак числа.
- *
- * @param dec Проверяемое число.
- * @return 0 — положительный, 1 — отрицательный.
- */
-bool get_sign_big(big_decimal dec);
-
-/**
- * Устанавливает знак числа.
- *
- * @param *dec Указатель на изменяемое число.
- * @param sign Знак числа (0 — положительный, 1 — отрицательный).
- */
-void set_sign_big(big_decimal *dec, bool sign);
-
-/**
- * Печатает big_decimal в двоичном предствалении.
- */
-void print_0b_big(big_decimal value);
-
-void ulong_binary(unsigned long value);
+#endif  // BIG_DECIMAL_H

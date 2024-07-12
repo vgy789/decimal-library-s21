@@ -1,3 +1,6 @@
+#ifndef DECIMAL_H
+#define DECIMAL_H
+
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -24,7 +27,7 @@ typedef struct {
  *
  * @param value_1 Первое десятичное значение.
  * @param value_2 Второе десятичное значение.
- * @param result Указатель на результат вычитания.
+ * @param result Указатель на результат сложения.
  * @return Код ошибки (0 - ок, 1 - число слишком велико или равно бесконечности,
  *         2 - число слишком мало или равно отрицательной бесконечности).
  */
@@ -208,22 +211,4 @@ int s21_truncate(s21_decimal value, s21_decimal *result);
  */
 int s21_negate(s21_decimal value, s21_decimal *result);
 
-/**
- * Возварщает знак числа.
- *
- * @param dec Проверяемое число.
- * @return 0 — положительный, 1 — отрицательный.
- */
-bool get_sign(s21_decimal dec);
-
-/**
- * Устанавливает знак числа.
- *
- * @param *dec Указатель на изменяемое число.
- * @param sign Знак числа (0 — положительный, 1 — отрицательный).
- */
-void set_sign(s21_decimal *dec, bool sign);
-
-void print_0b_decimal(s21_decimal value);
-
-void uint_binary(unsigned int value);
+#endif  // DECIMAL_H

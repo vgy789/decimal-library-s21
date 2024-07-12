@@ -1,25 +1,28 @@
 #include "big_decimal.h"
 
+#include "../bitwise_helper.h"
+
 void set_sign_big(big_decimal *dec, bool sign) {
-  if (sign == 0) {
-    dec->bits[2] &= ~(1 << 30);
+  if (sign == plus) {
+    dec->bits[2] &= ~(1 << 31);
   } else {
-    dec->bits[2] |= (1 << 30);
+    dec->bits[2] |= (1 << 31);
   }
 }
 
-bool get_sign_big(big_decimal dec){
-  return ((dec.bits[2] >> 30) & 1);
-}
+bool get_sign_big(big_decimal dec) { return ((dec.bits[2] >> 31) & 1); }
 
-// int s21_add_big(big_decimal value_1, big_decimal value_2, big_decimal *result) {
+// int s21_add_big(big_decimal value_1, big_decimal value_2, big_decimal
+// *result) {
+
+//   __builtin_saddl_overflow(, , *result.bits[0]);
 //   return 0;
 // }
 
 void print_0b_big(big_decimal value) {
-  if (get_sign_big(value)) 
+  if (get_sign_big(value))
     printf("-");
-  else 
+  else
     printf("+");
   ulong_binary(value.bits[1]);
   printf(" ");

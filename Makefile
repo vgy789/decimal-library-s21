@@ -1,5 +1,5 @@
 CC = gcc
-SRCMODULES = big_decimal.c s21_decimal.c
+SRCMODULES = ./big_decimal/big_decimal.c ./decimal/s21_decimal.c
 OBJMODULES = $(SRCMODULES:.c=.o)
 CFLAGS = -g -Wall -Werror -Wextra -std=c11
 LDFLAGS = `pkg-config --cflags --libs check`
@@ -21,7 +21,7 @@ gcov_report: test
 %.o: %.c %.h
 	$(CC) $(CFLAGS) -c $< -o $@ 
 
-s21_decimal.a: s21_decimal.o $(OBJMODULES)
+s21_decimal.a: $(OBJMODULES)
 	ar rcs $@ $<
 
 FORMAT = clang-format --style="{CommentPragmas: Insert, BasedOnStyle: Google}"
