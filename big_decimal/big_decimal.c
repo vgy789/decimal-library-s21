@@ -1,6 +1,6 @@
 #include "big_decimal.h"
 
-enum sign { plus, minus };
+#include "../bitwise_helper.h"
 
 void set_sign_big(big_decimal *dec, bool sign) {
   if (sign == plus) {

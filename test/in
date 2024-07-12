@@ -1,19 +1,20 @@
 #include <stdio.h>
-#include "../big_decimal.h"
+#include "../big_decimal/big_decimal.h"
+#include "../bitwise_helper.h"
 
 #test set_sign_positive
   big_decimal value = {0};
-  set_sign_big(&value, 0);
-  ck_assert(((value.bits[2] >> 31) & 1) == 0);
+  set_sign_big(&value, plus);
+  ck_assert(((value.bits[2] >> 31) & 1) == plus);
 #test set_sign_negative
   big_decimal value = {0};
-  set_sign_big(&value, 1);
-  ck_assert(((value.bits[2] >> 31) & 1) == 1);
+  set_sign_big(&value, minus);
+  ck_assert(((value.bits[2] >> 31) & 1) == minus);
 #test get_sign_positive
   big_decimal value = {0};
-  set_sign_big(&value, 0);
-  ck_assert(get_sign_big(value) == 0);
+  set_sign_big(&value, plus);
+  ck_assert(get_sign_big(value) == plus);
 #test get_sign_negative
   big_decimal value = {0};
-  set_sign_big(&value, 1);
-  ck_assert(get_sign_big(value) == 1);
+  set_sign_big(&value, minus);
+  ck_assert(get_sign_big(value) == minus);
