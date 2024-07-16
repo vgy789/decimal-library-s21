@@ -67,6 +67,13 @@ void print_0b_decimal(s21_decimal value) {
   uint_binary(value.bits[0]);
 }
 
+//функция инкремента
+ int s21_inc(s21_decimal value, s21_decimal *result){
+  s21_decimal one = {1,0,0,0};
+  s21_add(value, one, result);
+  return 0;
+ }
+
 int s21_negate(s21_decimal value, s21_decimal *result) {
   const bool sign = get_sign(value);
   int bit_i = 0;
@@ -76,7 +83,7 @@ int s21_negate(s21_decimal value, s21_decimal *result) {
     set_bit(result, bit_i, !bit);
     bit_i += 1;
   }
-  int is_err = s21_add(*result, (s21_decimal){0b1}, result);
+  int is_err = s21_inc(*result, result);
   set_sign(result, ~sign);
   // TODO: Возвращает ошибку. О какой ошибке идёт речь?
   return 0;
@@ -105,15 +112,22 @@ int s21_add(s21_decimal value1, s21_decimal value2, s21_decimal *result) {
   // }
 
   // TODO: ошибка
-  return;
+  return 0;
 }
 
 int s21_sub(s21_decimal value1, s21_decimal value2, s21_decimal *result) {
   s21_negate(value2, &value2);
   int is_err = s21_add(value1, value2, result);
   // TODO: ошибка
-  return;
+  return 0;
 }
+
+//функция декремента
+ int s21_dec(s21_decimal value, s21_decimal *result){
+  s21_decimal one = {1,0,0,0};
+  s21_sub(value, one, result);
+  return 0;
+ }
 
 int s21_mul(s21_decimal value1, s21_decimal value2, s21_decimal *result) {
   int is_err = 0;
@@ -127,7 +141,7 @@ int s21_mul(s21_decimal value1, s21_decimal value2, s21_decimal *result) {
     s21_negate(value2, &value2);
 
   while(value2.bits[0] | value2.bits[1] | value2.bits[2]) {
-    s21_sub(value2, (s21_decimal){0b1}, &value2);
+    s21_dec(value2, &value2);
     is_err = s21_add(value1, *result, result);
   }
 
@@ -136,7 +150,7 @@ int s21_mul(s21_decimal value1, s21_decimal value2, s21_decimal *result) {
     s21_negate(*result, result);
   
   // TODO: ошибка
-  return;
+  return 0;
 }
 
 // int s21_div(s21_decimal value1, s21_decimal value2, s21_decimal *result) {

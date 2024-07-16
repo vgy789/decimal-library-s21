@@ -1,5 +1,5 @@
 CC = gcc
-SRCMODULES = ./big_decimal/big_decimal.c ./decimal/s21_decimal.c
+SRCMODULES = ./decimal/s21_decimal.c
 OBJMODULES = $(SRCMODULES:.c=.o)
 CFLAGS = -g -Wall -Werror -Wextra -std=c11
 LDFLAGS = `pkg-config --cflags --libs check`
