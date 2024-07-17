@@ -1,10 +1,9 @@
-#ifndef DECIMAL_H
-#define DECIMAL_H
+#ifndef S21_DECIMAL_H
+#define S21_DECIMAL_H
 
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h>
 
 /**
  * Структура для представления десятичного значения.
@@ -211,4 +210,4 @@ int s21_truncate(s21_decimal value, s21_decimal *result);
  */
 int s21_negate(s21_decimal value, s21_decimal *result);
 
-#endif  // DECIMAL_H
+#endif  // S21_DECIMAL_H
