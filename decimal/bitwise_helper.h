@@ -44,4 +44,10 @@ uint8_t get_scale(s21_decimal value);
 // Устанавливает десятичную точку в числе s21_decimal.
 bool set_scale(s21_decimal *value, uint8_t scale);
 
+// функция инкремента
+int s21_inc(s21_decimal value, s21_decimal *result);
+
+// функция декремента
+int s21_dec(s21_decimal value, s21_decimal *result);
+
 #endif  // BITWISE_HELPER_H

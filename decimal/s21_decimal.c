@@ -151,3 +151,15 @@ void set_sign(s21_decimal *value, bool sign) {
 }
 
 bool get_sign(s21_decimal value) { return ((value.bits[3] >> 31) & 1); }
+
+int s21_inc(s21_decimal value, s21_decimal *result) {
+  s21_decimal one = (s21_decimal){{1,0,0,0}};
+  s21_add(value, one, result);
+  return 0;
+}
+
+int s21_dec(s21_decimal value, s21_decimal *result) {
+  s21_decimal one = (s21_decimal){{1,0,0,0}};
+  s21_sub(value, one, result);
+  return 0;
+}
