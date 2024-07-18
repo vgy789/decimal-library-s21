@@ -39,7 +39,7 @@ bool get_bit(s21_decimal value, uint8_t bit_pos);
 void set_bit(s21_decimal *value, uint8_t bit_pos, bool status);
 
 // Возвращает десятичную точку числа s21_decimal.
-unsigned get_scale(s21_decimal value);
+uint8_t get_scale(s21_decimal value);
 
 // Устанавливает десятичную точку в числе s21_decimal.
 bool set_scale(s21_decimal *value, uint8_t scale);

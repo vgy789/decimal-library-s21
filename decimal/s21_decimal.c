@@ -58,7 +58,7 @@ int s21_mul(s21_decimal value1, s21_decimal value2, s21_decimal *result) {
   uint8_t is_err = 0;
   *result = (s21_decimal){0b0};
   while(value2.bits[0] | value2.bits[1] | value2.bits[2]) {
-    s21_sub(value2, (s21_decimal){{0b1}}, &value2);
+    s21_sub(value2, (s21_decimal){{0b1,0,0,0}}, &value2);
     is_err = s21_add(value1, *result, result);
   }
 
@@ -76,14 +76,14 @@ int s21_mul(s21_decimal value1, s21_decimal value2, s21_decimal *result) {
 
 bool set_scale(s21_decimal *value, uint8_t scale) {
   if (scale > 28) return 1;
-  s21_decimal decimal_scale = {{scale, 0, 0, 0}};
+  s21_decimal decimal_scale = (s21_decimal){{scale, 0, 0, 0}};
 
   for (int bit_i = scale_start; bit_i <= scale_end; ++bit_i)
     set_bit(value, bit_i, get_bit(decimal_scale, bit_i % scale_start));
   return 0;
 }
 
-unsigned get_scale(s21_decimal value) {
+uint8_t get_scale(s21_decimal value) {
   return (value.bits[3] & (0b11111111 << 16)) >> 16;
 }
 
