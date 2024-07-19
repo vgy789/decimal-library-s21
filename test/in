@@ -1,6 +1,8 @@
 #include <stdio.h>
+#include <check.h>
+
 #include "../decimal/s21_decimal.h"
-#include "../bitwise_helper.h"
+#include "../decimal/bitwise_helper.h"
 
 #test set_sign_positive
   s21_decimal value = {0};
@@ -18,3 +20,35 @@
   s21_decimal value = {0};
   set_sign(&value, minus);
   ck_assert(get_sign(value) == minus);
+  #test set_bit_zero_false
+s21_decimal value = (s21_decimal){{0}};
+set_bit(&value, 0, false);
+ck_assert(get_bit(value, 0) == false);
+#test set_bit_zero_true
+s21_decimal value = (s21_decimal){{0}};
+set_bit(&value, 0, true);
+ck_assert(get_bit(value, 0) == true);
+#test set_bit_one_false
+s21_decimal value = (s21_decimal){{1}};
+set_bit(&value, 0, false);
+ck_assert(get_bit(value, 0) == false);
+#test set_bit_one_true
+s21_decimal value = (s21_decimal){{1}};
+set_bit(&value, 16, true);
+ck_assert(get_bit(value, 16) == true);
+#test set_bit_middle_false
+s21_decimal value = (s21_decimal){{0}};
+set_bit(&value, 16, false);
+ck_assert(get_bit(value, 16) == false);
+#test set_bit_middle_true
+s21_decimal value = (s21_decimal){{0}};
+set_bit(&value, 16, true);
+ck_assert(get_bit(value, 16) == true);
+#test set_bit_overflow_true
+s21_decimal value = (s21_decimal){{0}};
+set_bit(&value, 96, true);
+ck_assert(get_bit(value, 96) == true);
+#test set_bit_overflow_false
+s21_decimal value = (s21_decimal){{0}};
+set_bit(&value, 96, false);
+ck_assert(get_bit(value, 96) == false);

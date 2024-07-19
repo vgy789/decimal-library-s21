@@ -10,7 +10,7 @@ REPORT_DIR = ./report
 all: s21_decimal.a
 
 test: clean s21_decimal.a
-	checkmk test/in > test/test.c
+	checkmk clean_mode=1 test/in > test/test.c
 	$(CC) $(FLAGS) --coverage -o $(TEST_EXEC) test/test.c $(SRCMODULES) $(LDFLAGS)
 	./$(TEST_EXEC)
 
