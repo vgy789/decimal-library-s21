@@ -1,0 +1,20 @@
+#include <stdio.h>
+#include "../decimal/s21_decimal.h"
+#include "../bitwise_helper.h"
+
+#test set_sign_positive
+  s21_decimal value = {0};
+  set_sign(&value, plus);
+  ck_assert(((value.bits[3] >> 31) & 1) == plus);
+#test set_sign_negative
+  s21_decimal value = {0};
+  set_sign(&value, minus);
+  ck_assert(((value.bits[3] >> 31) & 1) == minus);
+#test get_sign_positive
+  s21_decimal value = {0};
+  set_sign(&value, plus);
+  ck_assert(get_sign(value) == plus);
+#test get_sign_negative
+  s21_decimal value = {0};
+  set_sign(&value, minus);
+  ck_assert(get_sign(value) == minus);
