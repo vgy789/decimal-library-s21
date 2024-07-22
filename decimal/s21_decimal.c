@@ -87,14 +87,14 @@ uint8_t get_scale(s21_decimal value) {
   return (value.bits[3] & (0b11111111 << 16)) >> 16;
 }
 
-void set_bit(s21_decimal *value, uint8_t bit_pos, bool status) {
+void set_bit(s21_decimal *value, uint8_t bit_pos, bool state) {
   uint8_t int_part = 0;
 
   while (bit_pos > 31) {
     bit_pos -= 32;
     int_part += 1;
   }
-  if (status == false) {
+  if (state == false) {
     value->bits[int_part] &= ~(1 << bit_pos);
   } else {
     value->bits[int_part] |= (1 << bit_pos);
