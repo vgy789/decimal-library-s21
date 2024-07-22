@@ -16,31 +16,31 @@ uint8_t compliment2(s21_decimal value, s21_decimal *result) {
   return 0;
 }
 
-static bool add_word(uint32_t *result, uint32_t value1, uint32_t value2,
+static bool add_word(uint32_t *result, uint32_t value_1, uint32_t value_2,
                      bool transfer) {
   bool overflow = 0;
-  overflow += __builtin_uadd_overflow(value1, value2, result);
+  overflow += __builtin_uadd_overflow(value_1, value_2, result);
   overflow += __builtin_uadd_overflow(*result, transfer, result);
   return overflow;
 }
 
-int s21_add(s21_decimal value1, s21_decimal value2, s21_decimal *result) {
-  bool sign1_buf = get_sign(value1);
-  bool sign2_buf = get_sign(value2);
+int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
+  bool sign1_buf = get_sign(value_1);
+  bool sign2_buf = get_sign(value_2);
 
   if (sign1_buf == minus) {
-    set_sign(&value1, plus);
-    compliment2(value1, &value1);
+    set_sign(&value_1, plus);
+    compliment2(value_1, &value_1);
   }
-  if (get_sign(value2) == minus) {
-    set_sign(&value2, plus);
-    compliment2(value2, &value2);
+  if (get_sign(value_2) == minus) {
+    set_sign(&value_2, plus);
+    compliment2(value_2, &value_2);
   }
 
   s21_decimal buf = (s21_decimal){{0, 0, 0, 0}};
-  bool transfer = add_word(&buf.bits[0], value1.bits[0], value2.bits[0], 0);
-  transfer = add_word(&buf.bits[1], value1.bits[1], value2.bits[1], transfer);
-  transfer = add_word(&buf.bits[2], value1.bits[2], value2.bits[2], transfer);
+  bool transfer = add_word(&buf.bits[0], value_1.bits[0], value_2.bits[0], 0);
+  transfer = add_word(&buf.bits[1], value_1.bits[1], value_2.bits[1], transfer);
+  transfer = add_word(&buf.bits[2], value_1.bits[2], value_2.bits[2], transfer);
 
   uint8_t err_code = 0;
   if (transfer) { /* переполнение | ошибка */
@@ -57,24 +57,24 @@ int s21_add(s21_decimal value1, s21_decimal value2, s21_decimal *result) {
   return err_code;
 }
 
-int s21_sub(s21_decimal value1, s21_decimal value2, s21_decimal *result) {
-  s21_negate(value2, &value2);
-  uint8_t is_err = s21_add(value1, value2, result);
+int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
+  s21_negate(value_2, &value_2);
+  uint8_t is_err = s21_add(value_1, value_2, result);
   // TODO: ошибка
   return is_err;
 }
 
-int s21_mul(s21_decimal value1, s21_decimal value2, s21_decimal *result) {
-  const bool sign1 = get_sign(value1);
-  const bool sign2 = get_sign(value2);
-  if (sign1 == minus) compliment2(value2, &value1);
-  if (sign2 == minus) compliment2(value2, &value2);
+int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
+  const bool sign1 = get_sign(value_1);
+  const bool sign2 = get_sign(value_2);
+  if (sign1 == minus) compliment2(value_2, &value_1);
+  if (sign2 == minus) compliment2(value_2, &value_2);
 
   uint8_t is_err = 0;
   *result = (s21_decimal){0b0};
-  while (value2.bits[0] | value2.bits[1] | value2.bits[2]) {
-    s21_sub(value2, (s21_decimal){{0b1, 0, 0, 0}}, &value2);
-    is_err = s21_add(value1, *result, result);
+  while (value_2.bits[0] | value_2.bits[1] | value_2.bits[2]) {
+    s21_sub(value_2, (s21_decimal){{0b1, 0, 0, 0}}, &value_2);
+    is_err = s21_add(value_1, *result, result);
   }
 
   const bool sign_result = sign1 ^ sign2;
@@ -84,7 +84,7 @@ int s21_mul(s21_decimal value1, s21_decimal value2, s21_decimal *result) {
   return is_err;
 }
 
-// int s21_div(s21_decimal value1, s21_decimal value2, s21_decimal *result) {
+// int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 // нужна операция сравнения >=
 // }
 
@@ -182,4 +182,50 @@ int s21_dec(s21_decimal value, s21_decimal *result) {
   const s21_decimal one = (s21_decimal){{1, 0, 0, 0}};
   s21_sub(value, one, result);
   return 0;
+}
+
+int comparison_mantiss(s21_decimal value_1, s21_decimal value_2) {
+  int bit_pos = 96;
+  bool pos_a, pos_b;
+  int result = 0;
+  while (bit_pos >= 0) {
+    pos_a = get_bit(value_1, bit_pos);
+    pos_b = get_bit(value_2, bit_pos);
+    if (pos_a > pos_b) {
+      result = 1;
+      break;
+    }
+    if (pos_a < pos_b) {
+      result = 2;
+      break;
+    }
+    if (pos_a == pos_b) bit_pos--;
+  }
+  return result;  // 0 -> a==b, 1 -> a > b, 2 -> a < b
+}
+
+int s21_is_equal(s21_decimal value_1, s21_decimal value_2) {
+  const bool result = comparison_mantiss(value_1, value_2);
+  return !result;
+}
+
+int s21_is_not_equal(s21_decimal value_1, s21_decimal value_2) {
+  const bool result = comparison_mantiss(value_1, value_2);
+  return result;
+}
+
+int s21_is_less(s21_decimal value_1, s21_decimal value_2) {
+  return comparison_mantiss(value_1, value_2) == 2;
+}
+
+int s21_is_greater(s21_decimal value_1, s21_decimal value_2) {
+  return comparison_mantiss(value_1, value_2) == 1;
+}
+
+int s21_is_less_or_equal(s21_decimal value_1, s21_decimal value_2) {
+  return !s21_is_greater(value_1, value_2);
+}
+
+int s21_is_greater_or_equal(s21_decimal value_1, s21_decimal value_2) {
+  return !s21_is_less(value_1, value_2);
 }

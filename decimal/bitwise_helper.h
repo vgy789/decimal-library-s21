@@ -48,10 +48,13 @@ uint8_t get_scale(s21_decimal value);
 // Устанавливает десятичную точку в числе s21_decimal.
 bool set_scale(s21_decimal *value, uint8_t scale);
 
-// функция инкремента
+// Функция инкремента.
 int s21_inc(s21_decimal value, s21_decimal *result);
 
-// функция декремента
+// Функция декремента.
 int s21_dec(s21_decimal value, s21_decimal *result);
+
+// Функция сравнения чисел.
+int comparison_mantiss(s21_decimal value_1, s21_decimal value_2);
 
 #endif  // BITWISE_HELPER_H
