@@ -3,6 +3,10 @@
 
 #include "s21_decimal.h"
 
+#define DECIMAL_MAX ((s21_decimal){{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0}})
+#define DECIMAL_ONE_MINUS ((s21_decimal){{0x1, 0, 0, 0x80000000}})
+#define SCALE_MAX (28)
+
 enum sign { plus, minus };
 enum { scale_start = 112, scale_end = 119 };
 
@@ -15,7 +19,7 @@ enum { scale_start = 112, scale_end = 119 };
 bool get_sign(s21_decimal value);
 
 /**
- * Устанавливает знак числа decimal. (работает)
+ * Устанавливает знак числа decimal.
  *
  * @param *value Указатель на изменяемое число.
  * @param sign Знак числа (0 — положительный, 1 — отрицательный).
@@ -23,12 +27,12 @@ bool get_sign(s21_decimal value);
 void set_sign(s21_decimal *value, bool sign);
 
 /**
- * Печатает s21_decimal в двоичном предствалении. (работает)
+ * Печатает s21_decimal в двоичном предствалении.
  */
-void decimal_binary(s21_decimal value);
+void decimal_binary(s21_decimal value, bool print_scale);
 
 /**
- * Печатает unsigned int в двоичном предствалении. (работает)
+ * Печатает unsigned int в двоичном предствалении.
  */
 void uint_binary(uint32_t value);
 
