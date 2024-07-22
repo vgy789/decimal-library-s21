@@ -4,16 +4,15 @@
 
 int s21_negate(s21_decimal value, s21_decimal *result) {
   uint8_t is_err = s21_mul(value, DECIMAL_ONE_MINUS, result);
+  // TODO: Возвращает ошибку. О какой ошибке идёт речь?
   return is_err;
 }
 
-uint8_t compliment2(s21_decimal value, s21_decimal *result) {
+void compliment2(s21_decimal value, s21_decimal *result) {
   value.bits[0] = ~value.bits[0];
   value.bits[1] = ~value.bits[1];
   value.bits[2] = ~value.bits[2];
   s21_inc(value, result);
-  // TODO: Возвращает ошибку. О какой ошибке идёт речь?
-  return 0;
 }
 
 static bool add_word(uint32_t *result, uint32_t value_1, uint32_t value_2,
@@ -24,6 +23,11 @@ static bool add_word(uint32_t *result, uint32_t value_1, uint32_t value_2,
   return overflow;
 }
 
+s21_decimal s21_abs(s21_decimal value) {
+  set_sign(&value, minus);
+  return value;
+}
+
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   bool sign1_buf = get_sign(value_1);
   bool sign2_buf = get_sign(value_2);
@@ -32,25 +36,35 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     set_sign(&value_1, plus);
     compliment2(value_1, &value_1);
   }
+
   if (get_sign(value_2) == minus) {
     set_sign(&value_2, plus);
     compliment2(value_2, &value_2);
   }
 
+  /* сложение */
   s21_decimal buf = (s21_decimal){{0, 0, 0, 0}};
-  bool transfer = add_word(&buf.bits[0], value_1.bits[0], value_2.bits[0], 0);
-  transfer = add_word(&buf.bits[1], value_1.bits[1], value_2.bits[1], transfer);
-  transfer = add_word(&buf.bits[2], value_1.bits[2], value_2.bits[2], transfer);
+  bool transfer =
+      add_word((uint32_t *)&buf.bits[0], value_1.bits[0], value_2.bits[0], 0);
+  transfer = add_word((uint32_t *)&buf.bits[1], value_1.bits[1],
+                      value_2.bits[1], transfer);
+  transfer = add_word((uint32_t *)&buf.bits[2], value_1.bits[2],
+                      value_2.bits[2], transfer);
 
   uint8_t err_code = 0;
-  if (transfer) { /* переполнение | ошибка */
+  if (transfer) { /* проверка переполнения s21_decimal */
   }
 
+  // 1 q z v 1 q x v 1 q w
   bool result_sign =
       (sign1_buf == minus && sign2_buf == minus); /* (-x) + (-y) */
-  if (result_sign) {
-    compliment2(buf, &buf);
-  }
+  result_sign +=
+      (sign1_buf == minus &&
+       s21_is_greater(s21_abs(value_1), s21_abs(value_2))); /* (-x) + y */
+  result_sign +=
+      (sign2_buf == minus &&
+       s21_is_less(s21_abs(value_1), s21_abs(value_2))); /* x + (-y) */
+  if (result_sign) compliment2(buf, &buf);
   set_sign(&buf, result_sign);
   *result = buf;
 
@@ -127,7 +141,7 @@ bool get_bit(s21_decimal value, uint8_t bit_pos) {
 void uint_binary(uint32_t value) {
   int8_t bits = 31;
 
-  // value = abs(value);
+  // value = s21_abs(value);
   while (value != 0) {
     int buf = value - (1 << bits);
 
