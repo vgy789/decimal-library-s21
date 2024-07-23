@@ -23,21 +23,18 @@ static bool add_word(uint32_t *result, uint32_t value_1, uint32_t value_2,
   return overflow;
 }
 
-s21_decimal s21_abs(s21_decimal value) {
-  set_sign(&value, minus);
-  return value;
-}
-
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
-  bool sign1_buf = get_sign(value_1);
-  bool sign2_buf = get_sign(value_2);
+  s21_decimal value_1_buf = value_1;
+  s21_decimal value_2_buf = value_2;
+  const bool sign1_buf = get_sign(value_1);
+  const bool sign2_buf = get_sign(value_2);
 
   if (sign1_buf == minus) {
     set_sign(&value_1, plus);
     compliment2(value_1, &value_1);
   }
 
-  if (get_sign(value_2) == minus) {
+  if (sign2_buf == minus) {
     set_sign(&value_2, plus);
     compliment2(value_2, &value_2);
   }
@@ -55,15 +52,12 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   if (transfer) { /* проверка переполнения s21_decimal */
   }
 
-  // 1 q z v 1 q x v 1 q w
   bool result_sign =
       (sign1_buf == minus && sign2_buf == minus); /* (-x) + (-y) */
-  result_sign +=
-      (sign1_buf == minus &&
-       s21_is_greater(s21_abs(value_1), s21_abs(value_2))); /* (-x) + y */
-  result_sign +=
-      (sign2_buf == minus &&
-       s21_is_less(s21_abs(value_1), s21_abs(value_2))); /* x + (-y) */
+  result_sign += (sign1_buf == minus &&
+                  s21_is_greater(value_1_buf, value_2_buf)); /* (-x) + y */
+  result_sign += (sign2_buf == minus &&
+                  s21_is_less(value_1_buf, value_2_buf)); /* x + (-y) */
   if (result_sign) compliment2(buf, &buf);
   set_sign(&buf, result_sign);
   *result = buf;
@@ -141,7 +135,6 @@ bool get_bit(s21_decimal value, uint8_t bit_pos) {
 void uint_binary(uint32_t value) {
   int8_t bits = 31;
 
-  // value = s21_abs(value);
   while (value != 0) {
     int buf = value - (1 << bits);
 
