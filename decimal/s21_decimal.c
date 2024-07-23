@@ -218,22 +218,64 @@ int comparison_mantiss(s21_decimal value_1, s21_decimal value_2) {
   return result;  // 0 -> a==b, 1 -> a > b, 2 -> a < b
 }
 
+int comparison(s21_decimal a,
+               s21_decimal b) { //сравнивает числа с учетом знака и экспоненты
+  int result = 2;
+  bool sign_a = get_sign(a);
+  bool sign_b = get_sign(b);
+  if (sign_a > sign_b)
+    result = 0; // а - отрицательное число, b - положительное
+  if (sign_a < sign_b)
+    result = 1; // b - отрицательное число, a - положительное
+  if (sign_a == sign_b) {
+    uint8_t scale_a = get_scale(a);
+    uint8_t scale_b = get_scale(b);
+    if (scale_a == scale_b)
+      result = comparison_mantiss(a, b); // если экспоненты равны
+    // else {
+    //   uint8_t difference = scale_a - scale_b;
+    //   if (difference > 0) {
+    //     s21_decimal mul = {10 * difference, 0, 0, 0}; //еще не работает mul
+    //     s21_decimal res = {0, 0, 0, 0};
+    //     s21_mul(b, mul, &res);
+    //     b = res;
+    //   } else {
+    //     s21_decimal mul = {10 * (-difference), 0, 0, 0}; //еще не работает
+    //     mul s21_decimal res = {0, 0, 0, 0}; s21_mul(a, mul, &res); a = res;
+    //   }
+    //   if (sign_a == 0)
+    //     result = comparison_mantiss(a, b); // a и b - положительные числа
+    //   if (sign_a == 1) { // a и b - отрицательные числа
+    //     result = comparison_mantiss(a, b);
+    //     if (result == 1)
+    //       result = 0;
+    //     if (result == 0)
+    //       result = 1;
+    //   }
+    //   //   result = additional_comparison(
+    //   //       a, b, scale_a, scale_b, sign_a,
+    //   //       sign_b); //пока не работает, потому что нет умножения
+    // }
+  }
+  return result; // 2 -> a==b, 1 -> a > b, 0 -> a < b
+}
+
 int s21_is_equal(s21_decimal value_1, s21_decimal value_2) {
-  const bool result = comparison_mantiss(value_1, value_2);
+  const bool result = comparison(value_1, value_2);
   return !result;
 }
 
 int s21_is_not_equal(s21_decimal value_1, s21_decimal value_2) {
-  const bool result = comparison_mantiss(value_1, value_2);
+  const bool result = comparison(value_1, value_2);
   return result;
 }
 
 int s21_is_less(s21_decimal value_1, s21_decimal value_2) {
-  return comparison_mantiss(value_1, value_2) == 2;
+  return comparison(value_1, value_2) == 2;
 }
 
 int s21_is_greater(s21_decimal value_1, s21_decimal value_2) {
-  return comparison_mantiss(value_1, value_2) == 1;
+  return comparison(value_1, value_2) == 1;
 }
 
 int s21_is_less_or_equal(s21_decimal value_1, s21_decimal value_2) {
