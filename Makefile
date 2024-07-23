@@ -4,7 +4,7 @@ OBJMODULES = $(SRCMODULES:.c=.o)
 CFLAGS = -g -Wall -Werror -Wextra -std=c11
 LDFLAGS = `pkg-config --cflags --libs check`
 
-TEST_EXEC = run_test
+TEST_EXEC = run_test.out
 REPORT_DIR = ./report
 
 all: s21_decimal.a
