@@ -232,30 +232,7 @@ int comparison(s21_decimal a,
     uint8_t scale_b = get_scale(b);
     if (scale_a == scale_b)
       result = comparison_mantiss(a, b); // если экспоненты равны
-    // else {
-    //   uint8_t difference = scale_a - scale_b;
-    //   if (difference > 0) {
-    //     s21_decimal mul = {10 * difference, 0, 0, 0}; //еще не работает mul
-    //     s21_decimal res = {0, 0, 0, 0};
-    //     s21_mul(b, mul, &res);
-    //     b = res;
-    //   } else {
-    //     s21_decimal mul = {10 * (-difference), 0, 0, 0}; //еще не работает
-    //     mul s21_decimal res = {0, 0, 0, 0}; s21_mul(a, mul, &res); a = res;
-    //   }
-    //   if (sign_a == 0)
-    //     result = comparison_mantiss(a, b); // a и b - положительные числа
-    //   if (sign_a == 1) { // a и b - отрицательные числа
-    //     result = comparison_mantiss(a, b);
-    //     if (result == 1)
-    //       result = 0;
-    //     if (result == 0)
-    //       result = 1;
-    //   }
-    //   //   result = additional_comparison(
-    //   //       a, b, scale_a, scale_b, sign_a,
-    //   //       sign_b); //пока не работает, потому что нет умножения
-    // }
+      //a если они не равны, то обломитесь
   }
   return result; // 2 -> a==b, 1 -> a > b, 0 -> a < b
 }
