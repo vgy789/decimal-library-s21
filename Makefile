@@ -10,7 +10,7 @@ REPORT_DIR = ./report
 all: s21_decimal.a
 
 test: clean s21_decimal.a
-	checkmk test/in > test/test.c
+	checkmk clean_mode=1 test/in > test/test.c
 	$(CC) $(FLAGS) --coverage -o $(TEST_EXEC) test/test.c $(SRCMODULES) $(LDFLAGS)
 	./$(TEST_EXEC)
 
@@ -24,13 +24,14 @@ gcov_report: test
 s21_decimal.a: $(OBJMODULES)
 	ar rcs $@ $<
 
-FORMAT = clang-format --style="{CommentPragmas: Insert, BasedOnStyle: Google}"
+CODE_STYLE = clang-format --style="{CommentPragmas: Insert, BasedOnStyle: Google}"
+FILES = find ./ -name '*.c' -print0 -or -name '*.h' -print0
 
-format_check:
-	find ./ -name '*.c' -or -name '*.h' -print0 | xargs -0 $(FORMAT) -n 
+fmt_check:
+	$(FILES) | xargs -0 $(CODE_STYLE) -n 
 
-format:
-	find ./ -name '*.c' -or -name '*.h' -print0 | xargs -0 $(FORMAT) -i
+fmt:
+	$(FILES) | xargs -0 $(CODE_STYLE) -i
 
 clean:
 	rm -f *.o *.a *.gcno *.gcda report.info $(TEST_EXEC) test/test.c
