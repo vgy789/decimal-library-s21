@@ -3,8 +3,6 @@
 
 #include "s21_decimal.h"
 
-#define DECIMAL_MAX ((s21_decimal){{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0}})
-#define DECIMAL_ONE_MINUS ((s21_decimal){{0x1, 0, 0, 0x80000000}})
 #define SCALE_MAX (28)
 
 enum sign { plus, minus };
