@@ -66,7 +66,8 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 }
 
 int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
-  s21_negate(value_2, &value_2);
+  const bool sign = get_sign(value_2);
+  set_sign(&value_2, !sign);
   uint8_t is_err = s21_add(value_1, value_2, result);
   // TODO: ошибка
   return is_err;
