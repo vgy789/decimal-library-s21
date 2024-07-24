@@ -3,9 +3,10 @@
 #include "bitwise_helper.h"
 
 int s21_negate(s21_decimal value, s21_decimal *result) {
-  uint8_t is_err = s21_mul(value, DECIMAL_ONE_MINUS, result);
-  // TODO: Возвращает ошибку. О какой ошибке идёт речь?
-  return is_err;
+  enum { minus_bit = 0x80000000 };
+  uint8_t err_code =
+      s21_mul(value, (s21_decimal){{1, 0, 0, minus_bit}}, result);
+  return err_code;
 }
 
 void compliment2(s21_decimal value, s21_decimal *result) {
@@ -24,43 +25,33 @@ static bool add_word(uint32_t *result, uint32_t value_1, uint32_t value_2,
 }
 
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
-  s21_decimal value_1_buf = value_1;
-  s21_decimal value_2_buf = value_2;
-  const bool sign1_buf = get_sign(value_1);
-  const bool sign2_buf = get_sign(value_2);
+  const s21_decimal value_1_orig = value_1;
+  const s21_decimal value_2_orig = value_2;
+  const bool sign_1_orig = get_sign(value_1);
+  const bool sign_2_orig = get_sign(value_2);
 
-  if (sign1_buf == minus) {
-    set_sign(&value_1, plus);
-    compliment2(value_1, &value_1);
-  }
-
-  if (sign2_buf == minus) {
-    set_sign(&value_2, plus);
-    compliment2(value_2, &value_2);
-  }
+  if (sign_1_orig == minus) compliment2(value_1, &value_1);
+  if (sign_2_orig == minus) compliment2(value_2, &value_2);
 
   /* сложение */
-  s21_decimal buf = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal buf = (s21_decimal){{0}};
   bool transfer =
       add_word((uint32_t *)&buf.bits[0], value_1.bits[0], value_2.bits[0], 0);
   transfer = add_word((uint32_t *)&buf.bits[1], value_1.bits[1],
                       value_2.bits[1], transfer);
   transfer = add_word((uint32_t *)&buf.bits[2], value_1.bits[2],
                       value_2.bits[2], transfer);
-
-  uint8_t err_code = 0;
-  if (transfer) { /* проверка переполнения s21_decimal */
-  }
-
   bool result_sign =
-      (sign1_buf == minus && sign2_buf == minus); /* (-x) + (-y) */
-  result_sign += (sign1_buf == minus &&
-                  s21_is_greater(value_1_buf, value_2_buf)); /* (-x) + y */
-  result_sign += (sign2_buf == minus &&
-                  s21_is_less(value_1_buf, value_2_buf)); /* x + (-y) */
+      (sign_1_orig == minus && sign_2_orig == minus) &&
+      (sign_1_orig == minus && s21_is_greater(value_1_orig, value_2_orig)) &&
+      sign_2_orig == minus && s21_is_less(value_1_orig, value_2_orig);
   if (result_sign) compliment2(buf, &buf);
   set_sign(&buf, result_sign);
   *result = buf;
+
+  uint8_t err_code = 0;
+  if (transfer == true) { /* проверка переполнения s21_decimal */
+  }
 
   return err_code;
 }
@@ -68,29 +59,31 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   const bool sign = get_sign(value_2);
   set_sign(&value_2, !sign);
-  uint8_t is_err = s21_add(value_1, value_2, result);
+  uint8_t err_code = s21_add(value_1, value_2, result);
   // TODO: ошибка
-  return is_err;
+  return err_code;
 }
 
 int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
-  const bool sign1 = get_sign(value_1);
-  const bool sign2 = get_sign(value_2);
-  if (sign1 == minus) compliment2(value_2, &value_1);
-  if (sign2 == minus) compliment2(value_2, &value_2);
+  const bool sign_1_orig = get_sign(value_1);
+  const bool sign_2_orig = get_sign(value_2);
 
-  uint8_t is_err = 0;
-  *result = (s21_decimal){0b0};
+  if (sign_1_orig == minus) set_sign(&value_1, plus);
+  if (sign_2_orig == minus) set_sign(&value_2, plus);
+
+  uint8_t err_code = 0;
+  *result = (s21_decimal){0};
   while (value_2.bits[0] | value_2.bits[1] | value_2.bits[2]) {
-    s21_sub(value_2, (s21_decimal){{0b1, 0, 0, 0}}, &value_2);
-    is_err = s21_add(value_1, *result, result);
+    (void)s21_sub(value_2, (s21_decimal){{1, 0, 0, 0}}, &value_2);
+    err_code = s21_add(value_1, *result, result);
   }
 
-  const bool sign_result = sign1 ^ sign2;
-  if (sign_result == minus) compliment2(*result, result);
+  const bool result_sign = (sign_1_orig == minus || sign_2_orig == minus) &&
+                           !(sign_1_orig == minus && sign_2_orig == minus);
+  set_sign(result, result_sign);
 
   // TODO: ошибка
-  return is_err;
+  return err_code;
 }
 
 // int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
