@@ -25,8 +25,8 @@ static bool add_word(uint32_t *result, uint32_t value_1, uint32_t value_2,
 }
 
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
-  const s21_decimal value_1_orig = value_1;
-  const s21_decimal value_2_orig = value_2;
+  s21_decimal value_1_orig = value_1;
+  s21_decimal value_2_orig = value_2;
   const bool sign_1_orig = get_sign(value_1);
   const bool sign_2_orig = get_sign(value_2);
 
@@ -48,6 +48,9 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
                       value_2.bits[1], transfer);
   transfer = add_word((uint32_t *)&buf.bits[2], value_1.bits[2],
                       value_2.bits[2], transfer);
+
+  set_sign(&value_1_orig, plus);  // далее нужно сравнить биты не учитывая знак
+  set_sign(&value_2_orig, plus);
   bool result_sign =
       (sign_1_orig == minus && sign_2_orig == minus) ||
       (sign_1_orig == minus && s21_is_greater(value_1_orig, value_2_orig)) ||
