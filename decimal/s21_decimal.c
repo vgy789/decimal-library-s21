@@ -30,8 +30,15 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   const bool sign_1_orig = get_sign(value_1);
   const bool sign_2_orig = get_sign(value_2);
 
-  if (sign_1_orig == minus) compliment2(value_1, &value_1);
-  if (sign_2_orig == minus) compliment2(value_2, &value_2);
+  if (sign_1_orig == minus) {
+    set_sign(&value_1, plus);  // complement2 использует сложение. Чтобы не уйти
+                               // в рекурсию ставлю знак в +.
+    compliment2(value_1, &value_1);
+  }
+  if (sign_2_orig == minus) {
+    set_sign(&value_2, plus);
+    compliment2(value_2, &value_2);
+  }
 
   /* сложение */
   s21_decimal buf = (s21_decimal){{0}};
@@ -42,9 +49,9 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   transfer = add_word((uint32_t *)&buf.bits[2], value_1.bits[2],
                       value_2.bits[2], transfer);
   bool result_sign =
-      (sign_1_orig == minus && sign_2_orig == minus) &&
-      (sign_1_orig == minus && s21_is_greater(value_1_orig, value_2_orig)) &&
-      sign_2_orig == minus && s21_is_less(value_1_orig, value_2_orig);
+      (sign_1_orig == minus && sign_2_orig == minus) ||
+      (sign_1_orig == minus && s21_is_greater(value_1_orig, value_2_orig)) ||
+      (sign_2_orig == minus && s21_is_less(value_1_orig, value_2_orig));
   if (result_sign) compliment2(buf, &buf);
   set_sign(&buf, result_sign);
   *result = buf;
