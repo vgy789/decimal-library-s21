@@ -195,7 +195,7 @@ int s21_dec(s21_decimal value, s21_decimal *result) {
   return 0;
 }
 
-int comparison_mantiss(s21_decimal value_1, s21_decimal value_2) {
+static int comparison_mantiss(s21_decimal value_1, s21_decimal value_2) {
   int bit_pos = 96;
   bool pos_a, pos_b;
   int result = 0;
@@ -215,8 +215,9 @@ int comparison_mantiss(s21_decimal value_1, s21_decimal value_2) {
   return result;  // 0 -> a==b, 1 -> a > b, 2 -> a < b
 }
 
-int comparison(s21_decimal a,
-               s21_decimal b) {  // сравнивает числа с учетом знака и экспоненты
+static int comparison(
+    s21_decimal a,
+    s21_decimal b) {  // сравнивает числа с учетом знака и экспоненты
   int result = 0;
   bool sign_a = get_sign(a);
   bool sign_b = get_sign(b);
