@@ -346,3 +346,39 @@ int return_code = s21_add(value_1, value_2, &result);
 
 ck_assert(s21_is_equal(result, expected) == 1);
 ck_assert(return_code == 0);
+
+#test positive_s21_is_equal_00
+s21_decimal value_1 = {{0, 0, 0, 0}};
+s21_decimal value_2 = {{0, 0, 0, 0}};
+bool result = s21_is_equal(value_1, value_2);
+ck_assert(result == 1);
+
+#test positive_s21_is_equal_01
+s21_decimal value_1 = {{0, 500, 1, 0}};
+s21_decimal value_2 = {{0, 500, 1, 0}};
+set_sign(&value_1, minus);
+set_sign(&value_2, minus);
+set_scale(&value_1, 27);
+set_scale(&value_2, 27);
+bool result = s21_is_equal(value_1, value_2);
+ck_assert(result == 1);
+
+#test negative_s21_is_equal_00
+s21_decimal value_1 = {{1, 0, 0, 0}};
+s21_decimal value_2 = {{0, 0, 0, 0}};
+bool result = s21_is_equal(value_1, value_2);
+ck_assert(result == 0);
+
+#test negative_s21_is_equal_01
+s21_decimal value_1 = {{1, 0, 0, 0}};
+s21_decimal value_2 = {{1, 0, 0, 0}};
+set_sign(&value_1, minus);
+bool result = s21_is_equal(value_1, value_2);
+ck_assert(result == 1);
+
+#test negative_s21_is_equal_02
+s21_decimal value_1 = {{1, 0, 0, 0}};
+s21_decimal value_2 = {{1, 0, 0, 0}};
+set_scale(&value_1, 27);
+bool result = s21_is_equal(value_1, value_2);
+ck_assert(result == 0);
