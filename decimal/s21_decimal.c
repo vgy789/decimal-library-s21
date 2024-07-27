@@ -9,7 +9,8 @@ int s21_negate(s21_decimal value, s21_decimal *result) {
   return err_code;
 }
 
-void compliment2(s21_decimal value, s21_decimal *result) {
+// Перевод мантиссы в дополнительный код (дополнение до двух).
+static void compliment2(s21_decimal value, s21_decimal *result) {
   value.bits[0] = ~value.bits[0];
   value.bits[1] = ~value.bits[1];
   value.bits[2] = ~value.bits[2];
@@ -49,7 +50,8 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   transfer = add_word((uint32_t *)&buf.bits[2], value_1.bits[2],
                       value_2.bits[2], transfer);
 
-  set_sign(&value_1_orig, plus);  // далее нужно сравнить биты не учитывая знак
+  /* далее нужно сравнить биты не учитывая знак */
+  set_sign(&value_1_orig, plus);
   set_sign(&value_2_orig, plus);
   bool result_sign =
       (sign_1_orig == minus && sign_2_orig == minus) ||
@@ -68,6 +70,7 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 
 int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   const bool sign = get_sign(value_2);
+  // инвертируем знак и складываем
   set_sign(&value_2, !sign);
   uint8_t err_code = s21_add(value_1, value_2, result);
   // TODO: ошибка
@@ -83,6 +86,7 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 
   uint8_t err_code = 0;
   *result = (s21_decimal){0};
+  // умножение через сложение
   while (value_2.bits[0] | value_2.bits[1] | value_2.bits[2]) {
     (void)s21_sub(value_2, (s21_decimal){{1, 0, 0, 0}}, &value_2);
     err_code = s21_add(value_1, *result, result);
@@ -195,7 +199,7 @@ int s21_dec(s21_decimal value, s21_decimal *result) {
   return 0;
 }
 
-int comparison_mantiss(s21_decimal value_1, s21_decimal value_2) {
+static int comparison_mantiss(s21_decimal value_1, s21_decimal value_2) {
   int bit_pos = 96;
   bool pos_a, pos_b;
   int result = 0;
