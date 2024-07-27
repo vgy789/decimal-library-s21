@@ -216,22 +216,22 @@ int comparison_mantiss(s21_decimal value_1, s21_decimal value_2) {
 }
 
 int comparison(s21_decimal a,
-               s21_decimal b) { //сравнивает числа с учетом знака и экспоненты
-  int result = 2;
+               s21_decimal b) {  // сравнивает числа с учетом знака и экспоненты
+  int result = 0;
   bool sign_a = get_sign(a);
   bool sign_b = get_sign(b);
   if (sign_a > sign_b)
-    result = 0; // а - отрицательное число, b - положительное
+    result = 2;  // а - отрицательное число, b - положительное
   if (sign_a < sign_b)
-    result = 1; // b - отрицательное число, a - положительное
+    result = 1;  // b - отрицательное число, a - положительное
   if (sign_a == sign_b) {
     uint8_t scale_a = get_scale(a);
     uint8_t scale_b = get_scale(b);
     if (scale_a == scale_b)
-      result = comparison_mantiss(a, b); // если экспоненты равны
-      //a если они не равны, то обломитесь
+      result = comparison_mantiss(a, b);  // если экспоненты равны
+    // a если они не равны, то обломитесь
   }
-  return result; // 2 -> a==b, 1 -> a > b, 0 -> a < b
+  return result;  // 0 -> a==b, 1 -> a > b, 2 -> a < b
 }
 
 int s21_is_equal(s21_decimal value_1, s21_decimal value_2) {
