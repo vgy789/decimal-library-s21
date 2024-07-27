@@ -260,3 +260,25 @@ int s21_is_less_or_equal(s21_decimal value_1, s21_decimal value_2) {
 int s21_is_greater_or_equal(s21_decimal value_1, s21_decimal value_2) {
   return !s21_is_less(value_1, value_2);
 }
+
+int s21_from_int_to_decimal(int src, s21_decimal *dst) {
+  if (src < 0) {
+    src = -src;
+    set_sign(dst, minus);
+  }
+  dst->bits[0] = src;
+  return 0;
+}
+
+int s21_from_decimal_to_int(s21_decimal src, int *dst) {
+  int result = 0;
+  if (src.bits[1] == 0 && src.bits[2] == 0) {
+    uint8_t scale_src = get_scale(src);
+    *dst = src.bits[0] >> scale_src;
+    if (get_sign(src) == 1) {
+      *dst = -*dst;
+    }
+  } else
+    result = 1;
+  return result;
+}
