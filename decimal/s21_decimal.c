@@ -143,7 +143,8 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   *result = buf;
 
   uint8_t err_code = 0;
-  if (transfer == true) { /* проверка переполнения s21_decimal */
+  if (transfer == true &&
+      sign_1_orig == sign_2_orig) { /* проверка переполнения s21_decimal */
     if (result_sign == plus)
       err_code = 1;
     else
