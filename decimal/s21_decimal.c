@@ -1,6 +1,97 @@
 #include "s21_decimal.h"
 
+#include <math.h>
+
 #include "bitwise_helper.h"
+
+// int s21_negate(s21_decimal value, s21_decimal *result) {
+//   enum { minus_bit = 0x80000000 };
+//   uint8_t err_code =
+//       s21_mul(value, (s21_decimal){{1, 0, 0, minus_bit}}, result);
+//   return err_code;
+// }
+
+bool mul_by_ten_bin(s21_decimal *value) {
+  uint8_t scale = get_scale(*value);
+  bool is_err = s21_mul(*value, (s21_decimal){{10, 0, 0, 0}}, value);
+  set_scale(value, ++scale);
+  return is_err;
+}
+
+int get_first_num(int value, int *size) {
+  int rez = 0;
+  *size = 0;
+  while (value > 0) {
+    rez = value % 10;
+    value /= 10;
+    (*size)++;
+  }
+  (*size) -= 1;
+  return rez;
+}
+
+void mul_by_ten(s21_decimal *value) {
+  int buff = 0;
+  int zer_buff = 0;
+  int scale = get_scale(*value);
+  for (int i = 0; i <= 2; i++) {
+    if (value->bits[i] > 0xFFFFFFF / 10) {
+      buff = get_first_num(value->bits[i], &zer_buff);
+      value->bits[i] -= buff * pow(10, zer_buff);
+      value->bits[i] *= 10;
+    } else {
+      value->bits[i] = value->bits[i] * 10 + buff;
+      buff = 0;
+    }
+  }
+  set_scale(value, ++scale);
+}
+
+void div_by_ten(s21_decimal *value) {
+  int buff[3];
+  int scale = get_scale(*value);
+  for (int i = 2; i >= 0; i--) {
+    buff[i] = value->bits[i] % 10;
+    value->bits[i] /= 10;
+  }
+  for (int i = 2; i >= 1; i--) {
+    value->bits[i - 1] += buff[i] * pow(10, 8);
+  }
+  set_scale(value, ++scale);
+}
+
+void alignment(s21_decimal *value1, s21_decimal *value2) {
+  int mant_size1 = get_scale(*value1), mant_size2 = get_scale(*value2);
+  if (mant_size1 == mant_size2) return;
+  if (mant_size2 < mant_size1) {
+    alignment(value2, value1);
+    return;
+  }
+  while (mant_size1 < mant_size2) {
+    if ((*value1).bits[2] > 0xFFFFFFF / 10) break;
+    mul_by_ten(value1);
+    mant_size1++;
+  }
+
+  set_scale(value1, mant_size1);
+  while (mant_size1 < mant_size2) {
+    if ((*value2).bits[0] % 10 != 0) break;
+    div_by_ten(value2);
+    mant_size2--;
+  }
+
+  set_scale(value2, mant_size2);
+  while (mant_size1 < mant_size2) {
+    div_by_ten(value2);
+    mant_size2--;
+  }
+  set_scale(value2, mant_size2);
+}
+
+///
+///
+///
+///
 
 int s21_negate(s21_decimal value, s21_decimal *result) {
   enum { minus_bit = 0x80000000 };
@@ -9,7 +100,8 @@ int s21_negate(s21_decimal value, s21_decimal *result) {
   return err_code;
 }
 
-void compliment2(s21_decimal value, s21_decimal *result) {
+// Перевод мантиссы в дополнительный код (дополнение до двух).
+static void compliment2(s21_decimal value, s21_decimal *result) {
   value.bits[0] = ~value.bits[0];
   value.bits[1] = ~value.bits[1];
   value.bits[2] = ~value.bits[2];
@@ -31,8 +123,8 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   const bool sign_2_orig = get_sign(value_2);
 
   if (sign_1_orig == minus) {
-    set_sign(&value_1, plus);  // complement2 использует сложение. Чтобы не уйти
-                               // в рекурсию ставлю знак в +.
+    set_sign(&value_1, plus);  // complement2 использует сложение. Чтобы не
+                               // уйти в рекурсию ставлю знак в +.
     compliment2(value_1, &value_1);
   }
   if (sign_2_orig == minus) {
@@ -49,7 +141,8 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   transfer = add_word((uint32_t *)&buf.bits[2], value_1.bits[2],
                       value_2.bits[2], transfer);
 
-  set_sign(&value_1_orig, plus);  // далее нужно сравнить биты не учитывая знак
+  /* далее нужно сравнить биты не учитывая знак */
+
   set_sign(&value_2_orig, plus);
   bool result_sign =
       (sign_1_orig == minus && sign_2_orig == minus) ||
@@ -68,6 +161,7 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 
 int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   const bool sign = get_sign(value_2);
+  // инвертируем знак и складываем
   set_sign(&value_2, !sign);
   uint8_t err_code = s21_add(value_1, value_2, result);
   // TODO: ошибка
@@ -83,6 +177,7 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 
   uint8_t err_code = 0;
   *result = (s21_decimal){0};
+  // умножение через сложение
   while (value_2.bits[0] | value_2.bits[1] | value_2.bits[2]) {
     (void)s21_sub(value_2, (s21_decimal){{1, 0, 0, 0}}, &value_2);
     err_code = s21_add(value_1, *result, result);
@@ -96,17 +191,18 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   return err_code;
 }
 
-// int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
-// нужна операция сравнения >=
+// int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result)
+// { нужна операция сравнения >=
 // }
 
 bool set_scale(s21_decimal *value, uint8_t scale) {
-  if (scale > 28) return 1;
-  s21_decimal decimal_scale = (s21_decimal){{scale, 0, 0, 0}};
+  if (scale > 28) return 0;
+  bool sign = get_sign(*value);
 
-  for (int bit_i = scale_start; bit_i <= scale_end; ++bit_i)
-    set_bit(value, bit_i, get_bit(decimal_scale, bit_i % scale_start));
-  return 0;
+  value->bits[3] = (0b11111111 << 16) & scale << 16;
+  set_sign(value, sign);
+
+  return 1;
 }
 
 uint8_t get_scale(s21_decimal value) {
@@ -230,7 +326,11 @@ static int comparison(
     uint8_t scale_b = get_scale(b);
     if (scale_a == scale_b)
       result = comparison_mantiss(a, b);  // если экспоненты равны
-    // a если они не равны, то обломитесь
+    else {
+      alignment(&a, &b);
+      result = comparison_mantiss(a, b);
+    }
+    if (scale_a == 1) result = -result;
   }
   return result;  // 0 -> a==b, 1 -> a > b, 2 -> a < b
 }
@@ -274,7 +374,11 @@ int s21_from_decimal_to_int(s21_decimal src, int *dst) {
   int result = 0;
   if (src.bits[1] == 0 && src.bits[2] == 0) {
     uint8_t scale_src = get_scale(src);
-    *dst = src.bits[0] >> scale_src;
+    while (scale_src > 0) {
+      div_by_ten(&src);
+      scale_src--;
+    }
+    *dst = src.bits[0];
     if (get_sign(src) == 1) {
       *dst = -*dst;
     }
