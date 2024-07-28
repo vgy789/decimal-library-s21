@@ -4,12 +4,26 @@
 
 #include "bitwise_helper.h"
 
-bool mul_by_ten_bin(s21_decimal *value) {
+static void left_shift(s21_decimal *value) {
+  for (int i = 95; i > 0; --i) {
+    set_bit(value, i, get_bit(*value, i - 1));
+  }
+  set_bit(value, 0, 0);
+}
+
+bool mul_by_ten(s21_decimal *value) {
   uint8_t scale = get_scale(*value);
   bool is_err = s21_mul(*value, (s21_decimal){{10, 0, 0, 0}}, value);
   set_scale(value, ++scale);
   return is_err;
 }
+
+// bool div_by_ten(s21_decimal *value) {
+//   uint8_t scale = get_scale(*value);
+//   bool is_err = s21_div(*value, (s21_decimal){{10, 0, 0, 0}}, value);
+//   set_scale(value, ++scale);
+//   return is_err;
+// }
 
 int get_first_num(int value, int *size) {
   int rez = 0;
@@ -21,23 +35,6 @@ int get_first_num(int value, int *size) {
   }
   (*size) -= 1;
   return rez;
-}
-
-void mul_by_ten(s21_decimal *value) {
-  int buff = 0;
-  int zer_buff = 0;
-  int scale = get_scale(*value);
-  for (int i = 0; i <= 2; i++) {
-    if (value->bits[i] > 0xFFFFFFF / 10) {
-      buff = get_first_num(value->bits[i], &zer_buff);
-      value->bits[i] -= buff * pow(10, zer_buff);
-      value->bits[i] *= 10;
-    } else {
-      value->bits[i] = value->bits[i] * 10 + buff;
-      buff = 0;
-    }
-  }
-  set_scale(value, ++scale);
 }
 
 void div_by_ten(s21_decimal *value) {
@@ -188,9 +185,52 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   return err_code;
 }
 
-// int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
-// нужна операция сравнения >=
-// }
+// https://en.wikipedia.org/wiki/Division_algorithm#Integer_division_(unsigned)_with_remainder
+int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
+  if (s21_is_equal(value_2, (s21_decimal){{0}})) /* если делим на 0 */
+    return 2;
+
+  const bool sign_1 = get_sign(value_1);
+  const bool sign_2 = get_sign(value_2);
+  const bool result_sign = (sign_1 == minus || sign_2 == minus) &&
+                           !(sign_1 == minus && sign_2 == minus);
+  set_sign(&value_1, plus);
+  set_sign(&value_2, plus);
+
+  s21_decimal Q = (s21_decimal){{0}};  // частное quotient
+  s21_decimal R = (s21_decimal){{0}};  // остаток remainder
+  while (1) {
+    Q.bits[0] = 0;
+    Q.bits[1] = 0;
+    Q.bits[2] = 0;
+    R = (s21_decimal){{0}};
+
+    int n = 96;  // number of bits in value_1
+    for (int i = n - 1; i >= 0; i--) {
+      left_shift(&R);
+      set_bit(&R, 0, get_bit(value_1, i));
+      if (s21_is_greater_or_equal(R, value_2)) {
+        (void)s21_sub(R, value_2, &R);
+        set_bit(&Q, i, 1);
+      }
+    }
+
+    *result = Q;
+
+    // домножаем на 10 и снова делим, пока остаток не станет 0
+    if (s21_is_not_equal(R, (s21_decimal){{0}})) {
+      const bool overflow = mul_by_ten(&value_1);
+      set_scale(&Q, get_scale(Q) + 1);
+      if (overflow) { /* слишком много цифр после запятой */
+        break;
+      }
+    } else {
+      break;
+    }
+  }
+  set_sign(result, result_sign);
+  return 0;
+}
 
 bool set_scale(s21_decimal *value, uint8_t scale) {
   if (scale > 28) return 0;
