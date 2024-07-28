@@ -34,8 +34,9 @@ fmt:
 	$(FILES) | xargs -0 $(CODE_STYLE) -i
 
 clean:
-	rm -f *.o *.a *.gcno *.gcda report.info $(TEST_EXEC) test/test.c
-	rm -rf $(REPORT_DIR)/ 
+	find . -name *.o | xargs rm -f
+	rm -f *.a *.gcno *.gcda report.info $(TEST_EXEC) test/test.c
+	rm -rf $(REPORT_DIR)/
 
 valgrind:
 	valgrind --tool=memcheck --leak-check=yes $(TEST_EXEC)
