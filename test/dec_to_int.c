@@ -50,14 +50,15 @@ static void dec_int(s21_decimal value) {
   print_u128_u(number);
 }
 
-/*
 int main(void) {
-  s21_decimal num1 = (s21_decimal){{5, 0, 0, 0}};
-  s21_decimal num2 = (s21_decimal){{5, 0, 0, 0}};
+  s21_decimal num1 = {{0, 0, 0, 0}};
+  s21_decimal num2 = {{0, 0, 0, 0}};
   s21_decimal result = (s21_decimal){{0, 0, 0, 0}};
 
-  set_sign(&num1, minus);
-  set_sign(&num2, minus);
+  // set_sign(&num1, minus);
+  // set_sign(&num2, minus);
+  // set_scale(&num1, 10);
+  // set_scale(&num2, 5);
 
   {
     decimal_binary(num1, 1);
@@ -72,4 +73,3 @@ int main(void) {
   decimal_binary(result, 1);
   dec_int(result);
 }
-*/
