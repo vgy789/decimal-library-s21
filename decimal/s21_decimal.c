@@ -147,6 +147,10 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 
   uint8_t err_code = 0;
   if (transfer == true) { /* проверка переполнения s21_decimal */
+    if (result_sign == plus)
+      err_code = 1;
+    else
+      err_code = 2;
   }
 
   return err_code;
