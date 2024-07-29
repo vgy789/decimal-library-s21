@@ -50,26 +50,43 @@ static void dec_int(s21_decimal value) {
   print_u128_u(number);
 }
 
-int main(void) {
-  s21_decimal num1 = {{0, 0, 0, 0}};
-  s21_decimal num2 = {{0, 0, 0, 0}};
-  s21_decimal result = (s21_decimal){{0, 0, 0, 0}};
+static s21_decimal uint128_to_bin(__uint128_t n) {
+  // use s21_decimal result = uint128_to_bin(1234123125678965432);
+  s21_decimal result = {{0, 0, 0, 0}};
+  int binary_num[128];
+  int i = 0;
 
-  // set_sign(&num1, minus);
-  // set_sign(&num2, minus);
-  // set_scale(&num1, 10);
-  // set_scale(&num2, 5);
-
-  {
-    decimal_binary(num1, 1);
-    dec_int(num1);
-    printf("\n");
-    decimal_binary(num2, 1);
-    dec_int(num2);
-    printf("\n");
+  while (n > 0) {
+    binary_num[i++] = n % 2;
+    n /= 2;
   }
 
-  s21_add(num1, num2, &result);
-  decimal_binary(result, 1);
-  dec_int(result);
+  for (int j = i - 1; j >= 0; j--) {
+    set_bit(&result, j, binary_num[j]);
+  }
+  return result;
 }
+
+// int main(void) {
+//   s21_decimal num1 = {{0, 0, 0, 0}};
+//   s21_decimal num2 = {{0, 0, 0, 0}};
+//   s21_decimal result = (s21_decimal){{0, 0, 0, 0}};
+
+//   // set_sign(&num1, minus);
+//   // set_sign(&num2, minus);
+//   // set_scale(&num1, 10);
+//   // set_scale(&num2, 5);
+
+//   {
+//     decimal_binary(num1, 1);
+//     dec_int(num1);
+//     printf("\n");
+//     decimal_binary(num2, 1);
+//     dec_int(num2);
+//     printf("\n");
+//   }
+
+//   s21_add(num1, num2, &result);
+//   decimal_binary(result, 1);
+//   dec_int(result);
+// }

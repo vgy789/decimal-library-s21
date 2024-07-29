@@ -107,11 +107,19 @@ static bool add_word(uint32_t *result, uint32_t value_1, uint32_t value_2,
 }
 
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
-  s21_decimal value_1_orig = value_1;
-  s21_decimal value_2_orig = value_2;
   const bool sign_1_orig = get_sign(value_1);
   const bool sign_2_orig = get_sign(value_2);
+  /* чтобы узнать знак результата необходимо сравнить биты не учитывая знак */
+  set_sign(&value_1, plus);
+  set_sign(&value_2, plus);
+  bool result_sign =
+      (sign_1_orig == minus && sign_2_orig == minus) ||
+      (sign_1_orig == minus && s21_is_greater(value_1, value_2)) ||
+      (sign_2_orig == minus && s21_is_less(value_1, value_2));
+  if (result_sign) compliment2(*result, result);
+  set_sign(result, result_sign);
 
+  // при необходимости переводим в дополнительный код.
   if (sign_1_orig == minus) {
     set_sign(&value_1, plus);  // complement2 использует сложение. Чтобы не уйти
                                // в рекурсию ставлю знак в +.
@@ -123,32 +131,18 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   }
 
   /* сложение */
-  s21_decimal buf = (s21_decimal){{0}};
-  bool transfer =
-      add_word((uint32_t *)&buf.bits[0], value_1.bits[0], value_2.bits[0], 0);
-  transfer = add_word((uint32_t *)&buf.bits[1], value_1.bits[1],
+  bool transfer = add_word((uint32_t *)&result->bits[0], value_1.bits[0],
+                           value_2.bits[0], 0);
+  transfer = add_word((uint32_t *)&result->bits[1], value_1.bits[1],
                       value_2.bits[1], transfer);
-  transfer = add_word((uint32_t *)&buf.bits[2], value_1.bits[2],
+  transfer = add_word((uint32_t *)&result->bits[2], value_1.bits[2],
                       value_2.bits[2], transfer);
-
-  /* далее нужно сравнить биты не учитывая знак */
-  set_sign(&value_1_orig, plus);
-  set_sign(&value_2_orig, plus);
-  bool result_sign =
-      (sign_1_orig == minus && sign_2_orig == minus) ||
-      (sign_1_orig == minus && s21_is_greater(value_1_orig, value_2_orig)) ||
-      (sign_2_orig == minus && s21_is_less(value_1_orig, value_2_orig));
-  if (result_sign) compliment2(buf, &buf);
-  set_sign(&buf, result_sign);
-  *result = buf;
 
   uint8_t err_code = 0;
   if (transfer == true &&
       sign_1_orig == sign_2_orig) { /* проверка переполнения s21_decimal */
-    if (result_sign == plus)
-      err_code = 1;
-    else
-      err_code = 2;
+    if (result_sign == plus) err_code = 1;
+    if (result_sign == minus) err_code = 2;
   }
 
   return err_code;
