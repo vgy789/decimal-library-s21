@@ -517,7 +517,7 @@ ck_assert(s21_is_equal(result, expected) == 1);
 ck_assert(return_code == 0);
 
 // Функция s21_add сложение двух отрицательных чисел с большой мантиссой
-#test add_negative_float_big_scale
+#test add_negative_float_big_scale_
 s21_decimal value_1 = {{1, 0, 0, 0x80000000}};
 s21_decimal value_2 = {{2, 0, 0, 0x80000000}};
 set_scale(&value_1, 28);
@@ -531,7 +531,7 @@ ck_assert(s21_is_equal(result, expected) == 1);
 ck_assert(return_code == 0);
 
 // Функция s21_add сложение отрицательного и положительного с большой мантиссой
-#test add_negative_and_positive_float_big_scale
+#test add_negative_and_positive_float_big_scale_
 s21_decimal value_1 = {{1, 0, 0, 0x80000000}};
 s21_decimal value_2 = {{2, 0, 0, 0}};
 set_scale(&value_1, 28);
