@@ -8,8 +8,7 @@
 enum sign { plus, minus };
 enum { scale_start = 112, scale_end = 119 };
 
-bool mul_by_ten_bin(s21_decimal *value);
-void mul_by_ten(s21_decimal *value);
+bool mul_by_ten(s21_decimal *value);
 void div_by_ten(s21_decimal *value);
 int get_first_num(int value, int *size);
 void alignment(s21_decimal *value1, s21_decimal *value2);
