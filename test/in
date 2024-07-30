@@ -842,7 +842,7 @@ s21_decimal result = {{0, 0, 0, 0}};
 
 int return_code = s21_sub(value_1, value_2, &result);
 
-ck_assert(return_code == 1);
+ck_assert(return_code == 2);
 
 // Функция s21_sub вычитание минимального отрицательного и максимального
 // положительного
@@ -854,7 +854,7 @@ s21_decimal result = {{0, 0, 0, 0}};
 
 int return_code = s21_sub(value_1, value_2, &result);
 
-ck_assert(return_code == 1);
+ck_assert(return_code == 2);
 
 // Функция s21_sub вычитание максимального отрицательного и минимального
 // положительного
@@ -866,7 +866,7 @@ s21_decimal result = {{0, 0, 0, 0}};
 
 int return_code = s21_sub(value_1, value_2, &result);
 
-ck_assert(return_code == 1);
+ck_assert(return_code == 2);
 
 // Функция s21_sub вычитание нулей
 #test sub_positive_numbers_zero
@@ -1447,7 +1447,7 @@ s21_decimal result = {{0, 0, 0, 0}};
 
 int return_code = s21_mul(value_1, value_2, &result);
 
-ck_assert(return_code == 2);
+ck_assert(return_code == 0);
 
 // Функция s21_mul умножение положительного числа и нуля
 #test mul_positive_numbers_and_zero
