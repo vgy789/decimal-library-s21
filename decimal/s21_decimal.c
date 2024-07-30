@@ -11,19 +11,19 @@ static void left_shift(s21_decimal *value) {
   set_bit(value, 0, 0);
 }
 
-bool mul_by_ten(s21_decimal *value) {
+static bool mul_by_ten(s21_decimal *value) {
   uint8_t scale = get_scale(*value);
   bool is_err = s21_mul(*value, (s21_decimal){{10, 0, 0, 0}}, value);
   set_scale(value, ++scale);
   return is_err;
 }
 
-// bool div_by_ten(s21_decimal *value) {
-//   uint8_t scale = get_scale(*value);
-//   bool is_err = s21_div(*value, (s21_decimal){{10, 0, 0, 0}}, value);
-//   set_scale(value, ++scale);
-//   return is_err;
-// }
+static bool div_by_ten(s21_decimal *value) {
+  uint8_t scale = get_scale(*value);
+  bool is_err = s21_div(*value, (s21_decimal){{10, 0, 0, 0}}, value);
+  set_scale(value, ++scale);
+  return is_err;
+}
 
 int get_first_num(int value, int *size) {
   int rez = 0;
@@ -35,19 +35,6 @@ int get_first_num(int value, int *size) {
   }
   (*size) -= 1;
   return rez;
-}
-
-void div_by_ten(s21_decimal *value) {
-  int buff[3];
-  int scale = get_scale(*value);
-  for (int i = 2; i >= 0; i--) {
-    buff[i] = value->bits[i] % 10;
-    value->bits[i] /= 10;
-  }
-  for (int i = 2; i >= 1; i--) {
-    value->bits[i - 1] += buff[i] * pow(10, 8);
-  }
-  set_scale(value, ++scale);
 }
 
 void alignment(s21_decimal *value1, s21_decimal *value2) {
