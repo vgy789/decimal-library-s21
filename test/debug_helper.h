@@ -21,8 +21,6 @@ void dec_2bin(s21_decimal value, bool print_scale, bool print_separate);
 
 /**
  * Конвертирует uint128 в decimal.
- *
- * Удобен для дальнейшего просмотра в двоичном представлении.
  */
 s21_decimal uint128_2decimal(__uint128_t n);
 
