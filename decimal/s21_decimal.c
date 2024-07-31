@@ -15,6 +15,14 @@ static bool add_word(uint32_t *result, uint32_t value_1, uint32_t value_2,
   return overflow;
 }
 
+static void set_result_sign(s21_decimal *value, bool sign) {
+  if (mantiss_eq(*value, (s21_decimal){{0}})) { /* -0 to +0 */
+    set_sign(value, plus);
+  } else {
+    set_sign(value, sign);
+  }
+}
+
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   *result = (s21_decimal){{0, 0, 0, 0}};
   s21_decimal value1_orig = value_1;
@@ -25,10 +33,9 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   /* чтобы узнать знак результата необходимо сравнить биты не учитывая знак. */
   set_sign(&value_1, plus);
   set_sign(&value_2, plus);
-  bool result_sign =
-      (sign_1_orig == minus && sign_2_orig == minus) ||
-      (sign_1_orig == minus && s21_is_greater(value_1, value_2)) ||
-      (sign_2_orig == minus && s21_is_less(value_1, value_2));
+  bool result_sign = (sign_1_orig == minus && sign_2_orig == minus) ||
+                     (sign_1_orig == minus && mantiss_gt(value_1, value_2)) ||
+                     (sign_2_orig == minus && mantiss_lt(value_1, value_2));
 
   // при необходимости переводим в дополнительный код.
   if (sign_1_orig == minus) {
@@ -59,15 +66,15 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     set_sign(&value2_orig, plus);
     // если результат суммы положительных/отрицательных меньше/больше, значит
     // ошибка переполнения.
-    if (s21_is_greater(value1_orig, *result) ||
-        s21_is_greater(value2_orig, *result)) {
+    if (mantiss_gt(value1_orig, *result) || mantiss_gt(value2_orig, *result)) {
       err_code = 1;
       if (result_sign) {
         err_code = 2;
       }
     }
   }
-  set_sign(result, result_sign);
+  set_result_sign(result, result_sign);
+
   return err_code;
 }
 
@@ -95,7 +102,7 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     // оптимизация умножения :-)
     set_sign(&value_1, plus);
     set_sign(&value_2, plus);
-    if (s21_is_greater(value_2, value_1)) {
+    if (mantiss_gt(value_2, value_1)) {
       swap(&value_1, &value_2);
     }
     set_sign(&value_1, sign_1_orig);
@@ -117,16 +124,14 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
       return err_code;
     }
   }
+  set_result_sign(result, result_sign);
 
-  set_sign(result, result_sign);
-
-  // TODO: ошибка
   return err_code;
 }
 
 // https://en.wikipedia.org/wiki/Division_algorithm#Integer_division_(unsigned)_with_remainder
 int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
-  if (s21_is_equal(value_2, (s21_decimal){{0}})) /* если делим на 0 */
+  if (mantiss_eq(value_2, (s21_decimal){{0}})) /* если делим на 0 */
     return 2;
 
   const bool sign_1 = get_sign(value_1);
@@ -148,7 +153,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     for (int i = n - 1; i >= 0; i--) {
       left_shift(&R);
       set_bit(&R, 0, get_bit(value_1, i));
-      if (s21_is_greater_or_equal(R, value_2)) {
+      if (mantiss_ge(R, value_2)) {
         (void)s21_sub(R, value_2, &R);
         set_bit(&Q, i, 1);
       }
@@ -157,7 +162,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     *result = Q;
 
     // домножаем на 10 и снова делим, пока остаток не станет 0.
-    if (s21_is_not_equal(R, (s21_decimal){{0}})) {
+    if (mantiss_ne(R, (s21_decimal){{0}})) {
       const bool overflow = mul_by_ten(&value_1);
       set_scale(&Q, get_scale(Q) + 1);
       if (overflow) { /* слишком много цифр после запятой */
@@ -167,14 +172,17 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
       break;
     }
   }
-  set_sign(result, result_sign);
+  set_result_sign(result, result_sign);
+
   return 0;
 }
 
+// сравнивает мантиссы без учёта знака и scale
 static int comparison_mantiss(s21_decimal value_1, s21_decimal value_2) {
   int bit_pos = 96;
   bool pos_a, pos_b;
   int result = 0;
+
   while (bit_pos >= 0) {
     pos_a = get_bit(value_1, bit_pos);
     pos_b = get_bit(value_2, bit_pos);
@@ -188,25 +196,77 @@ static int comparison_mantiss(s21_decimal value_1, s21_decimal value_2) {
     }
     if (pos_a == pos_b) bit_pos--;
   }
+
   return result;  // 0 → a==b, 1 → a > b, 2 → a < b
 }
 
-int s21_is_equal(s21_decimal value_1, s21_decimal value_2) {
+// сравнивает числа с учетом знака и scale
+static int comparison(s21_decimal a, s21_decimal b) {
+  int result = 0;
+  bool sign_a = get_sign(a);
+  bool sign_b = get_sign(b);
+
+  if (sign_a > sign_b)
+    result = 2;  // а - отрицательное число, b - положительное
+  if (sign_a < sign_b)
+    result = 1;  // b - отрицательное число, a - положительное
+  if (sign_a == sign_b) {
+    uint8_t scale_a = get_scale(a);
+    uint8_t scale_b = get_scale(b);
+    if (scale_a == scale_b)
+      result = comparison_mantiss(a, b);  // если экспоненты равны
+    else {
+      alignment(&a, &b);
+      result = comparison_mantiss(a, b);
+    }
+    if (scale_a == 1) result = -result;
+  }
+
+  return result;  // 0 → a==b, 1 → a > b, 2 → a < b
+}
+
+int mantiss_eq(s21_decimal value_1, s21_decimal value_2) {
   const bool result = comparison_mantiss(value_1, value_2);
   return !result;
 }
 
-int s21_is_not_equal(s21_decimal value_1, s21_decimal value_2) {
+int mantiss_ne(s21_decimal value_1, s21_decimal value_2) {
   const bool result = comparison_mantiss(value_1, value_2);
   return result;
 }
 
-int s21_is_less(s21_decimal value_1, s21_decimal value_2) {
+int mantiss_lt(s21_decimal value_1, s21_decimal value_2) {
   return comparison_mantiss(value_1, value_2) == 2;
 }
 
-int s21_is_greater(s21_decimal value_1, s21_decimal value_2) {
+int mantiss_gt(s21_decimal value_1, s21_decimal value_2) {
   return comparison_mantiss(value_1, value_2) == 1;
+}
+
+int mantiss_le(s21_decimal value_1, s21_decimal value_2) {
+  return !mantiss_gt(value_1, value_2);
+}
+
+int mantiss_ge(s21_decimal value_1, s21_decimal value_2) {
+  return !mantiss_lt(value_1, value_2);
+}
+
+int s21_is_equal(s21_decimal value_1, s21_decimal value_2) {
+  const bool result = comparison(value_1, value_2);
+  return !result;
+}
+
+int s21_is_not_equal(s21_decimal value_1, s21_decimal value_2) {
+  const bool result = comparison(value_1, value_2);
+  return result;
+}
+
+int s21_is_less(s21_decimal value_1, s21_decimal value_2) {
+  return comparison(value_1, value_2) == 2;
+}
+
+int s21_is_greater(s21_decimal value_1, s21_decimal value_2) {
+  return comparison(value_1, value_2) == 1;
 }
 
 int s21_is_less_or_equal(s21_decimal value_1, s21_decimal value_2) {

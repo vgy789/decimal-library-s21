@@ -79,6 +79,18 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
  */
 int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 
+int mantiss_eq(s21_decimal value_1, s21_decimal value_2);
+
+int mantiss_ne(s21_decimal value_1, s21_decimal value_2);
+
+int mantiss_lt(s21_decimal value_1, s21_decimal value_2);
+
+int mantiss_gt(s21_decimal value_1, s21_decimal value_2);
+
+int mantiss_le(s21_decimal value_1, s21_decimal value_2);
+
+int mantiss_ge(s21_decimal value_1, s21_decimal value_2);
+
 /**
  * Проверяет, является ли первое десятичное значение меньше второго.
  *

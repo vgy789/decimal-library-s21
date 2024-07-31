@@ -103,6 +103,5 @@ void dec_2bin(s21_decimal value, bool print_scale, bool print_separate) {
 
 #undef P10_UINT64
 #undef E10_UINT64
-
 #undef STRINGIZER
 #undef TO_STRING
