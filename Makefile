@@ -34,8 +34,8 @@ fmt:
 	$(FILES) | xargs -0 $(CODE_STYLE) -i
 
 clean:
-	find . -name *.o -or -name *.gch -or -name *.gcno -or -name *.gcda | xargs rm -f
-	rm -f *.a report.info $(TEST_EXEC) test/test.c
+	find . -name "*.out" -or -name "*.o" -or -name "*.gch" -or -name "*.gcno" -or -name "*.gcda" | xargs rm -f
+	rm -f report.info $(TEST_EXEC) test/test.c s21_decimal.a
 	rm -rf $(REPORT_DIR)/
 
 valgrind:
