@@ -1,7 +1,6 @@
 #include <check.h>
 #include <stdio.h>
 
-#include "../decimal/bitwise_helper.h"
 #include "../decimal/s21_decimal.h"
 
 static s21_decimal uint128_to_bin(__uint128_t n) {

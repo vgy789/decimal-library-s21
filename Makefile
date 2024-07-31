@@ -1,5 +1,5 @@
 CC = gcc
-SRCMODULES = ./decimal/s21_decimal.c
+SRCMODULES = ./decimal/compliment.c ./decimal/alignment.c ./decimal/s21_decimal.c ./decimal/bitwise_helper.c
 OBJMODULES = $(SRCMODULES:.c=.o)
 CFLAGS = -g -Wall -Werror -Wextra -std=c11
 LDFLAGS = `pkg-config --cflags --libs check`
@@ -34,8 +34,8 @@ fmt:
 	$(FILES) | xargs -0 $(CODE_STYLE) -i
 
 clean:
-	find . -name *.o | xargs rm -f
-	rm -f *.a *.gcno *.gcda report.info $(TEST_EXEC) test/test.c
+	find . -name *.o -or -name *.gch -or -name *.gcno -or -name *.gcda | xargs rm -f
+	rm -f *.a report.info $(TEST_EXEC) test/test.c
 	rm -rf $(REPORT_DIR)/
 
 valgrind:

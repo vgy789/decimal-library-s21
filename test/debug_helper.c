@@ -1,10 +1,5 @@
-#include <inttypes.h>
-#include <limits.h>
-#include <math.h>
-#include <stdint.h>
-#include <stdio.h>
+#include "debug_helper.h"
 
-#include "../decimal/bitwise_helper.h"
 #include "../decimal/s21_decimal.h"
 
 #define P10_UINT64 10000000000000000000ULL /* 19 zeroes */
@@ -39,7 +34,7 @@ __uint128_t pow_uint128(__uint128_t x, __uint128_t y) {
   return result;
 }
 
-static void dec_int(s21_decimal value) {
+void dec_2int(s21_decimal value) {
   __uint128_t number = 0u;
 
   for (int bit_i = 0; bit_i < 96; ++bit_i) {
@@ -50,8 +45,8 @@ static void dec_int(s21_decimal value) {
   print_u128_u(number);
 }
 
-static s21_decimal uint128_to_bin(__uint128_t n) {
-  // use s21_decimal result = uint128_to_bin(1234123125678965432);
+s21_decimal uint128_2decimal(__uint128_t n) {
+  // use s21_decimal result = uint128_2decimal(1234123125678965432);
   s21_decimal result = {{0, 0, 0, 0}};
   int binary_num[128];
   int i = 0;
@@ -64,29 +59,50 @@ static s21_decimal uint128_to_bin(__uint128_t n) {
   for (int j = i - 1; j >= 0; j--) {
     set_bit(&result, j, binary_num[j]);
   }
+
   return result;
 }
 
-// int main(void) {
-//   s21_decimal num1 = {{0, 0, 0, 0}};
-//   s21_decimal num2 = {{0, 0, 0, 0}};
-//   s21_decimal result = (s21_decimal){{0, 0, 0, 0}};
+static void uint_2bin(uint32_t value) {
+  int8_t bits = 31;
 
-//   // set_sign(&num1, minus);
-//   // set_sign(&num2, minus);
-//   // set_scale(&num1, 10);
-//   // set_scale(&num2, 5);
+  while (value != 0) {
+    int buf = value - (1 << bits);
 
-//   {
-//     decimal_binary(num1, 1);
-//     dec_int(num1);
-//     printf("\n");
-//     decimal_binary(num2, 1);
-//     dec_int(num2);
-//     printf("\n");
-//   }
+    if (buf >= 0) {
+      value = buf;
+      printf("1");
+    } else {
+      printf("0");
+    }
+    --bits;
+  }
+  while (bits >= 0) {
+    printf("0");
+    --bits;
+  }
+}
 
-//   s21_add(num1, num2, &result);
-//   decimal_binary(result, 1);
-//   dec_int(result);
-// }
+void dec_2bin(s21_decimal value, bool print_scale, bool print_separate) {
+  if (get_sign(value))
+    printf("(-)");
+  else
+    printf("(+)");
+
+  if (print_scale) {
+    uint_2bin(value.bits[3]);
+    if (print_separate) printf("\'");
+  }
+  uint_2bin(value.bits[2]);
+  if (print_separate) printf("\'");
+  uint_2bin(value.bits[1]);
+  if (print_separate) printf("\'");
+  uint_2bin(value.bits[0]);
+  printf("(scale=%d)", get_scale(value));
+}
+
+#undef P10_UINT64
+#undef E10_UINT64
+
+#undef STRINGIZER
+#undef TO_STRING
