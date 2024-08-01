@@ -29,11 +29,14 @@ void alignment(s21_decimal *value1, s21_decimal *value2) {
   uint8_t mant_size1 = get_scale(*value1);
   uint8_t mant_size2 = get_scale(*value2);
 
-  if (mant_size1 == mant_size2) return;
-  if (mant_size2 < mant_size1) {
+  if (mant_size1 == mant_size2) {
+    return;
+  }
+  if (mant_size1 > mant_size2) {
     alignment(value2, value1);
     return;
   }
+
   while (mant_size1 < mant_size2) {
     if ((*value1).bits[2] > 0xFFFFFFF / 10) break;
     mul_by_ten(value1);
