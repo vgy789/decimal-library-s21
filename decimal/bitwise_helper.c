@@ -8,7 +8,7 @@ bool get_bit(s21_decimal value, uint8_t bit_pos) {
     int_part += 1;
   }
   return (value.bits[int_part] & (1 << bit_pos));
-};
+}
 
 uint8_t get_scale(s21_decimal value) {
   return (value.bits[3] & (0b11111111 << 16)) >> 16;

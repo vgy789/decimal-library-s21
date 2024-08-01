@@ -7,7 +7,13 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#include "../big_decimal/big_decimal.h"
 #include "../decimal/s21_decimal.h"
+
+/**
+ * Печатает big_decimal в двоичном предствалении.
+ */
+void Bdec_2bin(big_decimal value, bool print_scale, bool print_separate);
 
 /**
  * Печатает s21_decimal в десятичном предствалении.

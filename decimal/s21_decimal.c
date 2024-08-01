@@ -7,8 +7,8 @@ int s21_negate(s21_decimal value, s21_decimal *result) {
   return err_code;
 }
 
-static bool add_word(uint32_t *result, uint32_t value_1, uint32_t value_2,
-                     bool transfer) {
+static bool Badd_word(uint32_t *result, uint32_t value_1, uint32_t value_2,
+                      bool transfer) {
   bool overflow = 0;
   overflow += __builtin_uadd_overflow(value_1, value_2, result);
   overflow += __builtin_uadd_overflow(*result, transfer, result);
@@ -48,8 +48,8 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   /* сложение */
   bool transfer = 0;
   for (uint8_t i = 0; i < 3; ++i) {
-    transfer = add_word((uint32_t *)&result->bits[i], value_1.bits[i],
-                        value_2.bits[i], transfer);
+    transfer = Badd_word((uint32_t *)&result->bits[i], value_1.bits[i],
+                         value_2.bits[i], transfer);
   }
 
   uint8_t err_code = 0;

@@ -1,7 +1,5 @@
 #include "debug_helper.h"
 
-#include "../decimal/s21_decimal.h"
-
 #define P10_UINT64 10000000000000000000ULL /* 19 zeroes */
 #define E10_UINT64 19
 
@@ -84,6 +82,23 @@ static void uint_2bin(uint32_t value) {
     printf("0");
     --bits;
   }
+}
+
+void Bdec_2bin(big_decimal value, bool print_scale, bool print_separate) {
+  if (Bget_sign(value))
+    printf("(-)");
+  else
+    printf("(+)");
+
+  if (print_scale) {
+    uint_2bin(value.bits[6]);
+    if (print_separate) printf("\'");
+  }
+  for (int8_t i = 5; i >= 0; --i) {
+    uint_2bin(value.bits[i]);
+    if (print_separate) printf("\'");
+  }
+  printf("(scale=%d)", Bget_scale(value));
 }
 
 void dec_2bin(s21_decimal value, bool print_scale, bool print_separate) {
