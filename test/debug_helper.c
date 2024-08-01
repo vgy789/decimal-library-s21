@@ -94,13 +94,11 @@ void dec_2bin(s21_decimal value, bool print_scale, bool print_separate) {
 
   if (print_scale) {
     uint_2bin(value.bits[3]);
-    if (print_separate) printf("\'");
   }
-  uint_2bin(value.bits[2]);
-  if (print_separate) printf("\'");
-  uint_2bin(value.bits[1]);
-  if (print_separate) printf("\'");
-  uint_2bin(value.bits[0]);
+  for (int8_t i = 2; i >= 0; --i) {
+    if (print_separate) printf("\'");
+    uint_2bin(value.bits[i]);
+  }
   printf("(scale=%d)", get_scale(value));
 }
 
