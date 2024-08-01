@@ -16,7 +16,7 @@ bool div_by_ten(s21_decimal *value) {
 
 // TODO: test this
 void circumcision(s21_decimal *value) {
-  int mant_size = get_scale(*value);
+  uint8_t mant_size = get_scale(*value);
 
   while (mant_size > 0 && (*value).bits[0] % 10 == 0) {
     div_by_ten(value);
@@ -26,7 +26,9 @@ void circumcision(s21_decimal *value) {
 }
 
 void alignment(s21_decimal *value1, s21_decimal *value2) {
-  int mant_size1 = get_scale(*value1), mant_size2 = get_scale(*value2);
+  uint8_t mant_size1 = get_scale(*value1);
+  uint8_t mant_size2 = get_scale(*value2);
+
   if (mant_size1 == mant_size2) return;
   if (mant_size2 < mant_size1) {
     alignment(value2, value1);

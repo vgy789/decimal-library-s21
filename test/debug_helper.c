@@ -8,6 +8,7 @@
 #define STRINGIZER(x) #x
 #define TO_STRING(x) STRINGIZER(x)
 
+// https://stackoverflow.com/questions/11656241/how-to-print-uint128-t-number-using-gcc
 static int print_u128_u(__uint128_t u128) {
   int rc;
   if (u128 > UINT64_MAX) {
@@ -22,7 +23,8 @@ static int print_u128_u(__uint128_t u128) {
   return rc;
 }
 
-__uint128_t pow_uint128(__uint128_t x, __uint128_t y) {
+// func for dec_2int()
+static __uint128_t pow_uint128(__uint128_t x, __uint128_t y) {
   __uint128_t result = 1;
   while (y) {
     if (y & 1) {
@@ -63,6 +65,7 @@ s21_decimal uint128_2decimal(__uint128_t n) {
   return result;
 }
 
+// func for dec_2bin()
 static void uint_2bin(uint32_t value) {
   int8_t bits = 31;
 

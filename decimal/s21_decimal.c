@@ -24,15 +24,12 @@ static void set_result_sign(s21_decimal *value, bool sign) {
 }
 
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
-  *result = (s21_decimal){{0, 0, 0, 0}};
+  *result = (s21_decimal){{0}};
   s21_decimal value1_orig = value_1;
   s21_decimal value2_orig = value_2;
   const bool sign_1_orig = get_sign(value_1);
   const bool sign_2_orig = get_sign(value_2);
 
-  /* чтобы узнать знак результата необходимо сравнить биты не учитывая знак. */
-  set_sign(&value_1, plus);
-  set_sign(&value_2, plus);
   bool result_sign = (sign_1_orig == minus && sign_2_orig == minus) ||
                      (sign_1_orig == minus && mantiss_gt(value_1, value_2)) ||
                      (sign_2_orig == minus && mantiss_lt(value_1, value_2));
@@ -49,12 +46,11 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   }
 
   /* сложение */
-  bool transfer = add_word((uint32_t *)&result->bits[0], value_1.bits[0],
-                           value_2.bits[0], 0);
-  transfer = add_word((uint32_t *)&result->bits[1], value_1.bits[1],
-                      value_2.bits[1], transfer);
-  transfer = add_word((uint32_t *)&result->bits[2], value_1.bits[2],
-                      value_2.bits[2], transfer);
+  bool transfer = 0;
+  for (uint8_t i = 0; i < 3; ++i) {
+    transfer = add_word((uint32_t *)&result->bits[i], value_1.bits[i],
+                        value_2.bits[i], transfer);
+  }
 
   uint8_t err_code = 0;
   if (result_sign == minus) {
@@ -62,8 +58,6 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   }
 
   if (sign_1_orig == sign_2_orig) { /* проверка переполнения s21_decimal */
-    set_sign(&value1_orig, plus);
-    set_sign(&value2_orig, plus);
     // если результат суммы положительных/отрицательных меньше/больше, значит
     // ошибка переполнения.
     if (mantiss_gt(value1_orig, *result) || mantiss_gt(value2_orig, *result)) {
@@ -100,11 +94,11 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
                            !(sign_1_orig == minus && sign_2_orig == minus);
   {
     // оптимизация умножения :-)
-    set_sign(&value_1, plus);
-    set_sign(&value_2, plus);
     if (mantiss_gt(value_2, value_1)) {
       swap(&value_1, &value_2);
     }
+    // TODO: этот код по-сути меняет знаки val_1 и val_2 местами. Если оставить
+    // знаки на своих местах, то тесткейс зависнет. ПОЧЕМУ
     set_sign(&value_1, sign_1_orig);
     set_sign(&value_2, sign_2_orig);
   }
@@ -115,7 +109,8 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   uint8_t err_code = 0;
   *result = (s21_decimal){0};
   // умножение через сложение
-  while (value_2.bits[0] | value_2.bits[1] | value_2.bits[2]) {
+  mantiss_ne(value_2, (s21_decimal){{0}});
+  while (mantiss_ne(value_2, (s21_decimal){{0}})) {
     s21_dec(value_2, &value_2);
     err_code = s21_add(value_1, *result, result);
     if (err_code) {
@@ -149,8 +144,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     Q.bits[2] = 0;
     R = (s21_decimal){{0}};
 
-    int n = 96;  // number of bits in value_1
-    for (int i = n - 1; i >= 0; i--) {
+    for (int i = MANTISS_BIT_COUNT - 1; i >= 0; i--) {
       left_shift(&R);
       set_bit(&R, 0, get_bit(value_1, i));
       if (mantiss_ge(R, value_2)) {
@@ -179,9 +173,9 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 
 // сравнивает мантиссы без учёта знака и scale
 static int comparison_mantiss(s21_decimal value_1, s21_decimal value_2) {
-  int bit_pos = 96;
+  int16_t bit_pos = MANTISS_BIT_COUNT - 1;
   bool pos_a, pos_b;
-  int result = 0;
+  u_int8_t result = 0;
 
   while (bit_pos >= 0) {
     pos_a = get_bit(value_1, bit_pos);
@@ -202,15 +196,15 @@ static int comparison_mantiss(s21_decimal value_1, s21_decimal value_2) {
 
 // сравнивает числа с учетом знака и scale
 static int comparison(s21_decimal a, s21_decimal b) {
-  int result = 0;
+  uint8_t result = 0;
   bool sign_a = get_sign(a);
   bool sign_b = get_sign(b);
 
-  if (sign_a > sign_b)
+  if (sign_a > sign_b) {
     result = 2;  // а - отрицательное число, b - положительное
-  if (sign_a < sign_b)
+  } else if (sign_a < sign_b) {
     result = 1;  // b - отрицательное число, a - положительное
-  if (sign_a == sign_b) {
+  } else { /* a == b */
     uint8_t scale_a = get_scale(a);
     uint8_t scale_b = get_scale(b);
     if (scale_a == scale_b)
@@ -225,29 +219,29 @@ static int comparison(s21_decimal a, s21_decimal b) {
   return result;  // 0 → a==b, 1 → a > b, 2 → a < b
 }
 
-int mantiss_eq(s21_decimal value_1, s21_decimal value_2) {
+bool mantiss_eq(s21_decimal value_1, s21_decimal value_2) {
   const bool result = comparison_mantiss(value_1, value_2);
   return !result;
 }
 
-int mantiss_ne(s21_decimal value_1, s21_decimal value_2) {
+bool mantiss_ne(s21_decimal value_1, s21_decimal value_2) {
   const bool result = comparison_mantiss(value_1, value_2);
   return result;
 }
 
-int mantiss_lt(s21_decimal value_1, s21_decimal value_2) {
+bool mantiss_lt(s21_decimal value_1, s21_decimal value_2) {
   return comparison_mantiss(value_1, value_2) == 2;
 }
 
-int mantiss_gt(s21_decimal value_1, s21_decimal value_2) {
+bool mantiss_gt(s21_decimal value_1, s21_decimal value_2) {
   return comparison_mantiss(value_1, value_2) == 1;
 }
 
-int mantiss_le(s21_decimal value_1, s21_decimal value_2) {
+bool mantiss_le(s21_decimal value_1, s21_decimal value_2) {
   return !mantiss_gt(value_1, value_2);
 }
 
-int mantiss_ge(s21_decimal value_1, s21_decimal value_2) {
+bool mantiss_ge(s21_decimal value_1, s21_decimal value_2) {
   return !mantiss_lt(value_1, value_2);
 }
 

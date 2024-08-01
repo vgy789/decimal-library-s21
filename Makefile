@@ -1,7 +1,7 @@
 CC = gcc
 SRCMODULES = ./decimal/compliment.c ./decimal/alignment.c ./decimal/s21_decimal.c ./decimal/bitwise_helper.c
 OBJMODULES = $(SRCMODULES:.c=.o)
-CFLAGS = -g -Wall -Werror -Wextra -std=c11
+CFLAGS = -O2 -Wall -Werror -Wextra -std=c11
 LDFLAGS = `pkg-config --cflags --libs check`
 
 TEST_EXEC = run_test.out

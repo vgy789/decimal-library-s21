@@ -17,7 +17,7 @@ uint8_t get_scale(s21_decimal value) {
 bool get_sign(s21_decimal value) { return ((value.bits[3] >> 31) & 1); }
 
 void left_shift(s21_decimal *value) {
-  for (int i = 95; i > 0; --i) {
+  for (int16_t i = MANTISS_BIT_COUNT - 1; i > 0; --i) {
     set_bit(value, i, get_bit(*value, i - 1));
   }
   set_bit(value, 0, 0);
