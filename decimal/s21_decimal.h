@@ -291,4 +291,6 @@ bool div_by_ten(s21_decimal *value);
 
 bool mul_by_ten(s21_decimal *value);
 
+void circumcision(s21_decimal *value);
+
 #endif  // S21_DECIMAL_H
