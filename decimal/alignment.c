@@ -16,7 +16,7 @@ bool div_by_ten(s21_decimal *value) {
 
 // TODO: test this
 void circumcision(s21_decimal *value) {
-  uint8_t mant_size = get_scale(*value);
+  int8_t mant_size = get_scale(*value);
 
   while (mant_size > 0 && (*value).bits[0] % 10 == 0) {
     div_by_ten(value);
