@@ -22,7 +22,7 @@ gcov_report: test
 	$(CC) $(CFLAGS) -c $< -o $@ 
 
 s21_decimal.a: $(OBJMODULES)
-	ar rcs $@ $<
+	ar rcs $@ $^
 
 CODE_STYLE = clang-format --style="{CommentPragmas: Insert, BasedOnStyle: Google}"
 FILES = find ./ -name '*.c' -print0 -or -name '*.h' -print0
