@@ -25,17 +25,25 @@ static void Bset_result_sign(big_decimal *value, bool sign) {
 
 int Bs21_add(big_decimal value_1, big_decimal value_2, big_decimal *result) {
   *result = (big_decimal){{0}};
-  big_decimal value1_orig = value_1;
-  big_decimal value2_orig = value_2;
   const bool sign_1_orig = Bget_sign(value_1);
   const bool sign_2_orig = Bget_sign(value_2);
+  Balignment(&value_1, &value_2);
+
+  // debug
+  // {
+  //   printf("\n----------\n");
+  //   Bdec_2bin(value_1, 1, 1);
+  //   printf("\n");
+  //   Bdec_2bin(value_2, 1, 1);
+  //   printf("\n");
+  //   printf("\n----------\n");
+  // }
 
   /* чтобы узнать знак результата необходимо сравнить биты не учитывая знак. */
-  Bset_sign(&value_1, plus);
-  Bset_sign(&value_2, plus);
-  bool result_sign = (sign_1_orig == minus && sign_2_orig == minus) ||
-                     (sign_1_orig == minus && Bmantiss_gt(value_1, value_2)) ||
-                     (sign_2_orig == minus && Bmantiss_lt(value_1, value_2));
+  const bool result_sign =
+      (sign_1_orig == minus && sign_2_orig == minus) ||
+      (sign_1_orig == minus && Bmantiss_gt(value_1, value_2)) ||
+      (sign_2_orig == minus && Bmantiss_lt(value_1, value_2));
 
   // при необходимости переводим в дополнительный код.
   if (sign_1_orig == minus) {
@@ -60,15 +68,11 @@ int Bs21_add(big_decimal value_1, big_decimal value_2, big_decimal *result) {
     Bcompliment2(*result, result);
   }
 
-  if (sign_1_orig == sign_2_orig) { /* проверка переполнения s21_decimal */
-    // если результат суммы положительных/отрицательных меньше/больше, значит
-    // ошибка переполнения.
-    if (Bmantiss_gt(value1_orig, *result) ||
-        Bmantiss_gt(value2_orig, *result)) {
-      err_code = 1;
-      if (result_sign) {
-        err_code = 2;
-      }
+  // Bcircumcision(result);
+  if (result->bits[3] != 0) {
+    err_code = 1;
+    if (result_sign == minus) {
+      err_code = 2;
     }
   }
   Bset_result_sign(result, result_sign);
@@ -119,7 +123,7 @@ int Bs21_mul(big_decimal value_1, big_decimal value_2, big_decimal *result) {
     if (err_code) {
       err_code = 1;
       if (result_sign == minus) err_code = 2;
-      return err_code;
+      break;
     }
   }
   Bset_result_sign(result, result_sign);
@@ -176,6 +180,7 @@ int Bs21_div(big_decimal value_1, big_decimal value_2, big_decimal *result) {
 
 // сравнивает мантиссы без учёта знака и scale
 static int Bcomparison_mantiss(big_decimal value_1, big_decimal value_2) {
+  // Balignment(&value_1, &value_2);
   int16_t bit_pos = BMANTISS_BIT_COUNT - 1;
   bool pos_a, pos_b;
   u_int8_t result = 0;

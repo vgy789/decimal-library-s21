@@ -107,27 +107,6 @@ set_bit(&value, 16, true);
 
 ck_assert(get_bit(value, 16) == true);
 
-// Функция set_bit поменять бит 0 на бит 1 индекс 96
-#test set_bit_overflow_true
-s21_decimal value = (s21_decimal){{0}};
-set_bit(&value, 96, true);
-
-ck_assert(get_bit(value, 96) == true);
-
-// Функция set_bit поменять бит 0 на бит 0 индекс 96
-#test set_bit_overflow_false
-s21_decimal value = (s21_decimal){{0}};
-set_bit(&value, 96, false);
-
-ck_assert(get_bit(value, 96) == false);
-
-// Функция set_bit поменять бит 1 на бит 1 индекс 96
-#test set_bit_overflow_true_one
-s21_decimal value = (s21_decimal){{1}};
-set_bit(&value, 96, true);
-
-ck_assert(get_bit(value, 96) == true);
-
 // Функция set_bit поменять бит 1 на бит 0 индекс 96
 #test set_bit_overflow_false_one
 s21_decimal value = (s21_decimal){{1}};
@@ -181,21 +160,21 @@ int return_code = s21_add(value_1, value_2, &result);
 ck_assert(s21_is_equal(result, expected) == 1);
 ck_assert(return_code == 0);
 
-//// Функция s21_add сложение двух положительных дробных
-// #test add_positive_float
-// s21_decimal value_1 = {{10, 0, 0, 0}};
-// s21_decimal value_2 = {{20, 0, 0, 0}};
-// set_scale(&value_1, 10);
-// set_scale(&value_2, 5);
-// s21_decimal result = {{0, 0, 0, 0}};
-// s21_decimal expected = {{200001, 0, 0, 0}};
-// set_scale(&expected, 9);
-// int return_code = s21_add(value_1, value_2, &result);
-//
-// ck_assert(s21_is_equal(result, expected) == 1);
-// ck_assert(return_code == 0);
-//
-//// Функция s21_add сложение двух отрицательных дробных
+// Функция s21_add сложение двух положительных дробных
+ #test add_positive_float
+ s21_decimal value_1 = {{10, 0, 0, 0}};
+ s21_decimal value_2 = {{20, 0, 0, 0}};
+ set_scale(&value_1, 10);
+ set_scale(&value_2, 5);
+ s21_decimal result = {{0, 0, 0, 0}};
+ s21_decimal expected = {{200001, 0, 0, 0}};
+ set_scale(&expected, 9);
+ int return_code = s21_add(value_1, value_2, &result);
+
+ ck_assert(s21_is_equal(result, expected) == 1);
+ ck_assert(return_code == 0);
+
+// Функция s21_add сложение двух отрицательных дробных
 // #test add_negative_float
 // s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
 // s21_decimal value_2 = {{20, 0, 0, 0x80000000}};

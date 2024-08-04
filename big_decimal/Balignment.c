@@ -14,7 +14,6 @@ bool Bdiv_by_ten(big_decimal *value) {
   return is_err;
 }
 
-// TODO: test this
 void Bcircumcision(big_decimal *value) {
   int8_t mant_size = Bget_scale(*value);
 
@@ -25,35 +24,49 @@ void Bcircumcision(big_decimal *value) {
   Bset_scale(value, mant_size);
 }
 
-void Balignment(big_decimal *value1, big_decimal *value2) {
-  uint8_t mant_size1 = Bget_scale(*value1);
-  uint8_t mant_size2 = Bget_scale(*value2);
+void Balignment(big_decimal *value_1, big_decimal *value_2) {
+  // Bcircumcision(value_1);
+  // Bcircumcision(value_2);
+  uint8_t mant_size1 = Bget_scale(*value_1);
+  uint8_t mant_size2 = Bget_scale(*value_2);
+
+  // if (Bmantiss_eq(*value_1, *value_2)) { // добавил. проверить.
+  //   if (mant_size1 > mant_size2) {
+  //     mant_size2 = mant_size1;
+  //   } else {
+  //     mant_size1 = mant_size2;
+  //   }
+  //   Bset_scale(value_1, mant_size1);
+  //   Bset_scale(value_2, mant_size2);
+  //   return;
+  // }
 
   if (mant_size1 == mant_size2) {
     return;
   }
+
   if (mant_size1 > mant_size2) {
-    Balignment(value2, value1);
+    Balignment(value_2, value_1);
     return;
   }
 
   while (mant_size1 < mant_size2) {
-    if ((*value1).bits[2] > 0xFFFFFFF / 10) break;
-    Bmul_by_ten(value1);
+    if ((*value_1).bits[5] > 0xFFFFFFF / 10) break;
+    Bmul_by_ten(value_1);
     mant_size1++;
   }
 
-  Bset_scale(value1, mant_size1);
+  Bset_scale(value_1, mant_size1);
   while (mant_size1 < mant_size2) {
-    if ((*value2).bits[0] % 10 != 0) break;
-    Bdiv_by_ten(value2);
+    if ((*value_2).bits[0] % 10 != 0) break;
+    Bdiv_by_ten(value_2);
     mant_size2--;
   }
 
-  Bset_scale(value2, mant_size2);
+  Bset_scale(value_2, mant_size2);
   while (mant_size1 < mant_size2) {
-    Bdiv_by_ten(value2);
+    Bdiv_by_ten(value_2);
     mant_size2--;
   }
-  Bset_scale(value2, mant_size2);
+  Bset_scale(value_2, mant_size2);
 }

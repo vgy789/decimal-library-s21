@@ -1,54 +1,48 @@
 #include "s21_decimal.h"
 
 bool get_bit(s21_decimal value, uint8_t bit_pos) {
-  uint8_t int_part = 0;
-
-  while (bit_pos > 31) {
-    bit_pos -= 32;
-    int_part += 1;
-  }
-  return (value.bits[int_part] & (1 << bit_pos));
+  big_decimal big = (big_decimal){{0}};
+  decimal_to_big(value, &big);
+  return Bget_bit(big, bit_pos);
 }
 
 uint8_t get_scale(s21_decimal value) {
-  return (value.bits[3] & (0b11111111 << 16)) >> 16;
+  big_decimal big = (big_decimal){{0}};
+  decimal_to_big(value, &big);
+  return Bget_scale(big);
 }
 
-bool get_sign(s21_decimal value) { return ((value.bits[3] >> 31) & 1); }
+bool get_sign(s21_decimal value) {
+  big_decimal big = (big_decimal){{0}};
+  decimal_to_big(value, &big);
+  return Bget_sign(big);
+}
 
 void left_shift(s21_decimal *value) {
-  for (int16_t i = MANTISS_BIT_COUNT - 1; i > 0; --i) {
-    set_bit(value, i, get_bit(*value, i - 1));
-  }
-  set_bit(value, 0, 0);
+  big_decimal big = (big_decimal){{0}};
+  decimal_to_big(*value, &big);
+  Bleft_shift(&big);
+  big_to_decimal(big, value);
 }
 
 void set_bit(s21_decimal *value, uint8_t bit_pos, bool state) {
-  uint8_t int_part = 0;
-
-  while (bit_pos > 31) {
-    bit_pos -= 32;
-    int_part += 1;
-  }
-  if (state == false)
-    value->bits[int_part] &= ~(1 << bit_pos);
-  else
-    value->bits[int_part] |= (1 << bit_pos);
+  big_decimal big = (big_decimal){{0}};
+  decimal_to_big(*value, &big);
+  Bset_bit(&big, bit_pos, state);
+  big_to_decimal(big, value);
 }
 
 bool set_scale(s21_decimal *value, uint8_t scale) {
-  if (scale > 28) return 0;
-  bool sign = get_sign(*value);
-
-  value->bits[3] = (0b11111111 << 16) & scale << 16;
-  set_sign(value, sign);
-
-  return 1;
+  big_decimal big = (big_decimal){{0}};
+  decimal_to_big(*value, &big);
+  const bool is_ok = Bset_scale(&big, scale);
+  big_to_decimal(big, value);
+  return is_ok;
 }
 
 void set_sign(s21_decimal *value, bool sign) {
-  if (sign == plus)
-    value->bits[3] &= ~(1 << 31);
-  else
-    value->bits[3] |= (1 << 31);
+  big_decimal big = (big_decimal){{0}};
+  decimal_to_big(*value, &big);
+  Bset_sign(&big, sign);
+  big_to_decimal(big, value);
 }

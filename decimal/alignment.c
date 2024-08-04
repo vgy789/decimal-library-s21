@@ -1,59 +1,32 @@
 #include "s21_decimal.h"
 
-bool mul_by_ten(s21_decimal *value) {
-  uint8_t scale = get_scale(*value);
-  bool is_err = s21_mul(*value, (s21_decimal){{10, 0, 0, 0}}, value);
-  set_scale(value, ++scale);
-  return is_err;
+uint8_t mul_by_ten(s21_decimal *value) {
+  big_decimal big = (big_decimal){{0}};
+  decimal_to_big(*value, &big);
+  Bmul_by_ten(&big);
+  return big_to_decimal(big, value);
 }
 
-bool div_by_ten(s21_decimal *value) {
-  uint8_t scale = get_scale(*value);
-  bool is_err = s21_div(*value, (s21_decimal){{10, 0, 0, 0}}, value);
-  set_scale(value, ++scale);
-  return is_err;
+uint8_t div_by_ten(s21_decimal *value) {
+  big_decimal big = (big_decimal){{0}};
+  decimal_to_big(*value, &big);
+  Bdiv_by_ten(&big);
+  return big_to_decimal(big, value);
 }
 
-// TODO: test this
 void circumcision(s21_decimal *value) {
-  int8_t mant_size = get_scale(*value);
-
-  while (mant_size > 0 && (*value).bits[0] % 10 == 0) {
-    div_by_ten(value);
-    mant_size--;
-  }
-  set_scale(value, mant_size);
+  big_decimal big = (big_decimal){{0}};
+  decimal_to_big(*value, &big);
+  Bcircumcision(&big);
+  big_to_decimal(big, value);
 }
 
-void alignment(s21_decimal *value1, s21_decimal *value2) {
-  uint8_t mant_size1 = get_scale(*value1);
-  uint8_t mant_size2 = get_scale(*value2);
-
-  if (mant_size1 == mant_size2) {
-    return;
-  }
-  if (mant_size1 > mant_size2) {
-    alignment(value2, value1);
-    return;
-  }
-
-  while (mant_size1 < mant_size2) {
-    if ((*value1).bits[2] > 0xFFFFFFF / 10) break;
-    mul_by_ten(value1);
-    mant_size1++;
-  }
-
-  set_scale(value1, mant_size1);
-  while (mant_size1 < mant_size2) {
-    if ((*value2).bits[0] % 10 != 0) break;
-    div_by_ten(value2);
-    mant_size2--;
-  }
-
-  set_scale(value2, mant_size2);
-  while (mant_size1 < mant_size2) {
-    div_by_ten(value2);
-    mant_size2--;
-  }
-  set_scale(value2, mant_size2);
+void alignment(s21_decimal *value_1, s21_decimal *value_2) {
+  big_decimal big_1 = (big_decimal){{0}};
+  big_decimal big_2 = (big_decimal){{0}};
+  decimal_to_big(*value_1, &big_1);
+  decimal_to_big(*value_2, &big_2);
+  Balignment(&big_1, &big_2);
+  big_to_decimal(big_1, value_1);
+  big_to_decimal(big_2, value_2);
 }

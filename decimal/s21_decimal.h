@@ -275,19 +275,18 @@ void set_sign(s21_decimal *value, bool sign);
 void alignment(s21_decimal *value1, s21_decimal *value2);
 
 /**
- * Перевод мантиссы в дополнительный код (дополнение до двух).
- */
-void compliment2(s21_decimal value, s21_decimal *result);
-
-/**
  * Сдвиг битов мантиссы влево на один.
  */
 void left_shift(s21_decimal *value);
 
-bool div_by_ten(s21_decimal *value);
+uint8_t div_by_ten(s21_decimal *value);
 
-bool mul_by_ten(s21_decimal *value);
+uint8_t mul_by_ten(s21_decimal *value);
 
 void circumcision(s21_decimal *value);
+
+void decimal_to_big(s21_decimal value, big_decimal *result);
+
+uint8_t big_to_decimal(big_decimal value, s21_decimal *result);
 
 #endif  // S21_DECIMAL_H
