@@ -23,21 +23,11 @@ static void Bset_result_sign(big_decimal *value, bool sign) {
   }
 }
 
-int Bs21_add(big_decimal value_1, big_decimal value_2, big_decimal *result) {
+int Bmantiss_add(big_decimal value_1, big_decimal value_2,
+                 big_decimal *result) {
   *result = (big_decimal){{0}};
   const bool sign_1_orig = Bget_sign(value_1);
   const bool sign_2_orig = Bget_sign(value_2);
-  Balignment(&value_1, &value_2);
-
-  // debug
-  // {
-  //   printf("\n----------\n");
-  //   Bdec_2bin(value_1, 1, 1);
-  //   printf("\n");
-  //   Bdec_2bin(value_2, 1, 1);
-  //   printf("\n");
-  //   printf("\n----------\n");
-  // }
 
   /* чтобы узнать знак результата необходимо сравнить биты не учитывая знак. */
   const bool result_sign =
@@ -68,7 +58,6 @@ int Bs21_add(big_decimal value_1, big_decimal value_2, big_decimal *result) {
     Bcompliment2(*result, result);
   }
 
-  // Bcircumcision(result);
   if (result->bits[3] != 0) {
     err_code = 1;
     if (result_sign == minus) {
@@ -80,11 +69,12 @@ int Bs21_add(big_decimal value_1, big_decimal value_2, big_decimal *result) {
   return err_code;
 }
 
-int Bs21_sub(big_decimal value_1, big_decimal value_2, big_decimal *result) {
+int Bmantiss_sub(big_decimal value_1, big_decimal value_2,
+                 big_decimal *result) {
   const bool sign = Bget_sign(value_2);
   // инвертируем знак и складываем
   Bset_sign(&value_2, !sign);
-  uint8_t err_code = Bs21_add(value_1, value_2, result);
+  uint8_t err_code = Bmantiss_add(value_1, value_2, result);
   return err_code;
 }
 
@@ -119,7 +109,7 @@ int Bs21_mul(big_decimal value_1, big_decimal value_2, big_decimal *result) {
   // умножение через сложение
   while (Bmantiss_ne(value_2, (big_decimal){{0}})) {
     Bs21_dec(value_2, &value_2);
-    err_code = Bs21_add(value_1, *result, result);
+    err_code = Bmantiss_add(value_1, *result, result);
     if (err_code) {
       err_code = 1;
       if (result_sign == minus) err_code = 2;
@@ -146,16 +136,16 @@ int Bs21_div(big_decimal value_1, big_decimal value_2, big_decimal *result) {
   big_decimal Q = (big_decimal){{0}};  // частное quotient
   big_decimal R = (big_decimal){{0}};  // остаток remainder
   while (1) {
-    Q.bits[0] = 0;
-    Q.bits[1] = 0;
-    Q.bits[2] = 0;
+    for (u_int8_t i = 0; i < 6; ++i) { /* сбрасывает значение Q */
+      Q.bits[i] = 0;
+    }
     R = (big_decimal){{0}};
 
     for (int i = BMANTISS_BIT_COUNT - 1; i >= 0; i--) {
       Bleft_shift(&R);
       Bset_bit(&R, 0, Bget_bit(value_1, i));
       if (Bmantiss_ge(R, value_2)) {
-        (void)Bs21_sub(R, value_2, &R);
+        (void)Bmantiss_sub(R, value_2, &R);
         Bset_bit(&Q, i, 1);
       }
     }
@@ -164,7 +154,7 @@ int Bs21_div(big_decimal value_1, big_decimal value_2, big_decimal *result) {
 
     // домножаем на 10 и снова делим, пока остаток не станет 0.
     if (Bmantiss_ne(R, (big_decimal){{0}})) {
-      const bool overflow = Bmul_by_ten(&value_1);
+      const bool overflow = Bmantiss_mul10(&value_1);
       Bset_scale(&Q, Bget_scale(Q) + 1);
       if (overflow) { /* слишком много цифр после запятой */
         break;
@@ -281,12 +271,12 @@ int Bs21_is_greater_or_equal(big_decimal value_1, big_decimal value_2) {
 
 int Bs21_inc(big_decimal value, big_decimal *result) {
   const big_decimal one = (big_decimal){{1, 0, 0, 0, 0, 0, 0}};
-  Bs21_add(value, one, result);
+  Bmantiss_add(value, one, result);
   return 0;
 }
 
 int Bs21_dec(big_decimal value, big_decimal *result) {
   const big_decimal one = (big_decimal){{1, 0, 0, 0, 0, 0, 0}};
-  Bs21_sub(value, one, result);
+  Bmantiss_sub(value, one, result);
   return 0;
 }

@@ -10,6 +10,17 @@
 #include "../big_decimal/big_decimal.h"
 #include "../decimal/s21_decimal.h"
 
+bool set_scale(s21_decimal *value, uint8_t scale);
+
+bool get_bit(s21_decimal value, uint8_t bit_pos);
+
+s21_decimal uint128_to_bin(__uint128_t n);
+
+/**
+ * Устанавливает указанный бит числа s21_decimal. Отсчёт с нуля.
+ */
+void set_bit(s21_decimal *value, uint8_t bit_pos, bool state);
+
 /**
  * Печатает big_decimal в двоичном предствалении.
  */

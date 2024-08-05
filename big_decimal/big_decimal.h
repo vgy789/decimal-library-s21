@@ -37,7 +37,7 @@ typedef struct {
  бесконечности,
  *         2 - число слишком мало или равно отрицательной бесконечности).
  */
-int Bs21_add(big_decimal value_1, big_decimal value_2, big_decimal *result);
+int Bmantiss_add(big_decimal value_1, big_decimal value_2, big_decimal *result);
 
 /**
  * Вычитает одно десятичное значение из другого.
@@ -51,7 +51,7 @@ int Bs21_add(big_decimal value_1, big_decimal value_2, big_decimal *result);
  бесконечности,
  *         2 - число слишком мало или равно отрицательной бесконечности).
  */
-int Bs21_sub(big_decimal value_1, big_decimal value_2, big_decimal *result);
+int Bmantiss_sub(big_decimal value_1, big_decimal value_2, big_decimal *result);
 
 /**
  * Умножает два десятичных значения.
@@ -293,9 +293,9 @@ void Bcompliment2(big_decimal value, big_decimal *result);
  */
 void Bleft_shift(big_decimal *value);
 
-bool Bdiv_by_ten(big_decimal *value);
+bool Bmantiss_div10(big_decimal *value);
 
-bool Bmul_by_ten(big_decimal *value);
+bool Bmantiss_mul10(big_decimal *value);
 
 void Bcircumcision(big_decimal *value);
 

@@ -227,16 +227,6 @@ int s21_truncate(s21_decimal value, s21_decimal *result);
 int s21_negate(s21_decimal value, s21_decimal *result);
 
 /**
- * Возвращает указанный бит числа s21_decimal. Отсчёт с нуля.
- */
-bool get_bit(s21_decimal value, uint8_t bit_pos);
-
-/**
- * Устанавливает указанный бит числа s21_decimal. Отсчёт с нуля.
- */
-void set_bit(s21_decimal *value, uint8_t bit_pos, bool status);
-
-/**
  * Возвращает десятичную точку числа s21_decimal.
  */
 uint8_t get_scale(s21_decimal value);

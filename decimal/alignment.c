@@ -1,16 +1,20 @@
+#include "../test/debug_helper.h"
 #include "s21_decimal.h"
+
+// почти не используются в s21_decimal, но используются в тестах
+// перенеси функции в debug_helper
 
 uint8_t mul_by_ten(s21_decimal *value) {
   big_decimal big = (big_decimal){{0}};
   decimal_to_big(*value, &big);
-  Bmul_by_ten(&big);
+  Bmantiss_mul10(&big);
   return big_to_decimal(big, value);
 }
 
 uint8_t div_by_ten(s21_decimal *value) {
   big_decimal big = (big_decimal){{0}};
   decimal_to_big(*value, &big);
-  Bdiv_by_ten(&big);
+  Bmantiss_div10(&big);
   return big_to_decimal(big, value);
 }
 

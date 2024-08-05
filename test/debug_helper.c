@@ -1,10 +1,54 @@
 #include "debug_helper.h"
 
+#include "../big_decimal/big_decimal.h"
+
 #define P10_UINT64 10000000000000000000ULL /* 19 zeroes */
 #define E10_UINT64 19
 
 #define STRINGIZER(x) #x
 #define TO_STRING(x) STRINGIZER(x)
+
+bool get_bit(s21_decimal value, uint8_t bit_pos) {
+  uint8_t int_part = 0; /* индекс ячейки в массиве */
+
+  while (bit_pos > 31) {
+    bit_pos -= 32;
+    int_part += 1;
+  }
+  return (value.bits[int_part] & (1 << bit_pos));
+}
+
+bool set_scale(s21_decimal *value, uint8_t scale) {
+  big_decimal big = (big_decimal){{0}};
+  decimal_to_big(*value, &big);
+  const bool is_ok = Bset_scale(&big, scale);
+  big_to_decimal(big, value);
+  return is_ok;
+}
+
+void set_bit(s21_decimal *value, uint8_t bit_pos, bool state) {
+  big_decimal big = (big_decimal){{0}};
+  decimal_to_big(*value, &big);
+  Bset_bit(&big, bit_pos, state);
+  big_to_decimal(big, value);
+}
+
+s21_decimal uint128_to_bin(__uint128_t n) {
+  // use it → s21_decimal result = uint128_to_bin(1234123125678965432);
+  s21_decimal result = {{0, 0, 0, 0}};
+  int binary_num[128];
+  int i = 0;
+
+  while (n > 0) {
+    binary_num[i++] = n % 2;
+    n /= 2;
+  }
+
+  for (int j = i - 1; j >= 0; j--) {
+    set_bit(&result, j, binary_num[j]);
+  }
+  return result;
+}
 
 // https://stackoverflow.com/questions/11656241/how-to-print-uint128-t-number-using-gcc
 static int print_u128_u(__uint128_t u128) {

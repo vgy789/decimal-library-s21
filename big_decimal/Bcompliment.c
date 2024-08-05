@@ -1,11 +1,8 @@
 #include "big_decimal.h"
 
 void Bcompliment2(big_decimal value, big_decimal *result) {
-  value.bits[0] = ~value.bits[0];
-  value.bits[1] = ~value.bits[1];
-  value.bits[2] = ~value.bits[2];
-  value.bits[3] = ~value.bits[3];
-  value.bits[4] = ~value.bits[4];
-  value.bits[5] = ~value.bits[5];
+  for (uint8_t i = 0; i < 6; ++i) {
+    value.bits[i] = ~value.bits[i];
+  }
   Bs21_inc(value, result);
 }
