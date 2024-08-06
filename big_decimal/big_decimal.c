@@ -1,12 +1,5 @@
 #include "big_decimal.h"
 
-int Bs21_negate(big_decimal value, big_decimal *result) {
-  enum { minus_bit = 0x80000000 };
-  uint8_t err_code =
-      Bs21_mul(value, (big_decimal){{1, 0, 0, 0, 0, 0, minus_bit}}, result);
-  return err_code;
-}
-
 static bool Badd_word(uint32_t *result, uint32_t value_1, uint32_t value_2,
                       bool transfer) {
   bool overflow = 0;
@@ -21,6 +14,12 @@ static void Bset_result_sign(big_decimal *value, bool sign) {
   } else {
     Bset_sign(value, sign);
   }
+}
+
+static void Bswap(big_decimal *value_1, big_decimal *value_2) {
+  big_decimal buf = *value_1;
+  *value_1 = *value_2;
+  *value_2 = buf;
 }
 
 int Bmantiss_add(big_decimal value_1, big_decimal value_2,
@@ -76,12 +75,6 @@ int Bmantiss_sub(big_decimal value_1, big_decimal value_2,
   Bset_sign(&value_2, !sign);
   uint8_t err_code = Bmantiss_add(value_1, value_2, result);
   return err_code;
-}
-
-static void Bswap(big_decimal *value_1, big_decimal *value_2) {
-  big_decimal buf = *value_1;
-  *value_1 = *value_2;
-  *value_2 = buf;
 }
 
 int Bs21_mul(big_decimal value_1, big_decimal value_2, big_decimal *result) {
@@ -168,9 +161,20 @@ int Bs21_div(big_decimal value_1, big_decimal value_2, big_decimal *result) {
   return 0;
 }
 
+int Bs21_dec(big_decimal value, big_decimal *result) {
+  const big_decimal one = (big_decimal){{1, 0, 0, 0, 0, 0, 0}};
+  Bmantiss_sub(value, one, result);
+  return 0;
+}
+
+int Bs21_inc(big_decimal value, big_decimal *result) {
+  const big_decimal one = (big_decimal){{1, 0, 0, 0, 0, 0, 0}};
+  Bmantiss_add(value, one, result);
+  return 0;
+}
+
 // сравнивает мантиссы без учёта знака и scale
 static int Bcomparison_mantiss(big_decimal value_1, big_decimal value_2) {
-  // Balignment(&value_1, &value_2);
   int16_t bit_pos = BMANTISS_BIT_COUNT - 1;
   bool pos_a, pos_b;
   u_int8_t result = 0;
@@ -227,8 +231,8 @@ int Bmantiss_ne(big_decimal value_1, big_decimal value_2) {
   return result;
 }
 
-int Bmantiss_lt(big_decimal value_1, big_decimal value_2) {
-  return Bcomparison_mantiss(value_1, value_2) == 2;
+int Bmantiss_ge(big_decimal value_1, big_decimal value_2) {
+  return !Bmantiss_lt(value_1, value_2);
 }
 
 int Bmantiss_gt(big_decimal value_1, big_decimal value_2) {
@@ -239,8 +243,8 @@ int Bmantiss_le(big_decimal value_1, big_decimal value_2) {
   return !Bmantiss_gt(value_1, value_2);
 }
 
-int Bmantiss_ge(big_decimal value_1, big_decimal value_2) {
-  return !Bmantiss_lt(value_1, value_2);
+int Bmantiss_lt(big_decimal value_1, big_decimal value_2) {
+  return Bcomparison_mantiss(value_1, value_2) == 2;
 }
 
 int Bs21_is_equal(big_decimal value_1, big_decimal value_2) {
@@ -253,30 +257,25 @@ int Bs21_is_not_equal(big_decimal value_1, big_decimal value_2) {
   return result;
 }
 
-int Bs21_is_less(big_decimal value_1, big_decimal value_2) {
-  return Bcomparison(value_1, value_2) == 2;
-}
-
 int Bs21_is_greater(big_decimal value_1, big_decimal value_2) {
   return Bcomparison(value_1, value_2) == 1;
-}
-
-int Bs21_is_less_or_equal(big_decimal value_1, big_decimal value_2) {
-  return !Bs21_is_greater(value_1, value_2);
 }
 
 int Bs21_is_greater_or_equal(big_decimal value_1, big_decimal value_2) {
   return !Bs21_is_less(value_1, value_2);
 }
 
-int Bs21_inc(big_decimal value, big_decimal *result) {
-  const big_decimal one = (big_decimal){{1, 0, 0, 0, 0, 0, 0}};
-  Bmantiss_add(value, one, result);
-  return 0;
+int Bs21_is_less(big_decimal value_1, big_decimal value_2) {
+  return Bcomparison(value_1, value_2) == 2;
 }
 
-int Bs21_dec(big_decimal value, big_decimal *result) {
-  const big_decimal one = (big_decimal){{1, 0, 0, 0, 0, 0, 0}};
-  Bmantiss_sub(value, one, result);
-  return 0;
+int Bs21_is_less_or_equal(big_decimal value_1, big_decimal value_2) {
+  return !Bs21_is_greater(value_1, value_2);
+}
+
+int Bs21_negate(big_decimal value, big_decimal *result) {
+  enum { minus_bit = 0x80000000 };
+  uint8_t err_code =
+      Bs21_mul(value, (big_decimal){{1, 0, 0, 0, 0, 0, minus_bit}}, result);
+  return err_code;
 }

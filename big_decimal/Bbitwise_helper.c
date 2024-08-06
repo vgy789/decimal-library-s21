@@ -10,19 +10,6 @@ bool Bget_bit(big_decimal value, uint8_t bit_pos) {
   return (value.bits[int_part] & (1 << bit_pos));
 }
 
-uint8_t Bget_scale(big_decimal value) {
-  return (value.bits[6] & (0b11111111 << 16)) >> 16;
-}
-
-bool Bget_sign(big_decimal value) { return ((value.bits[6] >> 31) & 1); }
-
-void Bleft_shift(big_decimal *value) {
-  for (int32_t i = BMANTISS_BIT_COUNT - 1; i > 0; --i) {
-    Bset_bit(value, i, Bget_bit(*value, i - 1));
-  }
-  Bset_bit(value, 0, 0);
-}
-
 void Bset_bit(big_decimal *value, uint8_t bit_pos, bool state) {
   uint8_t int_part = 0; /* индекс ячейки в массиве */
 
@@ -36,6 +23,10 @@ void Bset_bit(big_decimal *value, uint8_t bit_pos, bool state) {
     value->bits[int_part] |= (1 << bit_pos);
 }
 
+uint8_t Bget_scale(big_decimal value) {
+  return (value.bits[6] & (0b11111111 << 16)) >> 16;
+}
+
 void Bset_scale(big_decimal *value, uint8_t scale) {
   const bool sign = Bget_sign(*value);
 
@@ -43,9 +34,18 @@ void Bset_scale(big_decimal *value, uint8_t scale) {
   Bset_sign(value, sign);
 }
 
+bool Bget_sign(big_decimal value) { return ((value.bits[6] >> 31) & 1); }
+
 void Bset_sign(big_decimal *value, bool sign) {
   if (sign == plus)
     value->bits[6] &= ~(1 << 31);
   else
     value->bits[6] |= (1 << 31);
+}
+
+void Bleft_shift(big_decimal *value) {
+  for (int32_t i = BMANTISS_BIT_COUNT - 1; i > 0; --i) {
+    Bset_bit(value, i, Bget_bit(*value, i - 1));
+  }
+  Bset_bit(value, 0, 0);
 }

@@ -76,39 +76,27 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
  */
 int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 
-bool mantiss_eq(s21_decimal value_1, s21_decimal value_2);
-
-bool mantiss_ne(s21_decimal value_1, s21_decimal value_2);
-
-bool mantiss_lt(s21_decimal value_1, s21_decimal value_2);
-
-bool mantiss_gt(s21_decimal value_1, s21_decimal value_2);
-
-bool mantiss_le(s21_decimal value_1, s21_decimal value_2);
-
-bool mantiss_ge(s21_decimal value_1, s21_decimal value_2);
-
 /**
- * Проверяет, является ли первое десятичное значение меньше второго.
+ * Проверяет, равны ли два десятичных значения.
  *
- * Оператор '<'
+ * Оператор '=='
  *
  * @param value_1 Первое десятичное значение.
  * @param value_2 Второе десятичное значение.
- * @return 1 если value_1 меньше value_2, иначе 0.
+ * @return 1 если value_1 равно value_2, иначе 0.
  */
-int s21_is_less(s21_decimal value_1, s21_decimal value_2);
+int s21_is_equal(s21_decimal value_1, s21_decimal value_2);
 
 /**
- * Проверяет, является ли первое десятичное значение меньше или равно второму.
+ * Проверяет, не равны ли два десятичных значения.
  *
- * Оператор '<='
+ * Оператор '!='
  *
  * @param value_1 Первое десятичное значение.
  * @param value_2 Второе десятичное значение.
- * @return 1 если value_1 меньше или равно value_2, иначе 0.
+ * @return 1 если value_1 не равно value_2, иначе 0.
  */
-int s21_is_less_or_equal(s21_decimal value_1, s21_decimal value_2);
+int s21_is_not_equal(s21_decimal value_1, s21_decimal value_2);
 
 /**
  * Проверяет, является ли первое десятичное значение больше второго.
@@ -133,26 +121,44 @@ int s21_is_greater(s21_decimal value_1, s21_decimal value_2);
 int s21_is_greater_or_equal(s21_decimal value_1, s21_decimal value_2);
 
 /**
- * Проверяет, равны ли два десятичных значения.
+ * Проверяет, является ли первое десятичное значение меньше второго.
  *
- * Оператор '=='
+ * Оператор '<'
  *
  * @param value_1 Первое десятичное значение.
  * @param value_2 Второе десятичное значение.
- * @return 1 если value_1 равно value_2, иначе 0.
+ * @return 1 если value_1 меньше value_2, иначе 0.
  */
-int s21_is_equal(s21_decimal value_1, s21_decimal value_2);
+int s21_is_less(s21_decimal value_1, s21_decimal value_2);
 
 /**
- * Проверяет, не равны ли два десятичных значения.
+ * Проверяет, является ли первое десятичное значение меньше или равно второму.
  *
- * Оператор '!='
+ * Оператор '<='
  *
  * @param value_1 Первое десятичное значение.
  * @param value_2 Второе десятичное значение.
- * @return 1 если value_1 не равно value_2, иначе 0.
+ * @return 1 если value_1 меньше или равно value_2, иначе 0.
  */
-int s21_is_not_equal(s21_decimal value_1, s21_decimal value_2);
+int s21_is_less_or_equal(s21_decimal value_1, s21_decimal value_2);
+
+/**
+ * Преобразует десятичное значение в целое число.
+ *
+ * @param src Исходное десятичное значение.
+ * @param dst Указатель на результат преобразования.
+ * @return Код ошибки (0 - ок, 1 - ошибка конвертации).
+ */
+int s21_from_decimal_to_int(s21_decimal src, int *dst);
+
+/**
+ * Преобразует десятичное значение в число с плавающей запятой.
+ *
+ * @param src Исходное десятичное значение.
+ * @param dst Указатель на результат преобразования.
+ * @return Код ошибки (0 - ок, 1 - ошибка конвертации).
+ */
+int s21_from_decimal_to_float(s21_decimal src, float *dst);
 
 /**
  * Преобразует целое число в десятичное значение.
@@ -173,22 +179,13 @@ int s21_from_int_to_decimal(int src, s21_decimal *dst);
 int s21_from_float_to_decimal(float src, s21_decimal *dst);
 
 /**
- * Преобразует десятичное значение в целое число.
+ * Изменяет знак десятичного значения на противоположный.
  *
- * @param src Исходное десятичное значение.
- * @param dst Указатель на результат преобразования.
- * @return Код ошибки (0 - ок, 1 - ошибка конвертации).
+ * @param value Исходное десятичное значение.
+ * @param result Указатель на результат изменения знака.
+ * @return Код ошибки (0 - ок, 1 - ошибка вычисления).
  */
-int s21_from_decimal_to_int(s21_decimal src, int *dst);
-
-/**
- * Преобразует десятичное значение в число с плавающей запятой.
- *
- * @param src Исходное десятичное значение.
- * @param dst Указатель на результат преобразования.
- * @return Код ошибки (0 - ок, 1 - ошибка конвертации).
- */
-int s21_from_decimal_to_float(s21_decimal src, float *dst);
+int s21_negate(s21_decimal value, s21_decimal *result);
 
 /**
  * Округляет десятичное значение до ближайшего целого числа в меньшую сторону.
@@ -218,35 +215,6 @@ int s21_round(s21_decimal value, s21_decimal *result);
 int s21_truncate(s21_decimal value, s21_decimal *result);
 
 /**
- * Изменяет знак десятичного значения на противоположный.
- *
- * @param value Исходное десятичное значение.
- * @param result Указатель на результат изменения знака.
- * @return Код ошибки (0 - ок, 1 - ошибка вычисления).
- */
-int s21_negate(s21_decimal value, s21_decimal *result);
-
-/**
- * Возвращает десятичную точку числа s21_decimal.
- */
-uint8_t get_scale(s21_decimal value);
-
-/**
- * Устанавливает десятичную точку в числе s21_decimal.
- */
-bool set_scale(s21_decimal *value, uint8_t scale);
-
-/**
- * Прибавляет к числу s21_decimal единицу.
- */
-int s21_inc(s21_decimal value, s21_decimal *result);
-
-/**
- * Вычитает из числа s21_decimal единицу.
- */
-int s21_dec(s21_decimal value, s21_decimal *result);
-
-/**
  * Возварщает знак s21_decimal.
  *
  * @param value Проверяемое число.
@@ -264,19 +232,10 @@ void set_sign(s21_decimal *value, bool sign);
 
 void alignment(s21_decimal *value1, s21_decimal *value2);
 
-/**
- * Сдвиг битов мантиссы влево на один.
- */
-void left_shift(s21_decimal *value);
-
-uint8_t div_by_ten(s21_decimal *value);
-
-uint8_t mul_by_ten(s21_decimal *value);
+uint8_t big_to_decimal(big_decimal value, s21_decimal *result);
 
 void circumcision(s21_decimal *value);
 
 void decimal_to_big(s21_decimal value, big_decimal *result);
-
-uint8_t big_to_decimal(big_decimal value, s21_decimal *result);
 
 #endif  // S21_DECIMAL_H

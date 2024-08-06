@@ -1,40 +1,5 @@
 #include "s21_decimal.h"
 
-void decimal_to_big(s21_decimal value, big_decimal *result) {
-  for (uint8_t i = 0; i < 3; ++i) {
-    result->bits[i] = value.bits[i];
-  }
-  result->bits[6] = value.bits[3];
-}
-
-uint8_t big_to_decimal(big_decimal value, s21_decimal *result) {
-  for (uint8_t i = 3; i < 6; ++i) {
-    if (value.bits[i] != 0) { /* тест на переполнение */
-      if (Bget_sign(value) == plus) {
-        return 1;
-      } else {
-        return 2;
-      }
-    }
-  }
-
-  for (uint8_t i = 0; i < 3; ++i) {
-    result->bits[i] = value.bits[i];
-  }
-  result->bits[3] = value.bits[6];
-  return 0;
-}
-
-int s21_negate(s21_decimal value, s21_decimal *result) {
-  enum { minus_bit = 0x80000000 };
-  big_decimal big;
-
-  decimal_to_big(value, &big);
-  (void)Bs21_mul(big, (big_decimal){{1, 0, 0, 0, 0, 0, minus_bit}}, &big);
-  const bool err_code = big_to_decimal(big, result);
-  return err_code;
-}
-
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   big_decimal big_1 = (big_decimal){{0}};
   big_decimal big_2 = (big_decimal){{0}};
@@ -117,28 +82,12 @@ int s21_is_not_equal(s21_decimal value_1, s21_decimal value_2) {
   return Bs21_is_not_equal(big_1, big_2);
 }
 
-int s21_is_less(s21_decimal value_1, s21_decimal value_2) {
-  big_decimal big_1 = (big_decimal){{0}};
-  big_decimal big_2 = (big_decimal){{0}};
-  decimal_to_big(value_1, &big_1);
-  decimal_to_big(value_2, &big_2);
-  return Bs21_is_less(big_1, big_2);
-}
-
 int s21_is_greater(s21_decimal value_1, s21_decimal value_2) {
   big_decimal big_1 = (big_decimal){{0}};
   big_decimal big_2 = (big_decimal){{0}};
   decimal_to_big(value_1, &big_1);
   decimal_to_big(value_2, &big_2);
   return Bs21_is_greater(big_1, big_2);
-}
-
-int s21_is_less_or_equal(s21_decimal value_1, s21_decimal value_2) {
-  big_decimal big_1 = (big_decimal){{0}};
-  big_decimal big_2 = (big_decimal){{0}};
-  decimal_to_big(value_1, &big_1);
-  decimal_to_big(value_2, &big_2);
-  return Bs21_is_less_or_equal(big_1, big_2);
 }
 
 int s21_is_greater_or_equal(s21_decimal value_1, s21_decimal value_2) {
@@ -149,16 +98,53 @@ int s21_is_greater_or_equal(s21_decimal value_1, s21_decimal value_2) {
   return Bs21_is_greater_or_equal(big_1, big_2);
 }
 
-int s21_inc(s21_decimal value, s21_decimal *result) {
-  big_decimal big = (big_decimal){{0}};
-  decimal_to_big(value, &big);
-  (void)Bs21_inc(big, &big);
-  return big_to_decimal(big, result);
+int s21_is_less(s21_decimal value_1, s21_decimal value_2) {
+  big_decimal big_1 = (big_decimal){{0}};
+  big_decimal big_2 = (big_decimal){{0}};
+  decimal_to_big(value_1, &big_1);
+  decimal_to_big(value_2, &big_2);
+  return Bs21_is_less(big_1, big_2);
 }
 
-int s21_dec(s21_decimal value, s21_decimal *result) {
-  big_decimal big = (big_decimal){{0}};
+int s21_is_less_or_equal(s21_decimal value_1, s21_decimal value_2) {
+  big_decimal big_1 = (big_decimal){{0}};
+  big_decimal big_2 = (big_decimal){{0}};
+  decimal_to_big(value_1, &big_1);
+  decimal_to_big(value_2, &big_2);
+  return Bs21_is_less_or_equal(big_1, big_2);
+}
+
+int s21_negate(s21_decimal value, s21_decimal *result) {
+  enum { minus_bit = 0x80000000 };
+  big_decimal big;
+
   decimal_to_big(value, &big);
-  (void)Bs21_dec(big, &big);
-  return big_to_decimal(big, result);
+  (void)Bs21_mul(big, (big_decimal){{1, 0, 0, 0, 0, 0, minus_bit}}, &big);
+  const bool err_code = big_to_decimal(big, result);
+  return err_code;
+}
+
+uint8_t big_to_decimal(big_decimal value, s21_decimal *result) {
+  for (uint8_t i = 3; i < 6; ++i) {
+    if (value.bits[i] != 0) { /* тест на переполнение */
+      if (Bget_sign(value) == plus) {
+        return 1;
+      } else {
+        return 2;
+      }
+    }
+  }
+
+  for (uint8_t i = 0; i < 3; ++i) {
+    result->bits[i] = value.bits[i];
+  }
+  result->bits[3] = value.bits[6];
+  return 0;
+}
+
+void decimal_to_big(s21_decimal value, big_decimal *result) {
+  for (uint8_t i = 0; i < 3; ++i) {
+    result->bits[i] = value.bits[i];
+  }
+  result->bits[6] = value.bits[3];
 }

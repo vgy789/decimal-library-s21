@@ -3,12 +3,6 @@
 // почти не используются в s21_decimal, но используются в тестах
 // перенеси функции в debug_helper
 
-uint8_t get_scale(s21_decimal value) {
-  big_decimal big = (big_decimal){{0}};
-  decimal_to_big(value, &big);
-  return Bget_scale(big);
-}
-
 bool get_sign(s21_decimal value) {
   big_decimal big = (big_decimal){{0}};
   decimal_to_big(value, &big);
