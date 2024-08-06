@@ -55,14 +55,28 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   return big_to_decimal(big_result, result);
 }
 
-// https://en.wikipedia.org/wiki/Division_algorithm#Integer_division_(unsigned)_with_remainder
 int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   big_decimal big_1 = (big_decimal){{0}};
   big_decimal big_2 = (big_decimal){{0}};
   big_decimal big_result = (big_decimal){{0}};
   decimal_to_big(value_1, &big_1);
   decimal_to_big(value_2, &big_2);
+  const u_int8_t scale_1 = Bget_scale(big_1);
+  const u_int8_t scale_2 = Bget_scale(big_2);
+
   Bs21_div(big_1, big_2, &big_result);
+  printf("\n");
+  Bdec_2bin(big_result);
+  printf("\n");
+  int8_t scale_result = scale_1 - scale_2 + Bget_scale(big_result);
+
+  while (scale_result < 0) {
+    Bmantiss_mul10(&big_result);
+    ++scale_result;
+  }
+  Bset_scale(&big_result, scale_result);
+  Bcircumcision(&big_result);
+
   return big_to_decimal(big_result, result);
 }
 
