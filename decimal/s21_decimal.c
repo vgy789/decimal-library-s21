@@ -31,7 +31,6 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 }
 
 int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
-  // TODO: обрабатывать числа с точкой
   big_decimal big_1 = (big_decimal){{0}};
   big_decimal big_2 = (big_decimal){{0}};
   big_decimal big_result = (big_decimal){{0}};
@@ -64,10 +63,9 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   const u_int8_t scale_1 = Bget_scale(big_1);
   const u_int8_t scale_2 = Bget_scale(big_2);
 
-  Bs21_div(big_1, big_2, &big_result);
-  printf("\n");
-  Bdec_2bin(big_result);
-  printf("\n");
+  if (Bs21_div(big_1, big_2, &big_result) == 2) {
+    return 2; /* деление на 0 */
+  }
   int8_t scale_result = scale_1 - scale_2 + Bget_scale(big_result);
 
   while (scale_result < 0) {
