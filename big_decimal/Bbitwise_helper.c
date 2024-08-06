@@ -36,13 +36,11 @@ void Bset_bit(big_decimal *value, uint8_t bit_pos, bool state) {
     value->bits[int_part] |= (1 << bit_pos);
 }
 
-bool Bset_scale(big_decimal *value, uint8_t scale) {
-  if (scale > 28) return 0;
+void Bset_scale(big_decimal *value, uint8_t scale) {
   const bool sign = Bget_sign(*value);
 
   value->bits[6] = (0b11111111 << 16) & scale << 16;
   Bset_sign(value, sign);
-  return 1;
 }
 
 void Bset_sign(big_decimal *value, bool sign) {

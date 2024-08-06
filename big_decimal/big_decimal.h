@@ -253,7 +253,7 @@ uint8_t Bget_scale(big_decimal value);
 /**
  * Устанавливает десятичную точку в числе big_decimal.
  */
-bool Bset_scale(big_decimal *value, uint8_t scale);
+void Bset_scale(big_decimal *value, uint8_t scale);
 
 /**
  * Прибавляет к числу big_decimal единицу.

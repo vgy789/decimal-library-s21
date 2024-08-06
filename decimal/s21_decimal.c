@@ -8,7 +8,6 @@ void decimal_to_big(s21_decimal value, big_decimal *result) {
 }
 
 uint8_t big_to_decimal(big_decimal value, s21_decimal *result) {
-  // Bcircumcision(&value);
   for (uint8_t i = 3; i < 6; ++i) {
     if (value.bits[i] != 0) { /* тест на переполнение */
       if (Bget_sign(value) == plus) {
@@ -44,9 +43,8 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   decimal_to_big(value_2, &big_2);
 
   Balignment(&big_1, &big_2);
+
   Bmantiss_add(big_1, big_2, &big_result);
-  Bset_scale(&big_result, Bget_scale(big_1));
-  Bcircumcision(&big_result);
   // debug
   // {
   //   printf("\n>>>>>>>>>>>>\n");
@@ -54,6 +52,9 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   //   printf("\n");
   //   printf("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n\n");
   // }
+  Bset_scale(&big_result, Bget_scale(big_1));
+  Bcircumcision(&big_result);
+
   return big_to_decimal(big_result, result);
 }
 
@@ -69,9 +70,23 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   big_decimal big_1 = (big_decimal){{0}};
   big_decimal big_2 = (big_decimal){{0}};
   big_decimal big_result = (big_decimal){{0}};
+
   decimal_to_big(value_1, &big_1);
   decimal_to_big(value_2, &big_2);
+
+  const uint8_t scale_result = Bget_scale(big_1) + Bget_scale(big_2);
+
   Bs21_mul(big_1, big_2, &big_result);
+  if (scale_result > 28) { /* слишком большой scale */
+    if (Bget_sign(big_result) == plus) {
+      return 1;
+    } else {
+      return 2;
+    }
+  }
+  Bset_scale(&big_result, scale_result);
+  Bcircumcision(&big_result);
+
   return big_to_decimal(big_result, result);
 }
 
