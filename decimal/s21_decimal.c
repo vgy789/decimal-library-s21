@@ -126,6 +126,42 @@ int s21_is_less_or_equal(s21_decimal value_1, s21_decimal value_2) {
   return Bs21_is_less_or_equal(big_1, big_2);
 }
 
+static void mantiss_div10(s21_decimal *value) {
+  big_decimal big = (big_decimal){{0}};
+  Bs21_div(big, (big_decimal){{10}}, &big);
+  big_to_decimal(big, value);
+}
+
+// TODO: проверить
+int s21_from_decimal_to_int(s21_decimal src, int *dst) {
+  int result = 0;
+  if (src.bits[1] == 0 && src.bits[2] == 0) {
+    uint8_t scale_src = get_scale(src);
+    while (scale_src > 0) {
+      mantiss_div10(&src);
+      scale_src--;
+    }
+    *dst = src.bits[0];
+    if (get_sign(src) == 1) {
+      *dst = -*dst;
+    }
+  } else {
+    result = 1;
+  }
+
+  return result;
+}
+
+int s21_from_int_to_decimal(int src, s21_decimal *dst) {
+  if (src < 0) {
+    src = -src;
+    set_sign(dst, minus);
+  }
+  dst->bits[0] = src;
+
+  return 0;
+}
+
 int s21_negate(s21_decimal value, s21_decimal *result) {
   enum { minus_bit = 0x80000000 };
   big_decimal big;

@@ -74,6 +74,7 @@ int Bmantiss_sub(big_decimal value_1, big_decimal value_2,
   // инвертируем знак и складываем
   Bset_sign(&value_2, !sign);
   uint8_t err_code = Bmantiss_add(value_1, value_2, result);
+
   return err_code;
 }
 
