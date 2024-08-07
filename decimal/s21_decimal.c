@@ -63,7 +63,32 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   const u_int8_t scale_1 = Bget_scale(big_1);
   const u_int8_t scale_2 = Bget_scale(big_2);
 
-  if (Bs21_div(big_1, big_2, &big_result) == 2) {
+  uint8_t err_code = Bs21_div(big_1, big_2, &big_result);
+  if (err_code) {
+    return err_code;
+  }
+  int8_t scale_result = scale_1 - scale_2 + Bget_scale(big_result);
+
+  while (scale_result < 0) {
+    Bmantiss_mul10(&big_result);
+    ++scale_result;
+  }
+  Bset_scale(&big_result, scale_result);
+  Bcircumcision(&big_result);
+
+  return big_to_decimal(big_result, result);
+}
+
+int s21_div2(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
+  big_decimal big_1 = (big_decimal){{0}};
+  big_decimal big_2 = (big_decimal){{0}};
+  big_decimal big_result = (big_decimal){{0}};
+  decimal_to_big(value_1, &big_1);
+  decimal_to_big(value_2, &big_2);
+  const u_int8_t scale_1 = Bget_scale(big_1);
+  const u_int8_t scale_2 = Bget_scale(big_2);
+
+  if (Bs21_div2(big_1, big_2, &big_result) == 2) {
     return 2; /* деление на 0 */
   }
   int8_t scale_result = scale_1 - scale_2 + Bget_scale(big_result);
@@ -155,8 +180,19 @@ uint8_t big_to_decimal(big_decimal value, s21_decimal *result) {
 }
 
 void decimal_to_big(s21_decimal value, big_decimal *result) {
+  if (value.bits[0] == 0 && value.bits[1] == 0 && value.bits[2] == 0) {
+    value.bits[3] = 0;
+  }
   for (uint8_t i = 0; i < 3; ++i) {
     result->bits[i] = value.bits[i];
   }
   result->bits[6] = value.bits[3];
+}
+
+int s21_truncate(s21_decimal value, s21_decimal *result) {
+  big_decimal big = (big_decimal){{0}};
+  decimal_to_big(value, &big);
+  Bs21_truncate(big, &big);
+  big_to_decimal(big, result);
+  return 0;
 }

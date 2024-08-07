@@ -238,4 +238,6 @@ void circumcision(s21_decimal *value);
 
 void decimal_to_big(s21_decimal value, big_decimal *result);
 
+int s21_div2(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
+
 #endif  // S21_DECIMAL_H

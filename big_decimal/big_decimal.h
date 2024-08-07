@@ -299,4 +299,6 @@ void Bcompliment2(big_decimal value, big_decimal *result);
  */
 void Bleft_shift(big_decimal *value);
 
+int Bs21_div2(big_decimal value_1, big_decimal value_2, big_decimal *result);
+
 #endif  // BIG_DECIMAL_H
