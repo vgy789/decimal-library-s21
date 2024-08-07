@@ -1,4 +1,3 @@
-#include "../test/debug_helper.h"
 #include "s21_decimal.h"
 
 // почти не используются в s21_decimal, но используются в тестах

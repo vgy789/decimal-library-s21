@@ -3,11 +3,10 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdio.h>
 
 #include "../big_decimal/big_decimal.h"
 
-#define MANTISS_BIT_COUNT (96)
+#define MAGNITUDE_BIT_COUNT (96)
 
 /**
  * Структура для представления десятичного значения.
@@ -31,6 +30,8 @@ void circumcision(s21_decimal *value);
 
 void decimal_to_big(s21_decimal value, big_decimal *result);
 
+bool is_correct_scale(s21_decimal value);
+
 /**
  * Возвращает десятичную точку числа s21_decimal.
  */
@@ -51,6 +52,12 @@ bool get_sign(s21_decimal value);
  * @param sign Знак числа (0 — положительный, 1 — отрицательный).
  */
 void set_sign(s21_decimal *value, bool sign);
+
+void magnitude_div10(s21_decimal *value);
+
+int whole_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
+
+void mantiss_div10(s21_decimal *value);
 
 /**
  * Складывает два десятичных значения.
@@ -241,8 +248,6 @@ int s21_round(s21_decimal value, s21_decimal *result);
  * @param result Указатель на результат усечения.
  * @return Код ошибки (0 - ок, 1 - ошибка вычисления).
  */
-int truncate(s21_decimal value, s21_decimal *result);
-
-int s21_div2(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
+int s21_truncate(s21_decimal value, s21_decimal *result);
 
 #endif  // S21_DECIMAL_H
