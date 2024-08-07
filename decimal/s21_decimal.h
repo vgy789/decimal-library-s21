@@ -241,6 +241,8 @@ int s21_round(s21_decimal value, s21_decimal *result);
  * @param result Указатель на результат усечения.
  * @return Код ошибки (0 - ок, 1 - ошибка вычисления).
  */
-int s21_truncate(s21_decimal value, s21_decimal *result);
+int truncate(s21_decimal value, s21_decimal *result);
+
+int s21_div2(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 
 #endif  // S21_DECIMAL_H

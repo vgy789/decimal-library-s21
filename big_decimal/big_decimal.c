@@ -118,8 +118,9 @@ int Bs21_mul(big_decimal value_1, big_decimal value_2, big_decimal *result) {
 // https://en.wikipedia.org/wiki/Division_algorithm#Integer_division_(unsigned)_with_remainder
 int Bs21_div(big_decimal value_1, big_decimal value_2, big_decimal *result) {
   if (Bmantiss_eq(value_2, (big_decimal){{0}})) /* если делим на 0 */
-    return 2;
+    return 3;
 
+  uint8_t err_code = 0;
   const bool sign_1 = Bget_sign(value_1);
   const bool sign_2 = Bget_sign(value_2);
   const bool result_sign = (sign_1 == minus || sign_2 == minus) &&
@@ -151,11 +152,63 @@ int Bs21_div(big_decimal value_1, big_decimal value_2, big_decimal *result) {
       const bool overflow = Bmantiss_mul10(&value_1);
       Bset_scale(&Q, Bget_scale(Q) + 1);
       if (overflow) { /* слишком много цифр после запятой */
+        *result = Q;
+        if (result_sign == plus) {
+          err_code = 1;
+        } else {
+          err_code = 2;
+        }
         break;
       }
     } else {
       break;
     }
+  }
+  Bset_result_sign(result, result_sign);
+
+  return err_code;
+}
+
+int Bs21_div2(big_decimal value_1, big_decimal value_2, big_decimal *result) {
+  if (Bmantiss_eq(value_2, (big_decimal){{0}})) /* если делим на 0 */
+    return 2;
+
+  const bool sign_1 = Bget_sign(value_1);
+  const bool sign_2 = Bget_sign(value_2);
+  const bool result_sign = (sign_1 == minus || sign_2 == minus) &&
+                           !(sign_1 == minus && sign_2 == minus);
+  Bset_sign(&value_1, plus);
+  Bset_sign(&value_2, plus);
+
+  big_decimal Q = (big_decimal){{0}};  // частное quotient
+  big_decimal R = (big_decimal){{0}};  // остаток remainder
+  while (1) {
+    for (u_int8_t i = 0; i < 6; ++i) { /* сбрасывает значение Q */
+      Q.bits[i] = 0;
+    }
+    R = (big_decimal){{0}};
+
+    for (int i = BMANTISS_BIT_COUNT - 1; i >= 0; i--) {
+      Bleft_shift(&R);
+      Bset_bit(&R, 0, Bget_bit(value_1, i));
+      if (Bmantiss_ge(R, value_2)) {
+        (void)Bmantiss_sub(R, value_2, &R);
+        Bset_bit(&Q, i, 1);
+      }
+    }
+
+    *result = Q;
+    break;
+    //   // домножаем на 10 и снова делим, пока остаток не станет 0.
+    //   if (Bmantiss_ne(R, (big_decimal){{0}})) {
+    //     const bool overflow = Bmantiss_mul10(&value_1);
+    //     Bset_scale(&Q, Bget_scale(Q) + 1);
+    //     if (overflow) { /* слишком много цифр после запятой */
+    //       break;
+    //     }
+    //   } else {
+    //     break;
+    //   }
   }
   Bset_result_sign(result, result_sign);
 
@@ -279,4 +332,14 @@ int Bs21_negate(big_decimal value, big_decimal *result) {
   uint8_t err_code =
       Bs21_mul(value, (big_decimal){{1, 0, 0, 0, 0, 0, minus_bit}}, result);
   return err_code;
+}
+
+int Bs21_truncate(big_decimal value, big_decimal *result) {
+  int count = Bget_scale(value);
+  Bset_scale(&value, 0);
+  for (int i = 0; i < count; i++) {
+    Bs21_div2(value, (big_decimal){{10}}, &value);
+  }
+  *result = value;
+  return 0;
 }
