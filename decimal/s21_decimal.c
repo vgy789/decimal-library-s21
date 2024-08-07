@@ -1,5 +1,36 @@
 #include "s21_decimal.h"
 
+uint8_t big_to_decimal(big_decimal value, s21_decimal *result) {
+  for (uint8_t i = 3; i < 6; ++i) {
+    if (value.bits[i] != 0) { /* тест на переполнение */
+      if (Bget_sign(value) == plus) {
+        return 1;
+      } else {
+        return 2;
+      }
+    }
+  }
+
+  for (uint8_t i = 0; i < 3; ++i) {
+    result->bits[i] = value.bits[i];
+  }
+  result->bits[3] = value.bits[6];
+  return 0;
+}
+
+void decimal_to_big(s21_decimal value, big_decimal *result) {
+  for (uint8_t i = 0; i < 3; ++i) {
+    result->bits[i] = value.bits[i];
+  }
+  result->bits[6] = value.bits[3];
+}
+
+uint8_t get_scale(s21_decimal value) {
+  big_decimal big = (big_decimal){{0}};
+  decimal_to_big(value, &big);
+  return Bget_scale(big);
+}
+
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   big_decimal big_1 = (big_decimal){{0}};
   big_decimal big_2 = (big_decimal){{0}};
@@ -10,13 +41,7 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   Balignment(&big_1, &big_2);
 
   Bmantiss_add(big_1, big_2, &big_result);
-  // debug
-  // {
-  //   printf("\n>>>>>>>>>>>>\n");
-  //   Bdec_2bin(big_result, 1, 1);
-  //   printf("\n");
-  //   printf("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n\n");
-  // }
+
   Bset_scale(&big_result, Bget_scale(big_1));
   Bcircumcision(&big_result);
 
@@ -57,6 +82,7 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   big_decimal big_1 = (big_decimal){{0}};
   big_decimal big_2 = (big_decimal){{0}};
+  *result = (s21_decimal){{0}};
   big_decimal big_result = (big_decimal){{0}};
   decimal_to_big(value_1, &big_1);
   decimal_to_big(value_2, &big_2);
@@ -64,7 +90,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   const u_int8_t scale_2 = Bget_scale(big_2);
 
   if (Bs21_div(big_1, big_2, &big_result) == 2) {
-    return 2; /* деление на 0 */
+    return 3; /* деление на 0 */
   }
   int8_t scale_result = scale_1 - scale_2 + Bget_scale(big_result);
 
@@ -170,29 +196,4 @@ int s21_negate(s21_decimal value, s21_decimal *result) {
   (void)Bs21_mul(big, (big_decimal){{1, 0, 0, 0, 0, 0, minus_bit}}, &big);
   const bool err_code = big_to_decimal(big, result);
   return err_code;
-}
-
-uint8_t big_to_decimal(big_decimal value, s21_decimal *result) {
-  for (uint8_t i = 3; i < 6; ++i) {
-    if (value.bits[i] != 0) { /* тест на переполнение */
-      if (Bget_sign(value) == plus) {
-        return 1;
-      } else {
-        return 2;
-      }
-    }
-  }
-
-  for (uint8_t i = 0; i < 3; ++i) {
-    result->bits[i] = value.bits[i];
-  }
-  result->bits[3] = value.bits[6];
-  return 0;
-}
-
-void decimal_to_big(s21_decimal value, big_decimal *result) {
-  for (uint8_t i = 0; i < 3; ++i) {
-    result->bits[i] = value.bits[i];
-  }
-  result->bits[6] = value.bits[3];
 }

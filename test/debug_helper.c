@@ -25,12 +25,6 @@ void set_bit(s21_decimal *value, uint8_t bit_pos, bool state) {
   big_to_decimal(big, value);
 }
 
-uint8_t get_scale(s21_decimal value) {
-  big_decimal big = (big_decimal){{0}};
-  decimal_to_big(value, &big);
-  return Bget_scale(big);
-}
-
 bool set_scale(s21_decimal *value, uint8_t scale) {
   big_decimal big = (big_decimal){{0}};
   decimal_to_big(*value, &big);

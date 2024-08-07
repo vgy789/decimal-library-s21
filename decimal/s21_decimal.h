@@ -23,6 +23,35 @@ typedef struct {
   int bits[4];
 } s21_decimal;
 
+void alignment(s21_decimal *value1, s21_decimal *value2);
+
+uint8_t big_to_decimal(big_decimal value, s21_decimal *result);
+
+void circumcision(s21_decimal *value);
+
+void decimal_to_big(s21_decimal value, big_decimal *result);
+
+/**
+ * Возвращает десятичную точку числа s21_decimal.
+ */
+uint8_t get_scale(s21_decimal value);
+
+/**
+ * Возварщает знак s21_decimal.
+ *
+ * @param value Проверяемое число.
+ * @return 0 — положительный, 1 — отрицательный.
+ */
+bool get_sign(s21_decimal value);
+
+/**
+ * Устанавливает знак числа decimal.
+ *
+ * @param *value Указатель на изменяемое число.
+ * @param sign Знак числа (0 — положительный, 1 — отрицательный).
+ */
+void set_sign(s21_decimal *value, bool sign);
+
 /**
  * Складывает два десятичных значения.
  *
@@ -213,29 +242,5 @@ int s21_round(s21_decimal value, s21_decimal *result);
  * @return Код ошибки (0 - ок, 1 - ошибка вычисления).
  */
 int s21_truncate(s21_decimal value, s21_decimal *result);
-
-/**
- * Возварщает знак s21_decimal.
- *
- * @param value Проверяемое число.
- * @return 0 — положительный, 1 — отрицательный.
- */
-bool get_sign(s21_decimal value);
-
-/**
- * Устанавливает знак числа decimal.
- *
- * @param *value Указатель на изменяемое число.
- * @param sign Знак числа (0 — положительный, 1 — отрицательный).
- */
-void set_sign(s21_decimal *value, bool sign);
-
-void alignment(s21_decimal *value1, s21_decimal *value2);
-
-uint8_t big_to_decimal(big_decimal value, s21_decimal *result);
-
-void circumcision(s21_decimal *value);
-
-void decimal_to_big(s21_decimal value, big_decimal *result);
 
 #endif  // S21_DECIMAL_H
