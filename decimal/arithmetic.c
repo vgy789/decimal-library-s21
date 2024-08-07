@@ -30,7 +30,7 @@ int whole_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     int8_t scale_result = scale_1 - scale_2 + Bget_scale(big_result);
 
     while (scale_result < 0) {
-      Bmagnitude_mul10(&big_result);
+      Bdigits_mul10(&big_result);
       ++scale_result;
     }
     Bset_scale(&big_result, scale_result);
@@ -56,7 +56,7 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     decimal_to_big(value_2, &big_2);
 
     Balignment(&big_1, &big_2);
-    Bmagnitude_add(big_1, big_2, &big_result);
+    Bdigits_add(big_1, big_2, &big_result);
     Bset_scale(&big_result, Bget_scale(big_1));
     Bcircumcision(&big_result);
     err_code = big_to_decimal(big_result, result);
@@ -129,7 +129,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     int8_t scale_result = scale_1 - scale_2 + Bget_scale(big_result);
 
     while (scale_result < 0) {
-      Bmagnitude_mul10(&big_result);
+      Bdigits_mul10(&big_result);
       ++scale_result;
     }
     Bset_scale(&big_result, scale_result);

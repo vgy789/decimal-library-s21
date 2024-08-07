@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define BMAGNITUDE_BIT_COUNT (192)
+#define BDIGITS_BIT_COUNT (192)
 
 /**
  * Структура для представления десятичного значения.
@@ -36,21 +36,21 @@ int Bdecriment(big_decimal value, big_decimal *result);
  */
 int Bincrement(big_decimal value, big_decimal *result);
 
-bool Bmagnitude_div10(big_decimal *value);
+bool Bdigits_div10(big_decimal *value);
 
-bool Bmagnitude_mul10(big_decimal *value);
+bool Bdigits_mul10(big_decimal *value);
 
-int Bmagnitude_eq(big_decimal value_1, big_decimal value_2);
+int Bdigits_eq(big_decimal value_1, big_decimal value_2);
 
-int Bmagnitude_ne(big_decimal value_1, big_decimal value_2);
+int Bdigits_ne(big_decimal value_1, big_decimal value_2);
 
-int Bmagnitude_ge(big_decimal value_1, big_decimal value_2);
+int Bdigits_ge(big_decimal value_1, big_decimal value_2);
 
-int Bmagnitude_gt(big_decimal value_1, big_decimal value_2);
+int Bdigits_gt(big_decimal value_1, big_decimal value_2);
 
-int Bmagnitude_le(big_decimal value_1, big_decimal value_2);
+int Bdigits_le(big_decimal value_1, big_decimal value_2);
 
-int Bmagnitude_lt(big_decimal value_1, big_decimal value_2);
+int Bdigits_lt(big_decimal value_1, big_decimal value_2);
 
 /**
  * Складывает два десятичных значения.
@@ -64,7 +64,7 @@ int Bmagnitude_lt(big_decimal value_1, big_decimal value_2);
  бесконечности,
  *         2 - число слишком мало или равно отрицательной бесконечности).
  */
-int Bmagnitude_add(big_decimal value_1, big_decimal value_2,
+int Bdigits_add(big_decimal value_1, big_decimal value_2,
                    big_decimal *result);
 
 /**
@@ -79,7 +79,7 @@ int Bmagnitude_add(big_decimal value_1, big_decimal value_2,
  бесконечности,
  *         2 - число слишком мало или равно отрицательной бесконечности).
  */
-int Bmagnitude_sub(big_decimal value_1, big_decimal value_2,
+int Bdigits_sub(big_decimal value_1, big_decimal value_2,
                    big_decimal *result);
 
 /**

@@ -15,7 +15,7 @@ void Bcompliment2(big_decimal value, big_decimal *result) {
   Bincrement(value, result);
 }
 
-bool Bmagnitude_div10(big_decimal *value) {
+bool Bdigits_div10(big_decimal *value) {
   // const uint8_t scale = Bget_scale(*value);
   const uint8_t err_code =
       Bs21_div(*value, (big_decimal){{10, 0, 0, 0, 0, 0}}, value);
@@ -23,7 +23,7 @@ bool Bmagnitude_div10(big_decimal *value) {
   return err_code;
 }
 
-bool Bmagnitude_mul10(big_decimal *value) {
+bool Bdigits_mul10(big_decimal *value) {
   // const uint8_t scale = Bget_scale(*value);
   const uint8_t err_code =
       Bs21_mul(*value, (big_decimal){{10, 0, 0, 0, 0, 0}}, value);
@@ -33,17 +33,17 @@ bool Bmagnitude_mul10(big_decimal *value) {
 
 int Bdecriment(big_decimal value, big_decimal *result) {
   const big_decimal one = (big_decimal){{1, 0, 0, 0, 0, 0, 0}};
-  Bmagnitude_sub(value, one, result);
+  Bdigits_sub(value, one, result);
   return 0;
 }
 
 int Bincrement(big_decimal value, big_decimal *result) {
   const big_decimal one = (big_decimal){{1, 0, 0, 0, 0, 0, 0}};
-  Bmagnitude_add(value, one, result);
+  Bdigits_add(value, one, result);
   return 0;
 }
 
-int Bmagnitude_add(big_decimal value_1, big_decimal value_2,
+int Bdigits_add(big_decimal value_1, big_decimal value_2,
                    big_decimal *result) {
   *result = (big_decimal){{0}};
   const bool sign_1_orig = Bget_sign(value_1);
@@ -52,8 +52,8 @@ int Bmagnitude_add(big_decimal value_1, big_decimal value_2,
   /* чтобы узнать знак результата необходимо сравнить биты не учитывая знак. */
   const bool result_sign =
       (sign_1_orig == minus && sign_2_orig == minus) ||
-      (sign_1_orig == minus && Bmagnitude_gt(value_1, value_2)) ||
-      (sign_2_orig == minus && Bmagnitude_lt(value_1, value_2));
+      (sign_1_orig == minus && Bdigits_gt(value_1, value_2)) ||
+      (sign_2_orig == minus && Bdigits_lt(value_1, value_2));
 
   // при необходимости переводим в дополнительный код.
   if (sign_1_orig == minus) {
@@ -89,12 +89,12 @@ int Bmagnitude_add(big_decimal value_1, big_decimal value_2,
   return err_code;
 }
 
-int Bmagnitude_sub(big_decimal value_1, big_decimal value_2,
+int Bdigits_sub(big_decimal value_1, big_decimal value_2,
                    big_decimal *result) {
   const bool sign = Bget_sign(value_2);
   // инвертируем знак и складываем
   Bset_sign(&value_2, !sign);
-  uint8_t err_code = Bmagnitude_add(value_1, value_2, result);
+  uint8_t err_code = Bdigits_add(value_1, value_2, result);
 
   return err_code;
 }
@@ -107,7 +107,7 @@ int Bs21_mul(big_decimal value_1, big_decimal value_2, big_decimal *result) {
                            !(sign_1_orig == minus && sign_2_orig == minus);
   {
     // оптимизация умножения :-)
-    if (Bmagnitude_gt(value_2, value_1)) {
+    if (Bdigits_gt(value_2, value_1)) {
       Bswap(&value_1, &value_2);
     }
     // TODO: этот код по-сути меняет знаки val_1 и val_2 местами. Если оставить
@@ -122,9 +122,9 @@ int Bs21_mul(big_decimal value_1, big_decimal value_2, big_decimal *result) {
   uint8_t err_code = 0;
   *result = (big_decimal){0};
   // умножение через сложение
-  while (Bmagnitude_ne(value_2, (big_decimal){{0}})) {
+  while (Bdigits_ne(value_2, (big_decimal){{0}})) {
     Bdecriment(value_2, &value_2);
-    err_code = Bmagnitude_add(value_1, *result, result);
+    err_code = Bdigits_add(value_1, *result, result);
     if (err_code) {
       err_code = 1;
       if (result_sign == minus) err_code = 2;
@@ -138,7 +138,7 @@ int Bs21_mul(big_decimal value_1, big_decimal value_2, big_decimal *result) {
 
 // https://en.wikipedia.org/wiki/Division_algorithm#Integer_division_(unsigned)_with_remainder
 int Bs21_div(big_decimal value_1, big_decimal value_2, big_decimal *result) {
-  if (Bmagnitude_eq(value_2, (big_decimal){{0}})) /* если делим на 0 */
+  if (Bdigits_eq(value_2, (big_decimal){{0}})) /* если делим на 0 */
     return 3;
 
   uint8_t err_code = 0;
@@ -157,11 +157,11 @@ int Bs21_div(big_decimal value_1, big_decimal value_2, big_decimal *result) {
     }
     R = (big_decimal){{0}};
 
-    for (int i = BMAGNITUDE_BIT_COUNT - 1; i >= 0; i--) {
+    for (int i = BDIGITS_BIT_COUNT - 1; i >= 0; i--) {
       Bleft_shift(&R);
       Bset_bit(&R, 0, Bget_bit(value_1, i));
-      if (Bmagnitude_ge(R, value_2)) {
-        (void)Bmagnitude_sub(R, value_2, &R);
+      if (Bdigits_ge(R, value_2)) {
+        (void)Bdigits_sub(R, value_2, &R);
         Bset_bit(&Q, i, 1);
       }
     }
@@ -169,8 +169,8 @@ int Bs21_div(big_decimal value_1, big_decimal value_2, big_decimal *result) {
     *result = Q;
 
     // домножаем на 10 и снова делим, пока остаток не станет 0.
-    if (Bmagnitude_ne(R, (big_decimal){{0}})) {
-      const bool overflow = Bmagnitude_mul10(&value_1);
+    if (Bdigits_ne(R, (big_decimal){{0}})) {
+      const bool overflow = Bdigits_mul10(&value_1);
       Bset_scale(&Q, Bget_scale(Q) + 1);
       if (overflow) { /* слишком много цифр после запятой */
         *result = Q;
@@ -191,7 +191,7 @@ int Bs21_div(big_decimal value_1, big_decimal value_2, big_decimal *result) {
 }
 
 int Bs21_div2(big_decimal value_1, big_decimal value_2, big_decimal *result) {
-  if (Bmagnitude_eq(value_2, (big_decimal){{0}})) /* если делим на 0 */
+  if (Bdigits_eq(value_2, (big_decimal){{0}})) /* если делим на 0 */
     return 2;
 
   const bool sign_1 = Bget_sign(value_1);
@@ -209,11 +209,11 @@ int Bs21_div2(big_decimal value_1, big_decimal value_2, big_decimal *result) {
   }
   R = (big_decimal){{0}};
 
-  for (int i = BMAGNITUDE_BIT_COUNT - 1; i >= 0; i--) {
+  for (int i = BDIGITS_BIT_COUNT - 1; i >= 0; i--) {
     Bleft_shift(&R);
     Bset_bit(&R, 0, Bget_bit(value_1, i));
-    if (Bmagnitude_ge(R, value_2)) {
-      (void)Bmagnitude_sub(R, value_2, &R);
+    if (Bdigits_ge(R, value_2)) {
+      (void)Bdigits_sub(R, value_2, &R);
       Bset_bit(&Q, i, 1);
     }
   }

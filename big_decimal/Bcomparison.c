@@ -2,7 +2,7 @@
 
 // сравнивает мантиссы без учёта знака и scale
 static int Bcomparison_mantiss(big_decimal value_1, big_decimal value_2) {
-  int16_t bit_pos = BMAGNITUDE_BIT_COUNT - 1;
+  int16_t bit_pos = BDIGITS_BIT_COUNT - 1;
   bool pos_a, pos_b;
   u_int8_t result = 0;
 
@@ -48,29 +48,29 @@ static int Bcomparison(big_decimal a, big_decimal b) {
   return result;  // 0 → a==b, 1 → a > b, 2 → a < b
 }
 
-int Bmagnitude_eq(big_decimal value_1, big_decimal value_2) {
+int Bdigits_eq(big_decimal value_1, big_decimal value_2) {
   const bool result = Bcomparison_mantiss(value_1, value_2);
   return !result;
 }
 
-int Bmagnitude_ne(big_decimal value_1, big_decimal value_2) {
+int Bdigits_ne(big_decimal value_1, big_decimal value_2) {
   const bool result = Bcomparison_mantiss(value_1, value_2);
   return result;
 }
 
-int Bmagnitude_ge(big_decimal value_1, big_decimal value_2) {
-  return !Bmagnitude_lt(value_1, value_2);
+int Bdigits_ge(big_decimal value_1, big_decimal value_2) {
+  return !Bdigits_lt(value_1, value_2);
 }
 
-int Bmagnitude_gt(big_decimal value_1, big_decimal value_2) {
+int Bdigits_gt(big_decimal value_1, big_decimal value_2) {
   return Bcomparison_mantiss(value_1, value_2) == 1;
 }
 
-int Bmagnitude_le(big_decimal value_1, big_decimal value_2) {
-  return !Bmagnitude_gt(value_1, value_2);
+int Bdigits_le(big_decimal value_1, big_decimal value_2) {
+  return !Bdigits_gt(value_1, value_2);
 }
 
-int Bmagnitude_lt(big_decimal value_1, big_decimal value_2) {
+int Bdigits_lt(big_decimal value_1, big_decimal value_2) {
   return Bcomparison_mantiss(value_1, value_2) == 2;
 }
 

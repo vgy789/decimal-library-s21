@@ -14,7 +14,7 @@ int Bs21_negate(big_decimal value, big_decimal *result) {
 }
 
 void Bset_result_sign(big_decimal *value, bool sign) {
-  if (Bmagnitude_eq(*value, (big_decimal){{0}})) { /* -0 to +0 */
+  if (Bdigits_eq(*value, (big_decimal){{0}})) { /* -0 to +0 */
     Bset_sign(value, plus);
   } else {
     Bset_sign(value, sign);
@@ -65,7 +65,7 @@ void Bset_sign(big_decimal *value, bool sign) {
 }
 
 void Bleft_shift(big_decimal *value) {
-  for (int32_t i = BMAGNITUDE_BIT_COUNT - 1; i > 0; --i) {
+  for (int32_t i = BDIGITS_BIT_COUNT - 1; i > 0; --i) {
     Bset_bit(value, i, Bget_bit(*value, i - 1));
   }
   Bset_bit(value, 0, 0);
