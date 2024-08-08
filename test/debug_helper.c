@@ -32,6 +32,34 @@ bool set_scale(s21_decimal *value, uint8_t scale) {
   big_to_decimal(big, value);
 }
 
+void str_2decimal(char *number, s21_decimal *result) {
+  *result = (s21_decimal){{0}};
+  bool sign = plus;
+  if (*number == '-') {
+    sign = minus;
+    ++number;
+  }
+
+  bool radix_point = false;
+  uint8_t scale = 0;
+  for (int i = 0; number[i] != '\0'; ++i) {
+    if (number[i] == '.' || number[i] == ',') {
+      radix_point = true;
+      continue;
+    }
+    if (radix_point) {
+      scale += 1;
+    }
+
+    uint8_t digit = digittoint(number[i]);
+    s21_decimal dec_digit = (s21_decimal){{digit}};
+    s21_mul(*result, (s21_decimal){{10}}, result);
+    s21_add(*result, dec_digit, result);
+  }
+  set_scale(result, scale);
+  set_sign(result, sign);
+}
+
 s21_decimal uint128_to_bin(__uint128_t n) {
   // use it → s21_decimal result = uint128_to_bin(1234123125678965432);
   s21_decimal result = {{0, 0, 0, 0}};

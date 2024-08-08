@@ -32,7 +32,7 @@ void circumcision(s21_decimal *value);
 
 void decimal_to_big(s21_decimal value, big_decimal *result);
 
-bool is_correct_scale(s21_decimal value);
+uint8_t check_scale(s21_decimal value);
 
 /**
  * Возвращает десятичную точку числа s21_decimal.
@@ -56,8 +56,6 @@ bool get_sign(s21_decimal value);
 void set_sign(s21_decimal *value, bool sign);
 
 void magnitude_div10(s21_decimal *value);
-
-int whole_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 
 void mantiss_div10(s21_decimal *value);
 

@@ -5,7 +5,7 @@ static bool is_Bdigits_div10(big_decimal value) {
   big_decimal value_10 = (big_decimal){{10, 0, 0, 0, 0, 0}};
   Bset_sign(&value, plus);
   big_decimal Q = (big_decimal){{0}};  // частное quotient
-  big_decimal R = (big_decimal){{0}};  // остаток remainder
+  big_decimal R = (big_decimal){{0}};  // остаток reside
 
   while (1) {
     for (u_int8_t i = 0; i < 6; ++i) { /* сбрасывает значение Q */

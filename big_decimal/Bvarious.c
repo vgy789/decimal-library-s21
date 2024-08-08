@@ -64,9 +64,26 @@ void Bset_sign(big_decimal *value, bool sign) {
     value->bits[6] |= (1 << 31);
 }
 
-void Bleft_shift(big_decimal *value) {
+bool Bleft_shift(big_decimal *value) {
+  if (Bget_bit(*value, BDIGITS_BIT_COUNT - 1)) { /* overflow? */
+    return 1;
+  }
+
   for (int32_t i = BDIGITS_BIT_COUNT - 1; i > 0; --i) {
     Bset_bit(value, i, Bget_bit(*value, i - 1));
   }
   Bset_bit(value, 0, 0);
+  return 0;
+}
+
+bool Bright_shift(big_decimal *value) {
+  if (Bget_bit(*value, 0)) { /* overflow? */
+    return 1;
+  }
+
+  for (int32_t i = 0; i > BDIGITS_BIT_COUNT; ++i) {
+    Bset_bit(value, i, Bget_bit(*value, i + 1));
+  }
+  Bset_bit(value, BDIGITS_BIT_COUNT - 1, 0);
+  return 0;
 }

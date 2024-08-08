@@ -2110,3 +2110,194 @@ set_scale(&value_1, 25);
 set_scale(&value_2, 26);
 bool result = s21_is_greater_or_equal(value_1, value_2);
 ck_assert(result == 1);
+
+#test truncate_1
+s21_decimal value = {{25, 0, 0, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal expected = {{2, 0, 0, 0}};
+set_scale(&value, 1);
+set_scale(&expected, 0);
+s21_truncate(value, &result);
+int eq = s21_is_equal(result, expected);
+ck_assert(eq == 1);
+
+#test truncate_2
+s21_decimal value = {{12345, 0, 0, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal expected = {{123, 0, 0, 0}};
+set_scale(&value, 2);
+set_scale(&expected, 0);
+s21_truncate(value, &result);
+int eq = s21_is_equal(result, expected);
+ck_assert(eq == 1);
+
+#test truncate_3
+s21_decimal value = {{98765, 0, 0, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal expected = {{987, 0, 0, 0}};
+set_scale(&value, 2);
+set_scale(&expected, 0);
+s21_truncate(value, &result);
+int eq = s21_is_equal(result, expected);
+ck_assert(eq == 1);
+
+#test truncate_4
+s21_decimal value = {{1000, 0, 0, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal expected = {{10, 0, 0, 0}};
+set_scale(&value, 2);
+set_scale(&expected, 0);
+s21_truncate(value, &result);
+int eq = s21_is_equal(result, expected);
+ck_assert(eq == 1);
+
+#test truncate_5
+s21_decimal value = {{250, 0, 0, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal expected = {{25, 0, 0, 0}};
+set_sign(&value, minus);
+set_sign(&expected, minus);
+set_scale(&value, 1);
+set_scale(&expected, 0);
+s21_truncate(value, &result);
+int eq = s21_is_equal(result, expected);
+ck_assert(eq == 1);
+
+#test truncate_6
+s21_decimal value = {{123456789, 0, 0, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal expected = {{1234567, 0, 0, 0}};
+set_sign(&value, minus);
+set_sign(&expected, minus);
+set_scale(&value, 2);
+set_scale(&expected, 0);
+s21_truncate(value, &result);
+int eq = s21_is_equal(result, expected);
+ck_assert(eq == 1);
+
+#test truncate_7
+s21_decimal value = {{0, 0, 0, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal expected = {{0, 0, 0, 0}};
+set_scale(&value, 3);
+set_scale(&expected, 0);
+s21_truncate(value, &result);
+int eq = s21_is_equal(result, expected);
+ck_assert(eq == 1);
+
+#test truncate_overflow
+s21_decimal value = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+s21_decimal result;
+set_scale(&value, 1);
+int return_code = s21_truncate(value, &result);
+
+#test truncate_positive_float
+s21_decimal value = {{12345, 0, 0, 0}};
+s21_decimal result;
+s21_decimal expected = {{123, 0, 0, 0}};
+set_scale(&value, 2);
+set_scale(&expected, 0);
+int return_code = s21_truncate(value, &result);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
+
+// Функция s21_div - деление двух положительных дробных
+#test div_positive_float
+s21_decimal value_1 = {{100, 0, 0, 0}};
+s21_decimal value_2 = {{25, 0, 0, 0}};
+s21_decimal result;
+s21_decimal expected = {{4, 0, 0, 0}};
+set_scale(&value_1, 2);
+set_scale(&value_2, 2);
+set_scale(&expected, 0);
+int return_code = s21_div(value_1, value_2, &result);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
+
+// Функция s21_div - деление двух отрицательных дробных
+#test div_negative_float
+s21_decimal value_1 = {{100, 0, 0, 0x80000000}};
+s21_decimal value_2 = {{25, 0, 0, 0x80000000}};
+s21_decimal result;
+s21_decimal expected = {{4, 0, 0, 0}};
+set_scale(&value_1, 2);
+set_scale(&value_2, 2);
+set_scale(&expected, 0);
+int return_code = s21_div(value_1, value_2, &result);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
+
+// Функция s21_div - деление положительного на отрицательное
+#test div_positive_negative
+s21_decimal value_1 = {{100, 0, 0, 0}};
+s21_decimal value_2 = {{25, 0, 0, 0x80000000}};
+s21_decimal result;
+s21_decimal expected = {{4, 0, 0, 0}};
+set_scale(&value_1, 2);
+set_scale(&value_2, 2);
+set_scale(&expected, 0);
+set_sign(&expected, minus);
+int return_code = s21_div(value_1, value_2, &result);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
+
+// Функция s21_div - деление отрицательного на положительное
+#test div_negative_positive
+s21_decimal value_1 = {{100, 0, 0, 0x80000000}};
+s21_decimal value_2 = {{25, 0, 0, 0}};
+s21_decimal result;
+s21_decimal expected = {{4, 0, 0, 0x80000000}};
+set_scale(&value_1, 2);
+set_scale(&value_2, 2);
+set_scale(&expected, 0);
+int return_code = s21_div(value_1, value_2, &result);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
+
+#test div_by_zero
+s21_decimal value_1 = {{100, 0, 0, 0}};
+s21_decimal value_2 = {{0, 0, 0, 0}};
+s21_decimal result;
+int return_code = s21_div(value_1, value_2, &result);
+ck_assert(return_code == 3);
+
+#test inf_div
+s21_decimal value_1 = {{20, 0, 0, 0}};
+s21_decimal value_2 = {{7, 0, 0, 0}};
+s21_decimal result;
+int return_code = s21_div(value_1, value_2, &result);
+ck_assert(return_code == 1);
+
+#test neginf_div
+s21_decimal value_1 = {{22, 0, 0, 0}};
+s21_decimal value_2 = {{7, 0, 0, 0}};
+set_sign(&value_1, minus);
+s21_decimal result;
+int return_code = s21_div(value_1, value_2, &result);
+ck_assert(return_code == 2);
+
+#test div2
+s21_decimal value_1;
+s21_decimal value_2;
+s21_decimal result;
+s21_decimal expected;
+str_2decimal("171701", &value_1);
+str_2decimal("200000", &value_2);
+str_2decimal("858505", &expected);
+set_scale(&expected, 6);
+int return_code = s21_div(value_1, value_2, &result);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
+
+#test div3
+s21_decimal value_1;
+s21_decimal value_2;
+s21_decimal result;
+s21_decimal expected;
+str_2decimal(MAX_DECIMAL, &value_1);
+str_2decimal("1000000000", &value_2);
+str_2decimal("MAX_DECIMAL", &expected);
+set_scale(&expected, 9);
+int return_code = s21_div(value_1, value_2, &result);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);

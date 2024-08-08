@@ -24,6 +24,9 @@ typedef struct {
  */
 enum sign { plus, minus };
 
+// div деление, whole целое от деления, reside остаток от деления
+enum { div, whole, reside };
+
 void Bswap(big_decimal *value_1, big_decimal *value_2);
 
 /**
@@ -130,9 +133,12 @@ void Bcompliment2(big_decimal value, big_decimal *result);
 /**
  * Сдвиг битов мантиссы влево на один.
  */
-void Bleft_shift(big_decimal *value);
+bool Bleft_shift(big_decimal *value);
 
-int Bs21_div2(big_decimal value_1, big_decimal value_2, big_decimal *result);
+/**
+ * Сдвиг битов мантиссы враво на один.
+ */
+bool Bright_shift(big_decimal *value);
 
 void Bset_result_sign(big_decimal *value, bool sign);
 
@@ -163,7 +169,8 @@ int Bs21_mul(big_decimal value_1, big_decimal value_2, big_decimal *result);
  *         2 - число слишком мало или равно отрицательной бесконечности,
  *         3 - деление на 0).
  */
-int Bs21_div(big_decimal value_1, big_decimal value_2, big_decimal *result);
+int Bs21_div(big_decimal value_1, big_decimal value_2, big_decimal *result,
+             uint8_t mode);
 
 /**
  * Проверяет, равны ли два десятичных значения.

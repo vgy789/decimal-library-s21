@@ -1,7 +1,14 @@
 #include "s21_decimal.h"
 
-bool is_correct_scale(s21_decimal value) {
-  return get_scale(value) <= 28; /* max scale test */
+uint8_t check_scale(s21_decimal value) {
+  if (get_scale(value) > 28) { /* max scale test */
+    if (get_sign(value) == plus) {
+      return 1;
+    } else {
+      return 2;
+    }
+  }
+  return 0;  // correct scale
 }
 
 uint8_t get_scale(s21_decimal value) {
@@ -26,11 +33,8 @@ void set_sign(s21_decimal *value, bool sign) {
 int s21_negate(s21_decimal value, s21_decimal *result) {
   enum { minus_bit = 0x80000000 };
   big_decimal big = {0};
+  uint8_t err_code = check_scale(value);
 
-  bool err_code = 0;
-  if (!is_correct_scale(value)) {
-    err_code = 4;
-  }
   if (err_code == 0) {
     decimal_to_big(value, &big);
     (void)Bs21_mul(big, (big_decimal){{1, 0, 0, 0, 0, 0, minus_bit}}, &big);
