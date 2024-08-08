@@ -52,6 +52,8 @@ int Bdigits_le(big_decimal value_1, big_decimal value_2);
 
 int Bdigits_lt(big_decimal value_1, big_decimal value_2);
 
+int Bmod(big_decimal value_1, big_decimal value_2);
+
 /**
  * Складывает два десятичных значения.
  *
