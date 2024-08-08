@@ -39,7 +39,7 @@ static int Bcomparison(big_decimal a, big_decimal b) {
     if (scale_a == scale_b)
       result = Bcomparison_mantiss(a, b);  // если экспоненты равны
     else {
-      Balignment(&a, &b);
+      Balignment(&a, &b, 0);
       result = Bcomparison_mantiss(a, b);
     }
     if (scale_a == 1) result = -result;

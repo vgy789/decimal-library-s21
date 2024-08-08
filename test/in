@@ -759,7 +759,7 @@ ck_assert(return_code == 0);
  set_sign(&value_2, minus);
  s21_decimal result;
  s21_decimal expected = {{2820130817, 4, 0, 0}};
- set_scale(&expected, 4);
+ set_scale(&expected, 9);
  int return_code = s21_sub(value_1, value_2, &result);
 
  ck_assert(s21_is_equal(result, expected) == 1);
@@ -1278,7 +1278,7 @@ ck_assert(return_code == 0);
   s21_decimal result;
   s21_decimal expected = {{2, 0, 0, 0x80000000}};
   int return_code = s21_mul(value_1, value_2, &result);
-
+  set_scale(&expected, 3);
   ck_assert(s21_is_equal(result, expected) == 1);
   ck_assert(return_code == 0);
 
@@ -1636,7 +1636,7 @@ s21_decimal value_1 = {{0, 0, 0, 0}};
 s21_decimal value_2 = {{0, 0, 0, 0}};
 set_scale(&value_1, 28);
 set_scale(&value_2, 27);
-alignment(&value_1, &value_2);
+alignment(&value_1, &value_2, 1);
 
 s21_decimal expected1 = {{0, 0, 0, 0}};
 s21_decimal expected2 = {{0, 0, 0, 0}};
@@ -1651,7 +1651,7 @@ ck_assert(s21_is_equal(value_2, expected2) == 1);
 s21_decimal value_1 = {{0, 0, 0, 0}};
 s21_decimal value_2 = {{0, 0, 0, 0}};
 
-alignment(&value_1, &value_2);
+alignment(&value_1, &value_2, 1);
 
 s21_decimal expected1 = {{0, 0, 0, 0}};
 s21_decimal expected2 = {{0, 0, 0, 0}};
@@ -1665,7 +1665,7 @@ s21_decimal value_1 = {{0, 0, 0, 0}};
 s21_decimal value_2 = {{0, 0, 0, 0}};
 set_scale(&value_2, 28);
 
-alignment(&value_1, &value_2);
+alignment(&value_1, &value_2, 1);
 
 s21_decimal expected1 = {{0, 0, 0, 0}};
 s21_decimal expected2 = {{0, 0, 0, 0}};
@@ -1680,7 +1680,7 @@ s21_decimal value_1 = {{0, 0, 0, 0}};
 s21_decimal value_2 = {{0, 0, 0, 0}};
 set_scale(&value_1, 28);
 
-alignment(&value_1, &value_2);
+alignment(&value_1, &value_2, 1);
 
 s21_decimal expected1 = {{0, 0, 0, 0}};
 s21_decimal expected2 = {{0, 0, 0, 0}};
@@ -1696,7 +1696,7 @@ s21_decimal value_2 = {{5678, 0, 0, 0}};
 set_scale(&value_1, 7);
 set_scale(&value_2, 0);
 
-alignment(&value_1, &value_2);
+alignment(&value_1, &value_2, 1);
 
 s21_decimal expected1 = {{1234, 0, 0, 0}};
 s21_decimal expected2 = {{56780000, 0, 0, 0}};
@@ -1713,7 +1713,7 @@ s21_decimal value_2 = {{5678000, 0, 0, 0}};
 set_scale(&value_1, 0);
 set_scale(&value_2, 7);
 
-alignment(&value_1, &value_2);
+alignment(&value_1, &value_2, 1);
 
 s21_decimal expected1 = {{12340000, 0, 0, 0}};
 s21_decimal expected2 = {{5678, 0, 0, 0}};
@@ -1729,7 +1729,7 @@ s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
 s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
 set_scale(&value_1, 28);
 set_scale(&value_2, 1);
-alignment(&value_1, &value_2);
+alignment(&value_1, &value_2, 1);
 
 s21_decimal expected1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
 s21_decimal expected2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
@@ -1745,7 +1745,7 @@ s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
 s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
 set_scale(&value_1, 1);
 set_scale(&value_2, 28);
-alignment(&value_1, &value_2);
+alignment(&value_1, &value_2, 1);
 
 s21_decimal expected1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
 s21_decimal expected2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
@@ -1761,7 +1761,7 @@ s21_decimal value_1 = {{1, 0, 0, 0}};
 s21_decimal value_2 = {{1, 0, 0, 0}};
 set_scale(&value_1, 28);
 set_scale(&value_2, 1);
-alignment(&value_1, &value_2);
+alignment(&value_1, &value_2, 1);
 
 s21_decimal expected1 = {{1, 0, 0, 0}};
 s21_decimal expected2 = {{1, 0, 0, 0}};
@@ -1777,7 +1777,7 @@ s21_decimal value_1 = {{1, 0, 0, 0}};
 s21_decimal value_2 = {{1, 0, 0, 0}};
 set_scale(&value_1, 1);
 set_scale(&value_2, 28);
-alignment(&value_1, &value_2);
+alignment(&value_1, &value_2, 1);
 
 s21_decimal expected1 = {{1, 0, 0, 0}};
 s21_decimal expected2 = {{1, 0, 0, 0}};

@@ -1,3 +1,4 @@
+#include "../decimal/s21_decimal.h"
 #include "big_decimal.h"
 
 static bool Badd_word(uint32_t *result, uint32_t value_1, uint32_t value_2,
@@ -43,8 +44,7 @@ int Bincrement(big_decimal value, big_decimal *result) {
   return 0;
 }
 
-int Bdigits_add(big_decimal value_1, big_decimal value_2,
-                   big_decimal *result) {
+int Bdigits_add(big_decimal value_1, big_decimal value_2, big_decimal *result) {
   *result = (big_decimal){{0}};
   const bool sign_1_orig = Bget_sign(value_1);
   const bool sign_2_orig = Bget_sign(value_2);
@@ -89,8 +89,7 @@ int Bdigits_add(big_decimal value_1, big_decimal value_2,
   return err_code;
 }
 
-int Bdigits_sub(big_decimal value_1, big_decimal value_2,
-                   big_decimal *result) {
+int Bdigits_sub(big_decimal value_1, big_decimal value_2, big_decimal *result) {
   const bool sign = Bget_sign(value_2);
   // инвертируем знак и складываем
   Bset_sign(&value_2, !sign);
@@ -222,4 +221,28 @@ int Bs21_div2(big_decimal value_1, big_decimal value_2, big_decimal *result) {
   Bset_result_sign(result, result_sign);
 
   return 0;
+}
+
+int Bmod(big_decimal value_1, big_decimal value_2) {
+  Bset_sign(&value_1, plus);
+  Bset_sign(&value_2, plus);
+
+  big_decimal Q = (big_decimal){{0}};  // частное quotient
+  big_decimal R = (big_decimal){{0}};  // остаток remainder
+
+  for (u_int8_t i = 0; i < 6; ++i) { /* сбрасывает значение Q */
+    Q.bits[i] = 0;
+  }
+  R = (big_decimal){{0}};
+
+  for (int i = BDIGITS_BIT_COUNT - 1; i >= 0; i--) {
+    Bleft_shift(&R);
+    Bset_bit(&R, 0, Bget_bit(value_1, i));
+    if (Bdigits_ge(R, value_2)) {
+      (void)Bdigits_sub(R, value_2, &R);
+      Bset_bit(&Q, i, 1);
+    }
+  }
+
+  return Bdec_to_int(R);
 }

@@ -41,43 +41,45 @@ void Bcircumcision(big_decimal *value) {
   Bset_scale(value, mant_size);
 }
 
-void Balignment(big_decimal *value_1, big_decimal *value_2) {
-  uint8_t mant_size1 = Bget_scale(*value_1);
-  uint8_t mant_size2 = Bget_scale(*value_2);
+void Balignment(big_decimal *value_1, big_decimal *value_2, bool for_add) {
+  uint8_t scale_1 = Bget_scale(*value_1);
+  uint8_t scale_2 = Bget_scale(*value_2);
 
-  if (Bdigits_eq(*value_1, *value_2)) {
-    if (mant_size1 > mant_size2) {
-      mant_size2 = mant_size1;
-    } else {
-      mant_size1 = mant_size2;
+  if (for_add) {
+    if (Bdigits_eq(*value_1, *value_2)) {
+      if (scale_1 > scale_2) {
+        scale_2 = scale_1;
+      } else {
+        scale_1 = scale_2;
+      }
+      Bset_scale(value_1, scale_1);
+      Bset_scale(value_2, scale_2);
+      return;
     }
-    Bset_scale(value_1, mant_size1);
-    Bset_scale(value_2, mant_size2);
+  }
+
+  if (scale_1 == scale_2) return;
+  if (scale_1 > scale_2) {
+    Balignment(value_2, value_1, for_add);
     return;
   }
 
-  if (mant_size1 == mant_size2) return;
-  if (mant_size1 > mant_size2) {
-    Balignment(value_2, value_1);
-    return;
-  }
-
-  while (mant_size1 < mant_size2) {
+  while (scale_1 < scale_2) {
     Bdigits_mul10(value_1);
-    mant_size1++;
+    scale_1++;
   }
 
-  Bset_scale(value_1, mant_size1);
-  while (mant_size1 < mant_size2) {
+  Bset_scale(value_1, scale_1);
+  while (scale_1 < scale_2) {
     if ((*value_2).bits[0] % 10 != 0) break;
     Bdigits_div10(value_2);
-    mant_size2--;
+    scale_2--;
   }
 
-  Bset_scale(value_2, mant_size2);
-  while (mant_size1 < mant_size2) {
+  Bset_scale(value_2, scale_2);
+  while (scale_1 < scale_2) {
     Bdigits_div10(value_2);
-    mant_size2--;
+    scale_2--;
   }
-  Bset_scale(value_2, mant_size2);
+  Bset_scale(value_2, scale_2);
 }

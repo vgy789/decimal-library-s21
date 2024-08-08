@@ -1,4 +1,13 @@
+#include "../big_decimal/big_decimal.h"
 #include "s21_decimal.h"
+
+int Bdec_to_int(big_decimal value) {
+  s21_decimal dec_result = (s21_decimal){{0}};
+  big_to_decimal(value, &dec_result);
+  int result = 0;
+  s21_from_decimal_to_int(dec_result, &result);
+  return result;
+}
 
 uint8_t big_to_decimal(big_decimal value, s21_decimal *result) {
   *result = (s21_decimal){{0}};

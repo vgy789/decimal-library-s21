@@ -64,8 +64,7 @@ int Bdigits_lt(big_decimal value_1, big_decimal value_2);
  бесконечности,
  *         2 - число слишком мало или равно отрицательной бесконечности).
  */
-int Bdigits_add(big_decimal value_1, big_decimal value_2,
-                   big_decimal *result);
+int Bdigits_add(big_decimal value_1, big_decimal value_2, big_decimal *result);
 
 /**
  * Вычитает одно десятичное значение из другого.
@@ -79,8 +78,7 @@ int Bdigits_add(big_decimal value_1, big_decimal value_2,
  бесконечности,
  *         2 - число слишком мало или равно отрицательной бесконечности).
  */
-int Bdigits_sub(big_decimal value_1, big_decimal value_2,
-                   big_decimal *result);
+int Bdigits_sub(big_decimal value_1, big_decimal value_2, big_decimal *result);
 
 /**
  * Возвращает указанный бит числа big_decimal. Отсчёт с нуля.
@@ -118,7 +116,7 @@ bool Bget_sign(big_decimal value);
  */
 void Bset_sign(big_decimal *value, bool sign);
 
-void Balignment(big_decimal *value1, big_decimal *value2);
+void Balignment(big_decimal *value_1, big_decimal *value_2, bool for_add);
 
 void Bcircumcision(big_decimal *value);
 

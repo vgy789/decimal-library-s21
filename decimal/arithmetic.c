@@ -55,7 +55,7 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     decimal_to_big(value_1, &big_1);
     decimal_to_big(value_2, &big_2);
 
-    Balignment(&big_1, &big_2);
+    Balignment(&big_1, &big_2, 1);
     Bdigits_add(big_1, big_2, &big_result);
     Bset_scale(&big_result, Bget_scale(big_1));
     Bcircumcision(&big_result);
