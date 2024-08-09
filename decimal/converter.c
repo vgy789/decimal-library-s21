@@ -1,4 +1,6 @@
 #include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "../big_decimal/big_decimal.h"
 #include "s21_decimal.h"
@@ -44,6 +46,28 @@ void decimal_to_big(s21_decimal value, big_decimal *result) {
   result->bits[6] = value.bits[3];
 }
 
+static size_t s21_strlen(const char *str) {
+  const char *end = str;
+  while (*str != '\0') str += 1;
+  return end - str;
+}
+
+static void s21_strrev(char *str) {
+  if (!str) {
+    return;
+  }
+  int i = 0;
+  int j = s21_strlen(str) - 1;
+
+  while (i < j) {
+    char c = str[i];
+    str[i] = str[j];
+    str[j] = c;
+    i++;
+    j--;
+  }
+}
+
 int s21_from_decimal_to_int(s21_decimal src, int *dst) {
   uint8_t err_code = check_scale(src);
   if (err_code != 0) return err_code;
@@ -57,7 +81,7 @@ int s21_from_decimal_to_int(s21_decimal src, int *dst) {
 
   uint8_t scale_src = get_scale(src);
   while (scale_src > 0) {
-    magnitude_div10(&src);
+    divide10(src, &src);
     scale_src--;
   }
   *dst = src.bits[0];
@@ -79,52 +103,80 @@ int s21_from_int_to_decimal(int src, s21_decimal *dst) {
   return 0;
 }
 
-// int s21_from_float_to_decimal(float src, s21_decimal *dst) {
-//   const float src_buf = src;
-//   const bool sign = signbit(src);
-//   if (isinf(src)) { /* inf */
-//     return 1;
-//     if (sign == minus) { /* -inf */
-//       return 2;
-//     }
-//   }
-//   if (isnan(src)) { /* nan or -nan */
-//     return 3;
-//   }
+int s21_from_decimal_to_float(s21_decimal src, float *dst) {
+  *dst = 0;
+  const bool sign = get_sign(src);
+  if (sign == minus) {
+    *dst = -(*dst);
+  }
 
-//   s21_decimal buf_dec = (s21_decimal){{0}};
-//   uint8_t whole_buf[32];
-//   uint8_t real_buf[32];
-//   int8_t j = 0; /* real  digit count */
+  s21_decimal buf = (s21_decimal){{0}};
+  uint8_t scale = get_scale(src);
 
-//   src = src_buf;
+  char digits[33] = {'\0'};
+  int digit = 0;
 
-//   int8_t i = 0; /* whole digit count */
-//   uint64_t whole = src;
-//   // uint64_t fraction = 0;
-//   *dst = (s21_decimal){{0}};
+  uint8_t i = 0;
+  do {
+    if (scale == 0) {
+      digits[i] = '.';
+      i += 1;
+    }
+    modulus10(src, &buf);
+    s21_from_decimal_to_int(buf, &digit);
+    digits[i] = (char)(digit + '0');
+    i += 1;
+    scale -= 1;
+    divide10(src, &src);
+  } while (s21_is_not_equal(src, (s21_decimal){{0}}));
 
-//   set_sign(dst, sign);
-//   src = fabs(src);
+  s21_strrev(digits);
+  *dst = strtof(digits, NULL);
+  if (sign == minus) {
+    *dst = -*dst;
+  }
 
-//   whole_buf[i] = whole % 10;
-//   while (whole = whole / 10) {
-//     ++i;
-//     whole_buf[i] = whole % 10;
-//   }
+  return 0;
+}
 
-//   while (i >= 0) {
-//     s21_mul((s21_decimal){{whole_buf[i], 0, 0, 0}},
-//             (s21_decimal){{pow(10, i + j), 0, 0, 0}}, &buf_dec);
-//     s21_add(*dst, buf_dec, dst);
-//     --i;
-//   }
-//   while (j >= 0) {
-//     s21_mul((s21_decimal){{real_buf[j], 0, 0, 0}},
-//             (s21_decimal){{pow(10, j), 0, 0, 0}}, &buf_dec);
-//     s21_add(*dst, buf_dec, dst);
-//     --i;
-//   }
+int s21_from_float_to_decimal(float src, s21_decimal *dst) {
+  const bool sign = signbit(src);
+  if (isinf(src)) { /* inf */
+    return 1;
+    if (sign == minus) { /* -inf */
+      return 2;
+    }
+  }
+  if (isnan(src)) { /* nan or -nan */
+    return 3;
+  }
 
-//   return 0;
-// }
+  char digits[38] = {'\0'};
+  sprintf(digits, "%f", src);
+
+  big_decimal Bdst = (big_decimal){{0}};
+  src = fabs(src);
+  bool has_point = false;
+  uint8_t scale = 0;
+
+  for (int i = 0; digits[i] != '\0'; ++i) {
+    if (has_point) {
+      scale += 1;
+    }
+    if ((digits[i] == '.')) {
+      has_point = true;
+      continue;
+    }
+
+    Bdigits_mul10(&Bdst);
+    Bdigits_add(Bdst, (big_decimal){{digits[i] - '0'}}, &Bdst);
+  }
+
+  Bset_scale(&Bdst, scale);
+  Bcircumcision(&Bdst);
+  Bset_sign(&Bdst, sign);
+
+  big_to_decimal(Bdst, dst);
+
+  return 0;
+}

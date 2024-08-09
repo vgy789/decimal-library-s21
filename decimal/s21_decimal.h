@@ -22,6 +22,12 @@ typedef struct {
   int bits[4];
 } s21_decimal;
 
+uint8_t modulus10(s21_decimal value, s21_decimal *result);
+
+uint8_t divide10(s21_decimal value, s21_decimal *result);
+
+void mantiss_div10(s21_decimal *value);
+
 void alignment(s21_decimal *value1, s21_decimal *value2, bool for_add);
 
 uint8_t big_to_decimal(big_decimal value, s21_decimal *result);
@@ -54,10 +60,6 @@ bool get_sign(s21_decimal value);
  * @param sign Знак числа (0 — положительный, 1 — отрицательный).
  */
 void set_sign(s21_decimal *value, bool sign);
-
-void magnitude_div10(s21_decimal *value);
-
-void mantiss_div10(s21_decimal *value);
 
 /**
  * Складывает два десятичных значения.

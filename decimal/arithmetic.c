@@ -1,9 +1,19 @@
 #include "s21_decimal.h"
 
-void magnitude_div10(s21_decimal *value) {
+uint8_t divide10(s21_decimal value, s21_decimal *result) {
   big_decimal big = (big_decimal){{0}};
-  Bdigits_div(big, (big_decimal){{10}}, &big, div);
-  big_to_decimal(big, value);
+  decimal_to_big(value, &big);
+  const uint8_t err_code = Bdigits_div(big, (big_decimal){{10}}, &big, whole);
+  big_to_decimal(big, result);
+  return err_code;
+}
+
+uint8_t modulus10(s21_decimal value, s21_decimal *result) {
+  big_decimal big = (big_decimal){{0}};
+  decimal_to_big(value, &big);
+  const uint8_t err_code = Bdigits_div(big, (big_decimal){{10}}, &big, reside);
+  big_to_decimal(big, result);
+  return err_code;
 }
 
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
@@ -91,7 +101,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     const u_int8_t scale_1 = Bget_scale(big_1);
     const u_int8_t scale_2 = Bget_scale(big_2);
 
-    uint8_t err_code = Bdigits_div(big_1, big_2, &big_result, div);
+    uint8_t err_code = Bdigits_div(big_1, big_2, &big_result, divide);
     if (err_code) {
       return err_code;
     }

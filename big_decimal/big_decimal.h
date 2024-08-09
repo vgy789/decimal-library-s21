@@ -24,8 +24,8 @@ typedef struct {
  */
 enum sign { plus, minus };
 
-// div деление, whole целое от деления, reside остаток от деления
-enum { div, whole, reside };
+// divide деление, whole целое от деления, reside остаток от деления
+enum { divide, whole, reside };
 
 void Bswap(big_decimal *value_1, big_decimal *value_2);
 
