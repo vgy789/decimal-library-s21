@@ -119,7 +119,7 @@ int Bdigits_mul(big_decimal value_1, big_decimal value_2, big_decimal *result) {
   const bool result_sign = (sign_1_orig == minus || sign_2_orig == minus) &&
                            !(sign_1_orig == minus && sign_2_orig == minus);
 
-  uint8_t overflow = 0;
+  bool overflow = 0;
   while (Bdigits_ne(value_2, (big_decimal){{0}})) {
     if (Bget_bit(value_2, 0) == 1) {
       Bdigits_add(*result, value_1, result);
@@ -132,7 +132,15 @@ int Bdigits_mul(big_decimal value_1, big_decimal value_2, big_decimal *result) {
   }
   Bset_sign(result, result_sign);
 
-  return overflow;
+  uint8_t err_code = 0;
+  if (overflow) {
+    if (result_sign == plus) {
+      err_code = 1;
+    } else {
+      err_code = 2;
+    }
+  }
+  return err_code;
 }
 
 // https://en.wikipedia.org/wiki/Division_algorithm#Integer_division_(unsigned)_with_remainder

@@ -2301,3 +2301,16 @@ set_scale(&expected, 9);
 int return_code = s21_div(value_1, value_2, &result);
 ck_assert(s21_is_equal(result, expected) == 1);
 ck_assert(return_code == 0);
+
+#test div4
+s21_decimal value_1;
+s21_decimal value_2;
+s21_decimal result;
+s21_decimal expected;
+str_2decimal("1432345362332124431467430", &value_1);
+str_2decimal("320", &value_2);
+str_2decimal("447607925728788884833571875", &expected);
+set_scale(&expected, 5);
+int return_code = s21_div(value_1, value_2, &result);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
