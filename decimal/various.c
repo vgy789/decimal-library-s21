@@ -37,7 +37,7 @@ int s21_negate(s21_decimal value, s21_decimal *result) {
 
   if (err_code == 0) {
     decimal_to_big(value, &big);
-    (void)Bs21_mul(big, (big_decimal){{1, 0, 0, 0, 0, 0, minus_bit}}, &big);
+    (void)Bdigits_mul(big, (big_decimal){{1, 0, 0, 0, 0, 0, minus_bit}}, &big);
   }
   err_code = big_to_decimal(big, result);
   return err_code;

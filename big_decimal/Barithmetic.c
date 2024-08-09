@@ -19,7 +19,7 @@ void Bcompliment2(big_decimal value, big_decimal *result) {
 bool Bdigits_div10(big_decimal *value) {
   // const uint8_t scale = Bget_scale(*value);
   const uint8_t err_code =
-      Bs21_div(*value, (big_decimal){{10, 0, 0, 0, 0, 0}}, value, div);
+      Bdigits_div(*value, (big_decimal){{10, 0, 0, 0, 0, 0}}, value, div);
   // Bset_scale(value, scale - 1);
   return err_code;
 }
@@ -27,7 +27,7 @@ bool Bdigits_div10(big_decimal *value) {
 bool Bdigits_mul10(big_decimal *value) {
   // const uint8_t scale = Bget_scale(*value);
   const uint8_t err_code =
-      Bs21_mul(*value, (big_decimal){{10, 0, 0, 0, 0, 0}}, value);
+      Bdigits_mul(*value, (big_decimal){{10, 0, 0, 0, 0, 0}}, value);
   // Bset_scale(value, scale + 1);
   return err_code;
 }
@@ -112,47 +112,32 @@ int Bdigits_sub(big_decimal value_1, big_decimal value_2, big_decimal *result) {
   return err_code;
 }
 
-int Bs21_mul(big_decimal value_1, big_decimal value_2, big_decimal *result) {
+int Bdigits_mul(big_decimal value_1, big_decimal value_2, big_decimal *result) {
   *result = (big_decimal){{0}};
   const bool sign_1_orig = Bget_sign(value_1);
   const bool sign_2_orig = Bget_sign(value_2);
-
   const bool result_sign = (sign_1_orig == minus || sign_2_orig == minus) &&
                            !(sign_1_orig == minus && sign_2_orig == minus);
-  {
-    // оптимизация умножения :-)
-    if (Bdigits_gt(value_2, value_1)) {
-      Bswap(&value_1, &value_2);
-    }
-    // TODO: этот код по-сути меняет знаки val_1 и val_2 местами. Если оставить
-    // знаки на своих местах, то тесткейс зависнет. ПОЧЕМУ
-    Bset_sign(&value_1, sign_1_orig);
-    Bset_sign(&value_2, sign_2_orig);
-  }
 
-  if (sign_1_orig == minus) Bset_sign(&value_1, plus);
-  if (sign_2_orig == minus) Bset_sign(&value_2, plus);
-
-  uint8_t err_code = 0;
-  *result = (big_decimal){0};
-  // умножение через сложение
+  uint8_t overflow = 0;
   while (Bdigits_ne(value_2, (big_decimal){{0}})) {
-    Bdecriment(value_2, &value_2);
-    err_code = Bdigits_add(value_1, *result, result);
-    if (err_code) {
-      err_code = 1;
-      if (result_sign == minus) err_code = 2;
+    if (Bget_bit(value_2, 0) == 1) {
+      Bdigits_add(*result, value_1, result);
+    }
+    Bright_shift(&value_2);
+    overflow = Bleft_shift(&value_1);
+    if (overflow) {
       break;
     }
   }
-  Bset_result_sign(result, result_sign);
+  Bset_sign(result, result_sign);
 
-  return err_code;
+  return overflow;
 }
 
 // https://en.wikipedia.org/wiki/Division_algorithm#Integer_division_(unsigned)_with_remainder
-int Bs21_div(big_decimal value_1, big_decimal value_2, big_decimal *result,
-             uint8_t mode) {
+int Bdigits_div(big_decimal value_1, big_decimal value_2, big_decimal *result,
+                uint8_t mode) {
   if (Bdigits_eq(value_2, (big_decimal){{0}})) /* если делим на 0 */
     return 3;
 

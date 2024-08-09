@@ -2296,7 +2296,7 @@ s21_decimal result;
 s21_decimal expected;
 str_2decimal(MAX_DECIMAL, &value_1);
 str_2decimal("1000000000", &value_2);
-str_2decimal("MAX_DECIMAL", &expected);
+str_2decimal(MAX_DECIMAL, &expected);
 set_scale(&expected, 9);
 int return_code = s21_div(value_1, value_2, &result);
 ck_assert(s21_is_equal(result, expected) == 1);

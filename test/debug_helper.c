@@ -60,6 +60,34 @@ void str_2decimal(char *number, s21_decimal *result) {
   set_sign(result, sign);
 }
 
+void str_2bigdecimal(char *number, big_decimal *result) {
+  *result = (big_decimal){{0}};
+  bool sign = plus;
+  if (*number == '-') {
+    sign = minus;
+    ++number;
+  }
+
+  bool radix_point = false;
+  uint8_t scale = 0;
+  for (int i = 0; number[i] != '\0'; ++i) {
+    if (number[i] == '.' || number[i] == ',') {
+      radix_point = true;
+      continue;
+    }
+    if (radix_point) {
+      scale += 1;
+    }
+
+    uint8_t digit = digittoint(number[i]);
+    big_decimal dec_digit = (big_decimal){{digit}};
+    Bdigits_mul(*result, (big_decimal){{10}}, result);
+    Bdigits_add(*result, dec_digit, result);
+  }
+  Bset_scale(result, scale);
+  Bset_sign(result, sign);
+}
+
 s21_decimal uint128_to_bin(__uint128_t n) {
   // use it → s21_decimal result = uint128_to_bin(1234123125678965432);
   s21_decimal result = {{0, 0, 0, 0}};

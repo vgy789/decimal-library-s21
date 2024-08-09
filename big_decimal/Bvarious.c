@@ -9,7 +9,7 @@ void Bswap(big_decimal *value_1, big_decimal *value_2) {
 int Bs21_negate(big_decimal value, big_decimal *result) {
   enum { minus_bit = 0x80000000 };
   uint8_t err_code =
-      Bs21_mul(value, (big_decimal){{1, 0, 0, 0, 0, 0, minus_bit}}, result);
+      Bdigits_mul(value, (big_decimal){{1, 0, 0, 0, 0, 0, minus_bit}}, result);
   return err_code;
 }
 
@@ -65,25 +65,21 @@ void Bset_sign(big_decimal *value, bool sign) {
 }
 
 bool Bleft_shift(big_decimal *value) {
-  if (Bget_bit(*value, BDIGITS_BIT_COUNT - 1)) { /* overflow? */
-    return 1;
-  }
+  bool is_overflow = Bget_bit(*value, BDIGITS_BIT_COUNT - 1) == 1;
 
-  for (int32_t i = BDIGITS_BIT_COUNT - 1; i > 0; --i) {
+  for (int16_t i = BDIGITS_BIT_COUNT - 1; i > 0; --i) {
     Bset_bit(value, i, Bget_bit(*value, i - 1));
   }
   Bset_bit(value, 0, 0);
-  return 0;
+  return is_overflow;
 }
 
 bool Bright_shift(big_decimal *value) {
-  if (Bget_bit(*value, 0)) { /* overflow? */
-    return 1;
-  }
+  bool is_overflow = Bget_bit(*value, 0) == 1;
 
-  for (int32_t i = 0; i > BDIGITS_BIT_COUNT; ++i) {
-    Bset_bit(value, i, Bget_bit(*value, i + 1));
+  for (int16_t i = 1; i < BDIGITS_BIT_COUNT - 1; ++i) {
+    Bset_bit(value, i - 1, Bget_bit(*value, i));
   }
   Bset_bit(value, BDIGITS_BIT_COUNT - 1, 0);
-  return 0;
+  return is_overflow;
 }

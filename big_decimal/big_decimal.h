@@ -154,7 +154,7 @@ void Bset_result_sign(big_decimal *value, bool sign);
  бесконечности,
  *         2 - число слишком мало или равно отрицательной бесконечности).
  */
-int Bs21_mul(big_decimal value_1, big_decimal value_2, big_decimal *result);
+int Bdigits_mul(big_decimal value_1, big_decimal value_2, big_decimal *result);
 
 /**
  * Делит одно десятичное значение на другое.
@@ -169,8 +169,8 @@ int Bs21_mul(big_decimal value_1, big_decimal value_2, big_decimal *result);
  *         2 - число слишком мало или равно отрицательной бесконечности,
  *         3 - деление на 0).
  */
-int Bs21_div(big_decimal value_1, big_decimal value_2, big_decimal *result,
-             uint8_t mode);
+int Bdigits_div(big_decimal value_1, big_decimal value_2, big_decimal *result,
+                uint8_t mode);
 
 /**
  * Проверяет, равны ли два десятичных значения.
