@@ -2314,3 +2314,51 @@ set_scale(&expected, 5);
 int return_code = s21_div(value_1, value_2, &result);
 ck_assert(s21_is_equal(result, expected) == 1);
 ck_assert(return_code == 0);
+
+#test from_float_to_decimal_1
+  float fvalue = 79228157791897854723898736640.f;
+  s21_decimal result;
+  s21_decimal expected;
+  str_2decimal("79228157791897854723898736640", &expected);
+  s21_from_float_to_decimal(fvalue, &result);
+  ck_assert(s21_is_equal(result, expected) == 1);
+
+#test from_float_to_decimal_2
+  float fvalue = 0.123456f;
+  s21_decimal result;
+  s21_decimal expected;
+  str_2decimal("0.123456", &expected);
+  s21_from_float_to_decimal(fvalue, &result);
+  ck_assert(s21_is_equal(result, expected) == 1);
+
+#test from_float_to_decimal_3
+  float fvalue_inf = INFINITY;
+  s21_decimal result_inf;
+  s21_decimal expected_inf;
+  str_2decimal("0", &expected_inf);
+  int err_code = s21_from_float_to_decimal(fvalue_inf, &result_inf);
+  ck_assert(err_code == 1);
+
+#test from_float_to_decimal_4
+  float fvalue_neg_inf = -INFINITY;
+  s21_decimal result_neg_inf;
+  s21_decimal expected_neg_inf;
+  str_2decimal("0", &expected_neg_inf);
+  int err_code = s21_from_float_to_decimal(fvalue_neg_inf, &result_neg_inf);
+  ck_assert(err_code == 2);
+
+#test from_float_to_decimal_5
+  float fvalue_nan = NAN;
+  s21_decimal result_nan;
+  s21_decimal expected_nan;
+  str_2decimal("0", &expected_nan);
+  int err_code = s21_from_float_to_decimal(fvalue_nan, &result_nan);
+  ck_assert(err_code == 3);
+
+
+#test from_decimal_to_float_1
+  s21_decimal value_1 = {{0}};
+  float result = 0;
+  str_2decimal("78123", &value_1);
+  s21_from_decimal_to_float(value_1, &result);
+  ck_assert(78123.0 == result);

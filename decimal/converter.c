@@ -48,7 +48,7 @@ void decimal_to_big(s21_decimal value, big_decimal *result) {
 
 static size_t s21_strlen(const char *str) {
   const char *end = str;
-  while (*str != '\0') str += 1;
+  while (*end != '\0') end += 1;
   return end - str;
 }
 
@@ -130,8 +130,9 @@ int s21_from_decimal_to_float(s21_decimal src, float *dst) {
     divide10(src, &src);
   } while (s21_is_not_equal(src, (s21_decimal){{0}}));
 
+  char *err;
   s21_strrev(digits);
-  *dst = strtof(digits, NULL);
+  *dst = strtof(digits, &err);
   if (sign == minus) {
     *dst = -*dst;
   }
@@ -141,11 +142,11 @@ int s21_from_decimal_to_float(s21_decimal src, float *dst) {
 
 int s21_from_float_to_decimal(float src, s21_decimal *dst) {
   const bool sign = signbit(src);
-  if (isinf(src)) { /* inf */
-    return 1;
+  if (isinf(src)) {      /* inf */
     if (sign == minus) { /* -inf */
       return 2;
     }
+    return 1;
   }
   if (isnan(src)) { /* nan or -nan */
     return 3;
