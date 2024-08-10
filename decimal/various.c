@@ -14,7 +14,7 @@ bool get_bit(s21_decimal value, uint8_t bit_pos) {
     bit_pos -= 32;
     int_part += 1;
   }
-  return (value.bits[int_part] & (1 << bit_pos));
+  return (value.bits[int_part] & (1U << bit_pos));
 }
 
 void set_bit(s21_decimal *value, uint8_t bit_pos, bool state) {

@@ -21,7 +21,7 @@ uint8_t modulus10(s21_decimal value, s21_decimal *result) {
 }
 
 static int8_t calculate_scale(big_decimal value_1, big_decimal value_2,
-                              big_decimal result, calc_func calc) {
+                              big_decimal result, const calc_func calc) {
   int8_t scale_result = 0;
   if (calc == Bdigits_add) {
     scale_result = Bget_scale(value_1);
@@ -36,7 +36,7 @@ static int8_t calculate_scale(big_decimal value_1, big_decimal value_2,
 
 // calc ← Bdigits_add or Bdigits_mul
 static int calculate(s21_decimal value_1, s21_decimal value_2,
-                     s21_decimal *result, calc_func calc) {
+                     s21_decimal *result, const calc_func calc) {
   big_decimal big_1 = (big_decimal){{0}};
   big_decimal big_2 = (big_decimal){{0}};
   big_decimal big_result = (big_decimal){{0}};
@@ -48,8 +48,8 @@ static int calculate(s21_decimal value_1, s21_decimal value_2,
     err_code = check_scale(value_2);
   }
 
-  int8_t scale_result = 0;  // for mul
   if (err_code == 0) {
+    int8_t scale_result = 0;
     decimal_to_big(value_1, &big_1);
     decimal_to_big(value_2, &big_2);
 

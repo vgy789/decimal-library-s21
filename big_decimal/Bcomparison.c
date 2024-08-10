@@ -3,14 +3,13 @@
 enum { eq, gt, lt };
 
 // сравнивает мантиссы без учёта знака и scale
-static int Bcomparison_mantiss(big_decimal value_1, big_decimal value_2) {
+static int Bcomparison_digits(big_decimal value_1, big_decimal value_2) {
   int16_t bit_pos = BDIGITS_BIT_COUNT - 1;
-  bool pos_a, pos_b;
   u_int8_t result = eq;
 
   while (bit_pos >= 0) {
-    pos_a = Bget_bit(value_1, bit_pos);
-    pos_b = Bget_bit(value_2, bit_pos);
+    bool pos_a = Bget_bit(value_1, bit_pos);
+    bool pos_b = Bget_bit(value_2, bit_pos);
     if (pos_a > pos_b) {
       result = gt;
       break;
@@ -39,10 +38,10 @@ static int Bcomparison(big_decimal a, big_decimal b) {
     uint8_t scale_a = Bget_scale(a);
     uint8_t scale_b = Bget_scale(b);
     if (scale_a == scale_b)
-      result = Bcomparison_mantiss(a, b);  // если экспоненты равны
+      result = Bcomparison_digits(a, b);  // если экспоненты равны
     else {
       Balignment(&a, &b, 0);
-      result = Bcomparison_mantiss(a, b);
+      result = Bcomparison_digits(a, b);
     }
     if (scale_a == 1) result = -result;
   }
@@ -51,12 +50,12 @@ static int Bcomparison(big_decimal a, big_decimal b) {
 }
 
 int Bdigits_eq(big_decimal value_1, big_decimal value_2) {
-  const bool result = Bcomparison_mantiss(value_1, value_2);
+  const bool result = Bcomparison_digits(value_1, value_2);
   return !result;
 }
 
 int Bdigits_ne(big_decimal value_1, big_decimal value_2) {
-  const bool result = Bcomparison_mantiss(value_1, value_2);
+  const bool result = Bcomparison_digits(value_1, value_2);
   return result;
 }
 
@@ -66,7 +65,7 @@ int Bdigits_ge(big_decimal value_1, big_decimal value_2) {
 }
 
 int Bdigits_gt(big_decimal value_1, big_decimal value_2) {
-  const bool result = Bcomparison_mantiss(value_1, value_2) == gt;
+  const bool result = Bcomparison_digits(value_1, value_2) == gt;
   return result;
 }
 
@@ -76,7 +75,7 @@ int Bdigits_le(big_decimal value_1, big_decimal value_2) {
 }
 
 int Bdigits_lt(big_decimal value_1, big_decimal value_2) {
-  const bool result = Bcomparison_mantiss(value_1, value_2) == lt;
+  const bool result = Bcomparison_digits(value_1, value_2) == lt;
   return result;
 }
 

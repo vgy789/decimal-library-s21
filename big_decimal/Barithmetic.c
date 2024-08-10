@@ -159,7 +159,7 @@ int Bdigits_division(big_decimal value_1, big_decimal value_2,
   Bset_sign(&value_2, plus);
 
   big_decimal Q = (big_decimal){{0}};  // частное quotient
-  big_decimal R = (big_decimal){{0}};  // остаток reside
+  big_decimal R;                       // остаток reside
   while (1) {
     for (u_int8_t i = 0; i < 6; ++i) { /* сбрасывает значение Q */
       Q.bits[i] = 0;

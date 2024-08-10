@@ -35,8 +35,6 @@ uint8_t modulus10(s21_decimal value, s21_decimal *result);
 
 uint8_t divide10(s21_decimal value, s21_decimal *result);
 
-void mantiss_div10(s21_decimal *value);
-
 void alignment(s21_decimal *value1, s21_decimal *value2, bool for_add);
 
 uint8_t big_to_decimal(big_decimal value, s21_decimal *result);

@@ -63,7 +63,7 @@ static void uint_to_bin(uint32_t value) {
   int8_t bits = 31;
 
   while (value != 0) {
-    int buf = value - (1 << bits);
+    int buf = value - (1U << bits);
 
     if (buf >= 0) {
       value = buf;

@@ -28,7 +28,7 @@ bool Bget_bit(big_decimal value, uint8_t bit_pos) {
     bit_pos -= 32;
     int_part += 1;
   }
-  return (value.bits[int_part] & (1 << bit_pos));
+  return (value.bits[int_part] & (1U << bit_pos));
 }
 
 void Bset_bit(big_decimal *value, uint8_t bit_pos, bool state) {
@@ -39,9 +39,9 @@ void Bset_bit(big_decimal *value, uint8_t bit_pos, bool state) {
     int_part += 1;
   }
   if (state == false)
-    value->bits[int_part] &= ~(1 << bit_pos);
+    value->bits[int_part] &= ~(1U << bit_pos);
   else
-    value->bits[int_part] |= (1 << bit_pos);
+    value->bits[int_part] |= (1U << bit_pos);
 }
 
 uint8_t Bget_scale(big_decimal value) {
@@ -55,13 +55,15 @@ void Bset_scale(big_decimal *value, uint8_t scale) {
   Bset_sign(value, sign);
 }
 
-bool Bget_sign(big_decimal value) { return ((value.bits[6] >> 31) & 1); }
+bool Bget_sign(big_decimal value) {
+  return (((unsigned int)value.bits[6] >> 31) & 1);
+}
 
 void Bset_sign(big_decimal *value, bool sign) {
   if (sign == plus)
-    value->bits[6] &= ~(1 << 31);
+    value->bits[6] &= ~(1U << 31);
   else
-    value->bits[6] |= (1 << 31);
+    value->bits[6] |= (1U << 31);
 }
 
 bool Bleft_shift(big_decimal *value) {
