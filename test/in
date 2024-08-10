@@ -146,136 +146,136 @@ ck_assert(return_code == 0);
 
 // Функция s21_add сложение двух положительных дробных
 #test add_positive_float
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
-  set_scale(&value_1, 10);
-  set_scale(&value_2, 5);
-  s21_decimal result;
-  s21_decimal expected = {{200001, 0, 0, 0}};
-  set_scale(&expected, 9);
-  int return_code = s21_add(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0}};
+s21_decimal value_2 = {{20, 0, 0, 0}};
+set_scale(&value_1, 10);
+set_scale(&value_2, 5);
+s21_decimal result;
+s21_decimal expected = {{200001, 0, 0, 0}};
+set_scale(&expected, 9);
+int return_code = s21_add(value_1, value_2, &result);
 
-  ck_assert(s21_is_equal(result, expected) == 1);
-  ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_add сложение двух отрицательных дробных
 #test add_negative_float
- s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
- s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
- set_scale(&value_1, 10);
- set_scale(&value_2, 5);
- s21_decimal result;
- s21_decimal expected = {{200001, 0, 0, 0x80000000}};
- set_scale(&expected, 9);
- int return_code = s21_add(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
+s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
+set_scale(&value_1, 10);
+set_scale(&value_2, 5);
+s21_decimal result;
+s21_decimal expected = {{200001, 0, 0, 0x80000000}};
+set_scale(&expected, 9);
+int return_code = s21_add(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_add сложение положительного и отрицательного дробных
 #test add_positive_and_negative_float
- s21_decimal value_1 = {{10, 0, 0, 0}};
- s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
- set_scale(&value_1, 10);
- set_scale(&value_2, 5);
- s21_decimal result;
- s21_decimal expected = {{199999, 0, 0, 0x80000000}};
- set_scale(&expected, 9);
- int return_code = s21_add(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0}};
+s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
+set_scale(&value_1, 10);
+set_scale(&value_2, 5);
+s21_decimal result;
+s21_decimal expected = {{199999, 0, 0, 0x80000000}};
+set_scale(&expected, 9);
+int return_code = s21_add(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_add сложение отрицательного и положительного дробных
 #test add_negative_and_positive_float
- s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
- s21_decimal value_2 = {{20, 0, 0, 0}};
- set_scale(&value_1, 10);
- set_scale(&value_2, 5);
- s21_decimal result;
- s21_decimal expected = {{199999, 0, 0, 0}};
- set_scale(&expected, 9);
- int return_code = s21_add(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
+s21_decimal value_2 = {{20, 0, 0, 0}};
+set_scale(&value_1, 10);
+set_scale(&value_2, 5);
+s21_decimal result;
+s21_decimal expected = {{199999, 0, 0, 0}};
+set_scale(&expected, 9);
+int return_code = s21_add(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 // Функция s21_add сложение положительного дробного и целого
- #test add_positive_float_int
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
-  set_scale(&value_1, 10);
-  s21_decimal result;
-  s21_decimal expected = {{2820130817, 4, 0, 0}};
-  set_scale(&expected, 9);
-  int return_code = s21_add(value_1, value_2, &result);
+#test add_positive_float_int
+s21_decimal value_1 = {{10, 0, 0, 0}};
+s21_decimal value_2 = {{20, 0, 0, 0}};
+set_scale(&value_1, 10);
+s21_decimal result;
+s21_decimal expected = {{2820130817, 4, 0, 0}};
+set_scale(&expected, 9);
+int return_code = s21_add(value_1, value_2, &result);
 
-  ck_assert(s21_is_equal(result, expected) == 1);
-  ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_add сложение отрицательного дробного и целого
 #test add_negative_float_int
- s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
- s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
- set_scale(&value_1, 10);
- s21_decimal result;
- s21_decimal expected = {{2820130817, 4, 0, 0x80000000}};
- set_scale(&expected, 9);
- int return_code = s21_add(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
+s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
+set_scale(&value_1, 10);
+s21_decimal result;
+s21_decimal expected = {{2820130817, 4, 0, 0x80000000}};
+set_scale(&expected, 9);
+int return_code = s21_add(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_add сложение отрицательного дробного и положительного целого
 #test add_negative_float_positive_int
- s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
- s21_decimal value_2 = {{20, 0, 0, 0}};
- set_scale(&value_1, 10);
- s21_decimal result;
- s21_decimal expected = {{2820130815, 4, 0, 0}};
- set_scale(&expected, 9);
- int return_code = s21_add(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
+s21_decimal value_2 = {{20, 0, 0, 0}};
+set_scale(&value_1, 10);
+s21_decimal result;
+s21_decimal expected = {{2820130815, 4, 0, 0}};
+set_scale(&expected, 9);
+int return_code = s21_add(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_add сложение положительного дробного и отрицательного целого
 #test add_positive_float_negative_int
- s21_decimal value_1 = {{10, 0, 0, 0}};
- s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
- set_scale(&value_1, 10);
- s21_decimal result;
- s21_decimal expected = {{2820130815, 4, 0, 0x80000000}};
- set_scale(&expected, 9);
- int return_code = s21_add(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0}};
+s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
+set_scale(&value_1, 10);
+s21_decimal result;
+s21_decimal expected = {{2820130815, 4, 0, 0x80000000}};
+set_scale(&expected, 9);
+int return_code = s21_add(value_1, value_2, &result);
 
 ck_assert(s21_is_equal(result, expected) == 1);
 ck_assert(return_code == 0);
 
 // Функция s21_add сложение положительного целого отрицательного дробного
 #test add_positive_int_negative_float
- s21_decimal value_1 = {{10, 0, 0, 0}};
- s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
- set_scale(&value_2, 5);
- s21_decimal result;
- s21_decimal expected = {{99998, 0, 0, 0}};
- set_scale(&expected, 4);
- int return_code = s21_add(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0}};
+s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
+set_scale(&value_2, 5);
+s21_decimal result;
+s21_decimal expected = {{99998, 0, 0, 0}};
+set_scale(&expected, 4);
+int return_code = s21_add(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 //
 //// Функция s21_add сложение отрицательного целого положительного дробного
 #test add_negative_int_positive_float
- s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
- s21_decimal value_2 = {{20, 0, 0, 0}};
- set_scale(&value_2, 5);
- s21_decimal result;
- s21_decimal expected = {{99998, 0, 0, 0x80000000}};
- set_scale(&expected, 4);
- int return_code = s21_add(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
+s21_decimal value_2 = {{20, 0, 0, 0}};
+set_scale(&value_2, 5);
+s21_decimal result;
+s21_decimal expected = {{99998, 0, 0, 0x80000000}};
+set_scale(&expected, 4);
+int return_code = s21_add(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_add очень большое число и маленькое - переполнение
 #test add_overflow
@@ -409,29 +409,29 @@ ck_assert(return_code == 0);
 
 // Функция s21_add сложение положительного дробного и нуля
 #test add_positive_float_and_zero
- s21_decimal value_1 = {{15, 0, 0, 0}};
- s21_decimal value_2 = {{0, 0, 0, 0}};
- set_scale(&value_1, 7);
- s21_decimal result;
- s21_decimal expected = {{15, 0, 0, 0}};
- set_scale(&expected, 7);
- int return_code = s21_add(value_1, value_2, &result);
+s21_decimal value_1 = {{15, 0, 0, 0}};
+s21_decimal value_2 = {{0, 0, 0, 0}};
+set_scale(&value_1, 7);
+s21_decimal result;
+s21_decimal expected = {{15, 0, 0, 0}};
+set_scale(&expected, 7);
+int return_code = s21_add(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_add сложение нуля и положительного дробного
 #test add_zero_and_positive_float
- s21_decimal value_1 = {{0, 0, 0, 0}};
- s21_decimal value_2 = {{15, 0, 0, 0}};
- set_scale(&value_2, 7);
- s21_decimal result;
- s21_decimal expected = {{15, 0, 0, 0}};
- set_scale(&expected, 7);
- int return_code = s21_add(value_1, value_2, &result);
+s21_decimal value_1 = {{0, 0, 0, 0}};
+s21_decimal value_2 = {{15, 0, 0, 0}};
+set_scale(&value_2, 7);
+s21_decimal result;
+s21_decimal expected = {{15, 0, 0, 0}};
+set_scale(&expected, 7);
+int return_code = s21_add(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_add сложение отрицательного числа и нуля
 #test add_negative_numbers_and_zero
@@ -457,87 +457,87 @@ ck_assert(return_code == 0);
 
 // Функция s21_add сложение отрицательного дробного и нуля
 #test add_negative_float_and_zero
- s21_decimal value_1 = {{15, 0, 0, 0x80000000}};
- s21_decimal value_2 = {{0, 0, 0, 0}};
- set_scale(&value_1, 7);
- s21_decimal result;
- s21_decimal expected = {{15, 0, 0, 0x80000000}};
- set_scale(&expected, 7);
- int return_code = s21_add(value_1, value_2, &result);
+s21_decimal value_1 = {{15, 0, 0, 0x80000000}};
+s21_decimal value_2 = {{0, 0, 0, 0}};
+set_scale(&value_1, 7);
+s21_decimal result;
+s21_decimal expected = {{15, 0, 0, 0x80000000}};
+set_scale(&expected, 7);
+int return_code = s21_add(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_add сложение нуля и отрицательного дробного
 #test add_zero_and_negative_float
- s21_decimal value_1 = {{0, 0, 0, 0}};
- s21_decimal value_2 = {{15, 0, 0, 0x80000000}};
- set_scale(&value_2, 7);
- s21_decimal result;
- s21_decimal expected = {{15, 0, 0, 0x80000000}};
- set_scale(&expected, 7);
- int return_code = s21_add(value_1, value_2, &result);
+s21_decimal value_1 = {{0, 0, 0, 0}};
+s21_decimal value_2 = {{15, 0, 0, 0x80000000}};
+set_scale(&value_2, 7);
+s21_decimal result;
+s21_decimal expected = {{15, 0, 0, 0x80000000}};
+set_scale(&expected, 7);
+int return_code = s21_add(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_add сложение двух положительных чисел с большой мантиссой
 #test add_positive_float_big_scale
- s21_decimal value_1 = {{1, 0, 0, 0}};
- s21_decimal value_2 = {{2, 0, 0, 0}};
- set_scale(&value_1, 28);
- set_scale(&value_2, 27);
- s21_decimal result;
- s21_decimal expected = {{21, 0, 0, 0}};
- set_scale(&expected, 28);
- int return_code = s21_add(value_1, value_2, &result);
+s21_decimal value_1 = {{1, 0, 0, 0}};
+s21_decimal value_2 = {{2, 0, 0, 0}};
+set_scale(&value_1, 28);
+set_scale(&value_2, 27);
+s21_decimal result;
+s21_decimal expected = {{21, 0, 0, 0}};
+set_scale(&expected, 28);
+int return_code = s21_add(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_add сложение двух отрицательных чисел с большой мантиссой
 #test add_negative_float_big_scale_
- s21_decimal value_1 = {{1, 0, 0, 0x80000000}};
- s21_decimal value_2 = {{2, 0, 0, 0x80000000}};
- set_scale(&value_1, 28);
- set_scale(&value_2, 27);
- s21_decimal result;
- s21_decimal expected = {{21, 0, 0, 0x80000000}};
- set_scale(&expected, 28);
- int return_code = s21_add(value_1, value_2, &result);
+s21_decimal value_1 = {{1, 0, 0, 0x80000000}};
+s21_decimal value_2 = {{2, 0, 0, 0x80000000}};
+set_scale(&value_1, 28);
+set_scale(&value_2, 27);
+s21_decimal result;
+s21_decimal expected = {{21, 0, 0, 0x80000000}};
+set_scale(&expected, 28);
+int return_code = s21_add(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_add сложение отрицательного и положительного с большой
 //мантиссой
 #test add_negative_and_positive_float_big_scale_
- s21_decimal value_1 = {{1, 0, 0, 0x80000000}};
- s21_decimal value_2 = {{2, 0, 0, 0}};
- set_scale(&value_1, 28);
- set_scale(&value_2, 27);
- s21_decimal result;
- s21_decimal expected = {{19, 0, 0, 0}};
- set_scale(&expected, 28);
- int return_code = s21_add(value_1, value_2, &result);
+s21_decimal value_1 = {{1, 0, 0, 0x80000000}};
+s21_decimal value_2 = {{2, 0, 0, 0}};
+set_scale(&value_1, 28);
+set_scale(&value_2, 27);
+s21_decimal result;
+s21_decimal expected = {{19, 0, 0, 0}};
+set_scale(&expected, 28);
+int return_code = s21_add(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_add сложение положительного и отрицательного с большой
 //мантиссой
 #test add_positive_and_negative_float_big_scale
- s21_decimal value_1 = {{1, 0, 0, 0}};
- s21_decimal value_2 = {{2, 0, 0, 0x80000000}};
- set_scale(&value_1, 28);
- set_scale(&value_2, 27);
- s21_decimal result;
- s21_decimal expected = {{19, 0, 0, 0x80000000}};
- set_scale(&expected, 28);
- int return_code = s21_add(value_1, value_2, &result);
+s21_decimal value_1 = {{1, 0, 0, 0}};
+s21_decimal value_2 = {{2, 0, 0, 0x80000000}};
+set_scale(&value_1, 28);
+set_scale(&value_2, 27);
+s21_decimal result;
+s21_decimal expected = {{19, 0, 0, 0x80000000}};
+set_scale(&expected, 28);
+int return_code = s21_add(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 //
 //  ОКРУГЛЕНИЕ - поменять название тестов
 //   Функция s21_add сложение двух положительных чисел с большой мантиссой с
@@ -651,147 +651,147 @@ ck_assert(return_code == 0);
 
 // Функция s21_sub вычитание двух положительных дробных чисел
 #test sub_positive_float
- s21_decimal value_1 = {{10, 0, 0, 0}};
- s21_decimal value_2 = {{20, 0, 0, 0}};
- set_scale(&value_1, 10);
- set_scale(&value_2, 5);
- s21_decimal result;
- s21_decimal expected = {{199999, 0, 0, 0x80000000}};
- set_scale(&expected, 9);
- int return_code = s21_sub(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0}};
+s21_decimal value_2 = {{20, 0, 0, 0}};
+set_scale(&value_1, 10);
+set_scale(&value_2, 5);
+s21_decimal result;
+s21_decimal expected = {{199999, 0, 0, 0x80000000}};
+set_scale(&expected, 9);
+int return_code = s21_sub(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_sub вычитание двух отрицательных дробных чисел
 #test sub_negative_float
- s21_decimal value_1 = {{10, 0, 0, 0}};
- s21_decimal value_2 = {{20, 0, 0, 0}};
- set_sign(&value_1, minus);
- set_sign(&value_2, minus);
- set_scale(&value_1, 10);
- set_scale(&value_2, 5);
- s21_decimal result;
- s21_decimal expected = {{199999, 0, 0, 0}};
- set_scale(&expected, 9);
- int return_code = s21_sub(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0}};
+s21_decimal value_2 = {{20, 0, 0, 0}};
+set_sign(&value_1, minus);
+set_sign(&value_2, minus);
+set_scale(&value_1, 10);
+set_scale(&value_2, 5);
+s21_decimal result;
+s21_decimal expected = {{199999, 0, 0, 0}};
+set_scale(&expected, 9);
+int return_code = s21_sub(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_sub вычитание положительного и отрицательного дробных чисел
 #test sub_positive_and_negative_float
- s21_decimal value_1 = {{10, 0, 0, 0}};
- s21_decimal value_2 = {{20, 0, 0, 0}};
- set_sign(&value_2, minus);
- set_scale(&value_1, 10);
- set_scale(&value_2, 5);
- s21_decimal result;
- s21_decimal expected = {{200001, 0, 0, 0}};
- set_scale(&expected, 9);
- int return_code = s21_sub(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0}};
+s21_decimal value_2 = {{20, 0, 0, 0}};
+set_sign(&value_2, minus);
+set_scale(&value_1, 10);
+set_scale(&value_2, 5);
+s21_decimal result;
+s21_decimal expected = {{200001, 0, 0, 0}};
+set_scale(&expected, 9);
+int return_code = s21_sub(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_sub вычитание отрицательного и положительного дробных чисел
 #test sub_negative_and_positive_float
- s21_decimal value_1 = {{10, 0, 0, 0}};
- s21_decimal value_2 = {{20, 0, 0, 0}};
- set_sign(&value_1, minus);
- set_scale(&value_1, 10);
- set_scale(&value_2, 5);
- s21_decimal result;
- s21_decimal expected = {{200001, 0, 0, 0x80000000}};
- set_scale(&expected, 9);
- int return_code = s21_sub(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0}};
+s21_decimal value_2 = {{20, 0, 0, 0}};
+set_sign(&value_1, minus);
+set_scale(&value_1, 10);
+set_scale(&value_2, 5);
+s21_decimal result;
+s21_decimal expected = {{200001, 0, 0, 0x80000000}};
+set_scale(&expected, 9);
+int return_code = s21_sub(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_sub вычитание положительных дробного и целого
 #test sub_positive_float_int
- s21_decimal value_1 = {{10, 0, 0, 0}};
- s21_decimal value_2 = {{20, 0, 0, 0}};
- set_scale(&value_1, 10);
- s21_decimal result;
- s21_decimal expected = {{2820130815, 4, 0, 0x80000000}};
- set_scale(&expected, 9);
- int return_code = s21_sub(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0}};
+s21_decimal value_2 = {{20, 0, 0, 0}};
+set_scale(&value_1, 10);
+s21_decimal result;
+s21_decimal expected = {{2820130815, 4, 0, 0x80000000}};
+set_scale(&expected, 9);
+int return_code = s21_sub(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_sub вычитание отрицательных дробного и целого
 #test sub_negative_float_int
- s21_decimal value_1 = {{10, 0, 0, 0}};
- s21_decimal value_2 = {{20, 0, 0, 0}};
- set_sign(&value_1, minus);
- set_sign(&value_2, minus);
- set_scale(&value_1, 10);
- s21_decimal result;
- s21_decimal expected = {{2820130815, 4, 0, 0}};
- set_scale(&expected, 9);
- int return_code = s21_sub(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0}};
+s21_decimal value_2 = {{20, 0, 0, 0}};
+set_sign(&value_1, minus);
+set_sign(&value_2, minus);
+set_scale(&value_1, 10);
+s21_decimal result;
+s21_decimal expected = {{2820130815, 4, 0, 0}};
+set_scale(&expected, 9);
+int return_code = s21_sub(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_sub вычитание отрицательного дробного и положительного целого
 #test sub_negative_float_positive_int
- s21_decimal value_1 = {{10, 0, 0, 0}};
- s21_decimal value_2 = {{20, 0, 0, 0}};
- set_sign(&value_1, minus);
- set_scale(&value_1, 10);
- s21_decimal result;
- s21_decimal expected = {{2820130817, 4, 0, 0x80000000}};
- set_scale(&expected, 9);
- int return_code = s21_sub(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0}};
+s21_decimal value_2 = {{20, 0, 0, 0}};
+set_sign(&value_1, minus);
+set_scale(&value_1, 10);
+s21_decimal result;
+s21_decimal expected = {{2820130817, 4, 0, 0x80000000}};
+set_scale(&expected, 9);
+int return_code = s21_sub(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_sub вычитание положительного дробного и отрицательного целого
 #test sub_positive_float_negative_int
- s21_decimal value_1 = {{10, 0, 0, 0}};
- s21_decimal value_2 = {{20, 0, 0, 0}};
- set_scale(&value_1, 10);
- set_sign(&value_2, minus);
- s21_decimal result;
- s21_decimal expected = {{2820130817, 4, 0, 0}};
- set_scale(&expected, 9);
- int return_code = s21_sub(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0}};
+s21_decimal value_2 = {{20, 0, 0, 0}};
+set_scale(&value_1, 10);
+set_sign(&value_2, minus);
+s21_decimal result;
+s21_decimal expected = {{2820130817, 4, 0, 0}};
+set_scale(&expected, 9);
+int return_code = s21_sub(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_sub вычитание положительного целого и отрицательного дробного
 #test sub_positive_int_negative_float
- s21_decimal value_1 = {{10, 0, 0, 0}};
- s21_decimal value_2 = {{20, 0, 0, 0}};
- set_sign(&value_2, minus);
- set_scale(&value_2, 5);
- s21_decimal result;
- s21_decimal expected = {{100002, 0, 0, 0}};
- set_scale(&expected, 4);
- int return_code = s21_sub(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0}};
+s21_decimal value_2 = {{20, 0, 0, 0}};
+set_sign(&value_2, minus);
+set_scale(&value_2, 5);
+s21_decimal result;
+s21_decimal expected = {{100002, 0, 0, 0}};
+set_scale(&expected, 4);
+int return_code = s21_sub(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_sub вычитание отрицательного целого и положительного дробного
 #test sub_negative_int_positive_float
- s21_decimal value_1 = {{10, 0, 0, 0}};
- s21_decimal value_2 = {{20, 0, 0, 0}};
- set_sign(&value_1, minus);
- set_scale(&value_2, 5);
- s21_decimal result;
- s21_decimal expected = {{100002, 0, 0, 0x80000000}};
- set_scale(&expected, 4);
- int return_code = s21_sub(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0}};
+s21_decimal value_2 = {{20, 0, 0, 0}};
+set_sign(&value_1, minus);
+set_scale(&value_2, 5);
+s21_decimal result;
+s21_decimal expected = {{100002, 0, 0, 0x80000000}};
+set_scale(&expected, 4);
+int return_code = s21_sub(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_sub вычитание максимального отрицательного из максимального
 // положительного
@@ -893,51 +893,51 @@ ck_assert(return_code == 0);
 
 // Функция s21_sub вычитание отрицательных чисел с большим скейлом
 #test sub_negative_float_big_scale
- s21_decimal value_1 = {{1, 0, 0, 0}};
- s21_decimal value_2 = {{2, 0, 0, 0}};
- set_sign(&value_1, minus);
- set_sign(&value_2, minus);
- set_scale(&value_1, 28);
- set_scale(&value_2, 27);
- s21_decimal result;
- s21_decimal expected = {{19, 0, 0, 0}};
- set_scale(&expected, 28);
- int return_code = s21_sub(value_1, value_2, &result);
+s21_decimal value_1 = {{1, 0, 0, 0}};
+s21_decimal value_2 = {{2, 0, 0, 0}};
+set_sign(&value_1, minus);
+set_sign(&value_2, minus);
+set_scale(&value_1, 28);
+set_scale(&value_2, 27);
+s21_decimal result;
+s21_decimal expected = {{19, 0, 0, 0}};
+set_scale(&expected, 28);
+int return_code = s21_sub(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_sub вычитание отрицательного и положительного чисел с большим
 // скейлом
 #test sub_negative_and_positive_float_big_scale
- s21_decimal value_1 = {{1, 0, 0, 0}};
- s21_decimal value_2 = {{2, 0, 0, 0}};
- set_sign(&value_1, minus);
- set_scale(&value_1, 28);
- set_scale(&value_2, 27);
- s21_decimal result;
- s21_decimal expected = {{21, 0, 0, 0x80000000}};
- set_scale(&expected, 28);
- int return_code = s21_sub(value_1, value_2, &result);
+s21_decimal value_1 = {{1, 0, 0, 0}};
+s21_decimal value_2 = {{2, 0, 0, 0}};
+set_sign(&value_1, minus);
+set_scale(&value_1, 28);
+set_scale(&value_2, 27);
+s21_decimal result;
+s21_decimal expected = {{21, 0, 0, 0x80000000}};
+set_scale(&expected, 28);
+int return_code = s21_sub(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_sub вычитание полоижтельного и отрицательного чисел с большим
 // скейлом
 #test sub_positive_and_negative_float_big_scale
- s21_decimal value_1 = {{1, 0, 0, 0}};
- s21_decimal value_2 = {{2, 0, 0, 0}};
- set_sign(&value_2, minus);
- set_scale(&value_1, 28);
- set_scale(&value_2, 27);
- s21_decimal result;
- s21_decimal expected = {{21, 0, 0, 0}};
- set_scale(&expected, 28);
- int return_code = s21_sub(value_1, value_2, &result);
+s21_decimal value_1 = {{1, 0, 0, 0}};
+s21_decimal value_2 = {{2, 0, 0, 0}};
+set_sign(&value_2, minus);
+set_scale(&value_1, 28);
+set_scale(&value_2, 27);
+s21_decimal result;
+s21_decimal expected = {{21, 0, 0, 0}};
+set_scale(&expected, 28);
+int return_code = s21_sub(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_sub вычитание положительного числа и нуля
 #test sub_positive_numbers_and_zero
@@ -964,30 +964,30 @@ ck_assert(return_code == 0);
 
 // Функция s21_sub вычитание положительного дробного и нуля
 #test sub_positive_float_and_zero
- s21_decimal value_1 = {{15, 0, 0, 0}};
- s21_decimal value_2 = {{0, 0, 0, 0}};
- set_scale(&value_1, 7);
- s21_decimal result;
- s21_decimal expected = {{15, 0, 0, 0}};
- set_scale(&expected, 7);
- int return_code = s21_sub(value_1, value_2, &result);
+s21_decimal value_1 = {{15, 0, 0, 0}};
+s21_decimal value_2 = {{0, 0, 0, 0}};
+set_scale(&value_1, 7);
+s21_decimal result;
+s21_decimal expected = {{15, 0, 0, 0}};
+set_scale(&expected, 7);
+int return_code = s21_sub(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_sub вычитание нуля и положительного дробного
 #test sub_zero_and_positive_float
- s21_decimal value_1 = {{0, 0, 0, 0}};
- s21_decimal value_2 = {{15, 0, 0, 0}};
- set_scale(&value_2, 7);
- s21_decimal result;
- s21_decimal expected = {{15, 0, 0, 0}};
- set_scale(&expected, 7);
- set_sign(&expected, minus);
- int return_code = s21_sub(value_1, value_2, &result);
+s21_decimal value_1 = {{0, 0, 0, 0}};
+s21_decimal value_2 = {{15, 0, 0, 0}};
+set_scale(&value_2, 7);
+s21_decimal result;
+s21_decimal expected = {{15, 0, 0, 0}};
+set_scale(&expected, 7);
+set_sign(&expected, minus);
+int return_code = s21_sub(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_sub вычитание отрицательного числа и нуля
 #test sub_negative_numbers_and_zero
@@ -1016,33 +1016,33 @@ ck_assert(return_code == 0);
 
 // Функция s21_sub вычитание отрицательного дробного и нуля
 #test sub_negative_float_and_zero
- s21_decimal value_1 = {{15, 0, 0, 0}};
- s21_decimal value_2 = {{0, 0, 0, 0}};
- set_scale(&value_1, 7);
- set_sign(&value_1, minus);
+s21_decimal value_1 = {{15, 0, 0, 0}};
+s21_decimal value_2 = {{0, 0, 0, 0}};
+set_scale(&value_1, 7);
+set_sign(&value_1, minus);
 
- s21_decimal result;
- s21_decimal expected = {{15, 0, 0, 0x80000000}};
- set_scale(&expected, 7);
- set_sign(&value_1, minus);
- int return_code = s21_sub(value_1, value_2, &result);
+s21_decimal result;
+s21_decimal expected = {{15, 0, 0, 0x80000000}};
+set_scale(&expected, 7);
+set_sign(&value_1, minus);
+int return_code = s21_sub(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_sub вычитание нуля и отрицательного дробного
 #test sub_zero_and_negative_float
- s21_decimal value_1 = {{0, 0, 0, 0}};
- s21_decimal value_2 = {{15, 0, 0, 0}};
- set_scale(&value_2, 7);
- set_sign(&value_2, minus);
- s21_decimal result;
- s21_decimal expected = {{15, 0, 0, 0}};
- set_scale(&expected, 7);
- int return_code = s21_sub(value_1, value_2, &result);
+s21_decimal value_1 = {{0, 0, 0, 0}};
+s21_decimal value_2 = {{15, 0, 0, 0}};
+set_scale(&value_2, 7);
+set_sign(&value_2, minus);
+s21_decimal result;
+s21_decimal expected = {{15, 0, 0, 0}};
+set_scale(&expected, 7);
+int return_code = s21_sub(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 //  ОКРУГЛЕНИЕ
 //  Функция s21_sub сложение двух положительных чисел с большой мантиссой с
@@ -1054,7 +1054,7 @@ ck_assert(return_code == 0);
 //  set_scale(&value_2, 27);
 //  s21_decimal result;
 //  int return_code = s21_sub(value_1, value_2, &result);
-// 
+//
 //  ck_assert(s21_is_equal(result, expected) == 1);
 //  ck_assert(return_code == 0);
 
@@ -1150,156 +1150,156 @@ ck_assert(s21_is_equal(result, expected) == 1);
 ck_assert(return_code == 0);
 
 // Функция s21_mul умножение двух положительных дробных
- #test mul_positive_float
- s21_decimal value_1 = {{10, 0, 0, 0}};
- s21_decimal value_2 = {{20, 0, 0, 0}};
- set_scale(&value_1, 10);
- set_scale(&value_2, 5);
- s21_decimal result;
- s21_decimal expected = {{2, 0, 0, 0}};
- set_scale(&expected, 13);
- int return_code = s21_mul(value_1, value_2, &result);
+#test mul_positive_float
+s21_decimal value_1 = {{10, 0, 0, 0}};
+s21_decimal value_2 = {{20, 0, 0, 0}};
+set_scale(&value_1, 10);
+set_scale(&value_2, 5);
+s21_decimal result;
+s21_decimal expected = {{2, 0, 0, 0}};
+set_scale(&expected, 13);
+int return_code = s21_mul(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_mul умножение двух отрицательных дробных
 #test mul_negative_float
- s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
- s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
- set_scale(&value_1, 10);
- set_scale(&value_2, 5);
- s21_decimal result;
- s21_decimal expected = {{2, 0, 0, 0}};
- set_scale(&expected, 13);
- int return_code = s21_mul(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
+s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
+set_scale(&value_1, 10);
+set_scale(&value_2, 5);
+s21_decimal result;
+s21_decimal expected = {{2, 0, 0, 0}};
+set_scale(&expected, 13);
+int return_code = s21_mul(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 //// Функция s21_mul умножение положительного и отрицательного дробных
 #test mul_positive_and_negative_float
- s21_decimal value_1 = {{10, 0, 0, 0}};
- s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
- set_scale(&value_1, 10);
- set_scale(&value_2, 5);
- s21_decimal result;
- s21_decimal expected = {{2, 0, 0, 0x80000000}};
- set_scale(&expected, 13);
- int return_code = s21_mul(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0}};
+s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
+set_scale(&value_1, 10);
+set_scale(&value_2, 5);
+s21_decimal result;
+s21_decimal expected = {{2, 0, 0, 0x80000000}};
+set_scale(&expected, 13);
+int return_code = s21_mul(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_mul умножение отрицательного и положительного дробных
 #test mul_negative_and_positive_float
- s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
- s21_decimal value_2 = {{20, 0, 0, 0}};
- set_scale(&value_1, 10);
- set_scale(&value_2, 5);
- s21_decimal result;
- s21_decimal expected = {{2, 0, 0, 0x80000000}};
- set_scale(&expected, 13);
- int return_code = s21_mul(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
+s21_decimal value_2 = {{20, 0, 0, 0}};
+set_scale(&value_1, 10);
+set_scale(&value_2, 5);
+s21_decimal result;
+s21_decimal expected = {{2, 0, 0, 0x80000000}};
+set_scale(&expected, 13);
+int return_code = s21_mul(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_mul умножение положительного дробного и целого
 #test mul_positive_float_int
- s21_decimal value_1 = {{10, 0, 0, 0}};
- s21_decimal value_2 = {{20, 0, 0, 0}};
- set_scale(&value_1, 10);
- s21_decimal result;
- s21_decimal expected = {{2, 0, 0, 0}};
- set_scale(&expected, 8);
- int return_code = s21_mul(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0}};
+s21_decimal value_2 = {{20, 0, 0, 0}};
+set_scale(&value_1, 10);
+s21_decimal result;
+s21_decimal expected = {{2, 0, 0, 0}};
+set_scale(&expected, 8);
+int return_code = s21_mul(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_mul умножение отрицательного дробного и целого
 #test mul_negative_float_int
- s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
- s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
- set_scale(&value_1, 10);
- s21_decimal result;
- s21_decimal expected = {{2, 0, 0, 0}};
- set_scale(&expected, 8);
- int return_code = s21_mul(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
+s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
+set_scale(&value_1, 10);
+s21_decimal result;
+s21_decimal expected = {{2, 0, 0, 0}};
+set_scale(&expected, 8);
+int return_code = s21_mul(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_mul умножение отрицательного дробного и положительного целого
 #test mul_negative_float_positive_int
- s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
- s21_decimal value_2 = {{20, 0, 0, 0}};
- set_scale(&value_1, 10);
- s21_decimal result;
- s21_decimal expected = {{2, 0, 0, 0x80000000}};
- set_scale(&expected, 8);
- int return_code = s21_mul(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
+s21_decimal value_2 = {{20, 0, 0, 0}};
+set_scale(&value_1, 10);
+s21_decimal result;
+s21_decimal expected = {{2, 0, 0, 0x80000000}};
+set_scale(&expected, 8);
+int return_code = s21_mul(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_mul умножение положительного дробного и отрицательного целого
 #test mul_positive_float_negative_int
- s21_decimal value_1 = {{10, 0, 0, 0}};
- s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
- set_scale(&value_1, 10);
- s21_decimal result;
- s21_decimal expected = {{2, 0, 0, 0x80000000}};
- set_scale(&expected, 8);
- int return_code = s21_mul(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0}};
+s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
+set_scale(&value_1, 10);
+s21_decimal result;
+s21_decimal expected = {{2, 0, 0, 0x80000000}};
+set_scale(&expected, 8);
+int return_code = s21_mul(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_mul умножение положительного целого отрицательного дробного
 #test mul_positive_int_negative_float
- s21_decimal value_1 = {{10, 0, 0, 0}};
- s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
- set_scale(&value_2, 5);
- s21_decimal result;
- s21_decimal expected = {{2, 0, 0, 0x80000000}};
- set_scale(&expected, 3);
- int return_code = s21_mul(value_1, value_2, &result);
+s21_decimal value_1 = {{10, 0, 0, 0}};
+s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
+set_scale(&value_2, 5);
+s21_decimal result;
+s21_decimal expected = {{2, 0, 0, 0x80000000}};
+set_scale(&expected, 3);
+int return_code = s21_mul(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_mul умножение отрицательного целого положительного дробного
 #test mul_negative_int_positive_float
-  s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
-  set_scale(&value_2, 5);
-  s21_decimal result;
-  s21_decimal expected = {{2, 0, 0, 0x80000000}};
-  int return_code = s21_mul(value_1, value_2, &result);
-  set_scale(&expected, 3);
-  ck_assert(s21_is_equal(result, expected) == 1);
-  ck_assert(return_code == 0);
+s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
+s21_decimal value_2 = {{20, 0, 0, 0}};
+set_scale(&value_2, 5);
+s21_decimal result;
+s21_decimal expected = {{2, 0, 0, 0x80000000}};
+int return_code = s21_mul(value_1, value_2, &result);
+set_scale(&expected, 3);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_mul очень большое число и маленькое - переполнение
 #test mul_overflow
-  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal value_2 = {{2, 0, 0, 0}};
-  s21_decimal result;
+s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+s21_decimal value_2 = {{2, 0, 0, 0}};
+s21_decimal result;
 
-  int return_code = s21_mul(value_1, value_2, &result);
+int return_code = s21_mul(value_1, value_2, &result);
 
-  ck_assert(return_code == 1);
+ck_assert(return_code == 1);
 
 // Функция s21_mul умножение очень маленького и очень большого - переполнение
 #test mul_overflow_two
-  s21_decimal value_1 = {{2, 0, 0, 0}};
-  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal result;
+s21_decimal value_1 = {{2, 0, 0, 0}};
+s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+s21_decimal result;
 
-  int return_code = s21_mul(value_1, value_2, &result);
-  ck_assert(return_code == 1);
+int return_code = s21_mul(value_1, value_2, &result);
+ck_assert(return_code == 1);
 
 // Функция s21_mul умножение двух очень больших - переполнение
 #test mul_overflow_three
@@ -1432,27 +1432,27 @@ ck_assert(return_code == 0);
 
 // Функция s21_mul умножение положительного дробного и нуля
 #test mul_positive_float_and_zero
- s21_decimal value_1 = {{15, 0, 0, 0}};
- s21_decimal value_2 = {{0, 0, 0, 0}};
- set_scale(&value_1, 7);
- s21_decimal result;
- s21_decimal expected = {{0, 0, 0, 0}};
- int return_code = s21_mul(value_1, value_2, &result);
+s21_decimal value_1 = {{15, 0, 0, 0}};
+s21_decimal value_2 = {{0, 0, 0, 0}};
+set_scale(&value_1, 7);
+s21_decimal result;
+s21_decimal expected = {{0, 0, 0, 0}};
+int return_code = s21_mul(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_mul умножение нуля и положительного дробного
 #test mul_zero_and_positive_float
- s21_decimal value_1 = {{0, 0, 0, 0}};
- s21_decimal value_2 = {{15, 0, 0, 0}};
- set_scale(&value_2, 7);
- s21_decimal result;
- s21_decimal expected = {{0, 0, 0, 0}};
- int return_code = s21_mul(value_1, value_2, &result);
+s21_decimal value_1 = {{0, 0, 0, 0}};
+s21_decimal value_2 = {{15, 0, 0, 0}};
+set_scale(&value_2, 7);
+s21_decimal result;
+s21_decimal expected = {{0, 0, 0, 0}};
+int return_code = s21_mul(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_mul умножение отрицательного числа и нуля
 #test mul_negative_numbers_and_zero
@@ -1478,129 +1478,129 @@ ck_assert(return_code == 0);
 
 // Функция s21_mul умножение отрицательного дробного и нуля
 #test mul_negative_float_and_zero
- s21_decimal value_1 = {{15, 0, 0, 0x80000000}};
- s21_decimal value_2 = {{0, 0, 0, 0}};
- set_scale(&value_1, 7);
- s21_decimal result;
- s21_decimal expected = {{0, 0, 0, 0}};
- int return_code = s21_mul(value_1, value_2, &result);
+s21_decimal value_1 = {{15, 0, 0, 0x80000000}};
+s21_decimal value_2 = {{0, 0, 0, 0}};
+set_scale(&value_1, 7);
+s21_decimal result;
+s21_decimal expected = {{0, 0, 0, 0}};
+int return_code = s21_mul(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_mul умножение нуля и отрицательного дробного
 #test mul_zero_and_negative_float
- s21_decimal value_1 = {{0, 0, 0, 0}};
- s21_decimal value_2 = {{15, 0, 0, 0x80000000}};
- set_scale(&value_2, 7);
- s21_decimal result;
- s21_decimal expected = {{0, 0, 0, 0}};
- int return_code = s21_mul(value_1, value_2, &result);
+s21_decimal value_1 = {{0, 0, 0, 0}};
+s21_decimal value_2 = {{15, 0, 0, 0x80000000}};
+set_scale(&value_2, 7);
+s21_decimal result;
+s21_decimal expected = {{0, 0, 0, 0}};
+int return_code = s21_mul(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_mul умножение двух положительных чисел с большой мантиссой
 #test mul_positive_float_big_scale
-  s21_decimal value_1 = {{1, 0, 0, 0}};
-  s21_decimal value_2 = {{2, 0, 0, 0}};
-  set_scale(&value_1, 28);
-  set_scale(&value_2, 27);
-  s21_decimal result;
+s21_decimal value_1 = {{1, 0, 0, 0}};
+s21_decimal value_2 = {{2, 0, 0, 0}};
+set_scale(&value_1, 28);
+set_scale(&value_2, 27);
+s21_decimal result;
 
-  int return_code = s21_mul(value_1, value_2, &result);
+int return_code = s21_mul(value_1, value_2, &result);
 
-  ck_assert(return_code == 1);
+ck_assert(return_code == 1);
 
 // Функция s21_mul умножение двух отрицательных чисел с большой мантиссой
 #test mul_negative_float_big_scale
-  s21_decimal value_1 = {{1, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{2, 0, 0, 0x80000000}};
-  set_scale(&value_1, 28);
-  set_scale(&value_2, 27);
-  s21_decimal result;
+s21_decimal value_1 = {{1, 0, 0, 0x80000000}};
+s21_decimal value_2 = {{2, 0, 0, 0x80000000}};
+set_scale(&value_1, 28);
+set_scale(&value_2, 27);
+s21_decimal result;
 
-  int return_code = s21_mul(value_1, value_2, &result);
+int return_code = s21_mul(value_1, value_2, &result);
 
-  ck_assert(return_code == 1);
+ck_assert(return_code == 1);
 
 // Функция s21_mul умножение отрицательного и положительного с большой
 ///мантиссой
 #test mul_negative_and_positive_float_big_scale
- s21_decimal value_1 = {{1, 0, 0, 0x80000000}};
- s21_decimal value_2 = {{2, 0, 0, 0}};
- set_scale(&value_1, 28);
- set_scale(&value_2, 27);
- s21_decimal result;
+s21_decimal value_1 = {{1, 0, 0, 0x80000000}};
+s21_decimal value_2 = {{2, 0, 0, 0}};
+set_scale(&value_1, 28);
+set_scale(&value_2, 27);
+s21_decimal result;
 
- int return_code = s21_mul(value_1, value_2, &result);
+int return_code = s21_mul(value_1, value_2, &result);
 
- ck_assert(return_code == 2);
+ck_assert(return_code == 2);
 
 // Функция s21_mul умножение положительного и отрицательного с большой
 ///мантиссой
 #test mul_positive_and_negative_float_big_scale
- s21_decimal value_1 = {{1, 0, 0, 0}};
- s21_decimal value_2 = {{2, 0, 0, 0x80000000}};
- set_scale(&value_1, 28);
- set_scale(&value_2, 27);
- s21_decimal result;
+s21_decimal value_1 = {{1, 0, 0, 0}};
+s21_decimal value_2 = {{2, 0, 0, 0x80000000}};
+set_scale(&value_1, 28);
+set_scale(&value_2, 27);
+s21_decimal result;
 
- int return_code = s21_mul(value_1, value_2, &result);
+int return_code = s21_mul(value_1, value_2, &result);
 
- ck_assert(return_code == 2);
+ck_assert(return_code == 2);
 
 // Функция s21_mul умножение двух положительных чисел с большой мантиссой с
 // ненулевыми разрядами
 #test mul_positive_float_big_scale_not_zero
- s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
- s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
- set_scale(&value_1, 28);
- set_scale(&value_2, 27);
- s21_decimal result;
+s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+set_scale(&value_1, 28);
+set_scale(&value_2, 27);
+s21_decimal result;
 
- int return_code = s21_mul(value_1, value_2, &result);
+int return_code = s21_mul(value_1, value_2, &result);
 
- ck_assert(return_code == 1);
+ck_assert(return_code == 1);
 
 // Функция s21_mul умножение двух отрицательных чисел с большой мантиссой с
 // ненулевыми разрядами
 #test mul_negative_float_big_scale_not_zero
- s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
- s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
- set_scale(&value_1, 28);
- set_scale(&value_2, 27);
- s21_decimal result;
+s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
+s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
+set_scale(&value_1, 28);
+set_scale(&value_2, 27);
+s21_decimal result;
 
- int return_code = s21_mul(value_1, value_2, &result);
+int return_code = s21_mul(value_1, value_2, &result);
 
- ck_assert(return_code == 1);
+ck_assert(return_code == 1);
 
 // Функция s21_mul умножение отрицательного и положительного с большой
 // мантиссой / с ненулевыми разрядами
 #test mul_negative_and_positive_float_big_scale_not_zero
- s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
- s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
- set_scale(&value_1, 28);
- set_scale(&value_2, 27);
- s21_decimal result;
+s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
+s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+set_scale(&value_1, 28);
+set_scale(&value_2, 27);
+s21_decimal result;
 
- int return_code = s21_mul(value_1, value_2, &result);
+int return_code = s21_mul(value_1, value_2, &result);
 
- ck_assert(return_code == 2);
+ck_assert(return_code == 2);
 
 // Функция s21_mul умножение положительного и отрицательного с большой
 // мантиссой / с ненулевыми разрядами
 #test mul_positive_and_negative_float_big_scale_not_zero
- s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
- s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
- set_scale(&value_1, 28);
- set_scale(&value_2, 27);
- s21_decimal result;
+s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
+set_scale(&value_1, 28);
+set_scale(&value_2, 27);
+s21_decimal result;
 
- int return_code = s21_mul(value_1, value_2, &result);
+int return_code = s21_mul(value_1, value_2, &result);
 
- ck_assert(return_code == 2);
+ck_assert(return_code == 2);
 
 // Функция s21_mul умножение целые большие числа с нулями
 // Функция s21_mul очень большое целое число на очень маленькое число с
@@ -1608,27 +1608,27 @@ ck_assert(return_code == 0);
 
 // Функция s21_mul умножение двух положительных дробных результат 5
 #test mul_positive_float__
- s21_decimal value_1 = {{50, 0, 0, 0}};
- s21_decimal value_2 = {{10, 0, 0, 0}};
- set_scale(&value_2, 2);
- s21_decimal result;
- s21_decimal expected = {{5, 0, 0, 0}};
- int return_code = s21_mul(value_1, value_2, &result);
+s21_decimal value_1 = {{50, 0, 0, 0}};
+s21_decimal value_2 = {{10, 0, 0, 0}};
+set_scale(&value_2, 2);
+s21_decimal result;
+s21_decimal expected = {{5, 0, 0, 0}};
+int return_code = s21_mul(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция s21_mul умножение двух положительных дробных результат 5
 #test mul_positive_float____
- s21_decimal value_1 = {{5, 0, 0, 0}};
- s21_decimal value_2 = {{10, 0, 0, 0}};
- set_scale(&value_2, 1);
- s21_decimal result;
- s21_decimal expected = {{5, 0, 0, 0}};
- int return_code = s21_mul(value_1, value_2, &result);
+s21_decimal value_1 = {{5, 0, 0, 0}};
+s21_decimal value_2 = {{10, 0, 0, 0}};
+set_scale(&value_2, 1);
+s21_decimal result;
+s21_decimal expected = {{5, 0, 0, 0}};
+int return_code = s21_mul(value_1, value_2, &result);
 
- ck_assert(s21_is_equal(result, expected) == 1);
- ck_assert(return_code == 0);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 // Функция void alignment
 #test alignment_both_zero_with_scale
@@ -2185,12 +2185,6 @@ s21_truncate(value, &result);
 int eq = s21_is_equal(result, expected);
 ck_assert(eq == 1);
 
-#test truncate_overflow
-s21_decimal value = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-s21_decimal result;
-set_scale(&value, 1);
-int return_code = s21_truncate(value, &result);
-
 #test truncate_positive_float
 s21_decimal value = {{12345, 0, 0, 0}};
 s21_decimal result;
@@ -2316,49 +2310,48 @@ ck_assert(s21_is_equal(result, expected) == 1);
 ck_assert(return_code == 0);
 
 #test from_float_to_decimal_1
-  float fvalue = 79228157791897854723898736640.f;
-  s21_decimal result;
-  s21_decimal expected;
-  str_to_decimal("79228157791897854723898736640", &expected);
-  s21_from_float_to_decimal(fvalue, &result);
-  ck_assert(s21_is_equal(result, expected) == 1);
+float fvalue = 79228157791897854723898736640.f;
+s21_decimal result;
+s21_decimal expected;
+str_to_decimal("79228157791897854723898736640", &expected);
+s21_from_float_to_decimal(fvalue, &result);
+ck_assert(s21_is_equal(result, expected) == 1);
 
 #test from_float_to_decimal_2
-  float fvalue = 0.123456f;
-  s21_decimal result;
-  s21_decimal expected;
-  str_to_decimal("0.123456", &expected);
-  s21_from_float_to_decimal(fvalue, &result);
-  ck_assert(s21_is_equal(result, expected) == 1);
+float fvalue = 0.123456f;
+s21_decimal result;
+s21_decimal expected;
+str_to_decimal("0.123456", &expected);
+s21_from_float_to_decimal(fvalue, &result);
+ck_assert(s21_is_equal(result, expected) == 1);
 
 #test from_float_to_decimal_3
-  float fvalue_inf = INFINITY;
-  s21_decimal result_inf;
-  s21_decimal expected_inf;
-  str_to_decimal("0", &expected_inf);
-  int err_code = s21_from_float_to_decimal(fvalue_inf, &result_inf);
-  ck_assert(err_code == 1);
+float fvalue_inf = INFINITY;
+s21_decimal result_inf;
+s21_decimal expected_inf;
+str_to_decimal("0", &expected_inf);
+int err_code = s21_from_float_to_decimal(fvalue_inf, &result_inf);
+ck_assert(err_code == 1);
 
 #test from_float_to_decimal_4
-  float fvalue_neg_inf = -INFINITY;
-  s21_decimal result_neg_inf;
-  s21_decimal expected_neg_inf;
-  str_to_decimal("0", &expected_neg_inf);
-  int err_code = s21_from_float_to_decimal(fvalue_neg_inf, &result_neg_inf);
-  ck_assert(err_code == 2);
+float fvalue_neg_inf = -INFINITY;
+s21_decimal result_neg_inf;
+s21_decimal expected_neg_inf;
+str_to_decimal("0", &expected_neg_inf);
+int err_code = s21_from_float_to_decimal(fvalue_neg_inf, &result_neg_inf);
+ck_assert(err_code == 2);
 
 #test from_float_to_decimal_5
-  float fvalue_nan = NAN;
-  s21_decimal result_nan;
-  s21_decimal expected_nan;
-  str_to_decimal("0", &expected_nan);
-  int err_code = s21_from_float_to_decimal(fvalue_nan, &result_nan);
-  ck_assert(err_code == 3);
-
+float fvalue_nan = NAN;
+s21_decimal result_nan;
+s21_decimal expected_nan;
+str_to_decimal("0", &expected_nan);
+int err_code = s21_from_float_to_decimal(fvalue_nan, &result_nan);
+ck_assert(err_code == 3);
 
 #test from_decimal_to_float_1
-  s21_decimal value_1 = {{0}};
-  float result = 0;
-  str_to_decimal("78123", &value_1);
-  s21_from_decimal_to_float(value_1, &result);
-  ck_assert(78123.0 == result);
+s21_decimal value_1 = {{0}};
+float result = 0;
+str_to_decimal("78123", &value_1);
+s21_from_decimal_to_float(value_1, &result);
+ck_assert(78123.0 == result);
