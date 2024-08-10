@@ -4,8 +4,7 @@ int Bs21_truncate(big_decimal value, big_decimal *result) {
   int count = Bget_scale(value);
   Bset_scale(&value, 0);
   for (int i = 0; i < count; i++) {
-    // TODO: проверить! заменил div1 на reside
-    Bdigits_div(value, (big_decimal){{10}}, &value, whole);
+    Bdigits_division(value, (big_decimal){{10}}, &value, whole);
   }
   *result = value;
   return 0;

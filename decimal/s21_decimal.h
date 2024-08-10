@@ -22,6 +22,15 @@ typedef struct {
   int bits[4];
 } s21_decimal;
 
+bool set_scale(s21_decimal *value, uint8_t scale);
+
+bool get_bit(s21_decimal value, uint8_t bit_pos);
+
+/**
+ * Устанавливает указанный бит числа s21_decimal. Отсчёт с нуля.
+ */
+void set_bit(s21_decimal *value, uint8_t bit_pos, bool state);
+
 uint8_t modulus10(s21_decimal value, s21_decimal *result);
 
 uint8_t divide10(s21_decimal value, s21_decimal *result);
@@ -32,7 +41,7 @@ void alignment(s21_decimal *value1, s21_decimal *value2, bool for_add);
 
 uint8_t big_to_decimal(big_decimal value, s21_decimal *result);
 
-int Bdec_to_int(big_decimal value);
+int big_to_int(big_decimal value);
 
 void circumcision(s21_decimal *value);
 

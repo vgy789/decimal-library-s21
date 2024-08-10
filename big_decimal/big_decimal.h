@@ -156,6 +156,9 @@ void Bset_result_sign(big_decimal *value, bool sign);
  */
 int Bdigits_mul(big_decimal value_1, big_decimal value_2, big_decimal *result);
 
+int Bdigits_division(big_decimal value_1, big_decimal value_2,
+                     big_decimal *result, uint8_t mode);
+
 /**
  * Делит одно десятичное значение на другое.
  *
@@ -169,8 +172,7 @@ int Bdigits_mul(big_decimal value_1, big_decimal value_2, big_decimal *result);
  *         2 - число слишком мало или равно отрицательной бесконечности,
  *         3 - деление на 0).
  */
-int Bdigits_div(big_decimal value_1, big_decimal value_2, big_decimal *result,
-                uint8_t mode);
+int Bdigits_div(big_decimal value_1, big_decimal value_2, big_decimal *result);
 
 /**
  * Проверяет, равны ли два десятичных значения.

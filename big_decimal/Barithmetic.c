@@ -18,8 +18,8 @@ void Bcompliment2(big_decimal value, big_decimal *result) {
 
 bool Bdigits_div10(big_decimal *value) {
   // const uint8_t scale = Bget_scale(*value);
-  const uint8_t err_code =
-      Bdigits_div(*value, (big_decimal){{10, 0, 0, 0, 0, 0}}, value, divide);
+  const uint8_t err_code = Bdigits_division(
+      *value, (big_decimal){{10, 0, 0, 0, 0, 0}}, value, divide);
   // Bset_scale(value, scale - 1);
   return err_code;
 }
@@ -81,13 +81,13 @@ int Bdigits_add(big_decimal value_1, big_decimal value_2, big_decimal *result) {
 
   uint8_t err_code = 0;
 
-  if (result->bits[3] != 0) {
-    err_code = 1;
-    if (result_sign == minus) {
-      err_code = 2;
-    }
-  }
-  if (sign_1_orig == sign_2_orig) { /* проверка переполнения s21_decimal */
+  // if (result->bits[3] != 0) {
+  //   err_code = 1;
+  //   if (result_sign == minus) {
+  //     err_code = 2;
+  //   }
+  // }
+  if (sign_1_orig == sign_2_orig) { /* проверка переполнения big_decimal */
     // если результат суммы положительных/отрицательных меньше/больше, значит
     // ошибка переполнения.
     if (Bdigits_gt(value_1_orig, *result) ||
@@ -104,11 +104,8 @@ int Bdigits_add(big_decimal value_1, big_decimal value_2, big_decimal *result) {
 }
 
 int Bdigits_sub(big_decimal value_1, big_decimal value_2, big_decimal *result) {
-  const bool sign = Bget_sign(value_2);
-  // инвертируем знак и складываем
-  Bset_sign(&value_2, !sign);
-  uint8_t err_code = Bdigits_add(value_1, value_2, result);
-
+  Bset_sign(&value_2, !Bget_sign(value_2));
+  const uint8_t err_code = Bdigits_add(value_1, value_2, result);
   return err_code;
 }
 
@@ -143,9 +140,13 @@ int Bdigits_mul(big_decimal value_1, big_decimal value_2, big_decimal *result) {
   return err_code;
 }
 
+int Bdigits_div(big_decimal value_1, big_decimal value_2, big_decimal *result) {
+  return Bdigits_division(value_1, value_2, result, divide);
+}
+
 // https://en.wikipedia.org/wiki/Division_algorithm#Integer_division_(unsigned)_with_remainder
-int Bdigits_div(big_decimal value_1, big_decimal value_2, big_decimal *result,
-                uint8_t mode) {
+int Bdigits_division(big_decimal value_1, big_decimal value_2,
+                     big_decimal *result, uint8_t mode) {
   if (Bdigits_eq(value_2, (big_decimal){{0}})) /* если делим на 0 */
     return 3;
 
@@ -225,5 +226,5 @@ int Bmod(big_decimal value_1, big_decimal value_2) {
     }
   }
 
-  return Bdec_to_int(R);
+  return big_to_int(R);
 }

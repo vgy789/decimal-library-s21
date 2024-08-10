@@ -13,23 +13,15 @@
 
 #define MAX_DECIMAL "79228162514264337593543950335"
 
-bool set_scale(s21_decimal *value, uint8_t scale);
-
-bool get_bit(s21_decimal value, uint8_t bit_pos);
-
 /**
- * Устанавливает указанный бит числа s21_decimal. Отсчёт с нуля.
+ * Конвертирует число из строкового литерала в s21_decimal.
  */
-void set_bit(s21_decimal *value, uint8_t bit_pos, bool state);
-
-void str_2decimal(char *number, s21_decimal *result);
-
-s21_decimal uint128_to_bin(__uint128_t n);
+void str_to_decimal(char *number, s21_decimal *result);
 
 /**
  * Печатает big_decimal в двоичном предствалении.
  */
-void Bdec_2bin(big_decimal value, bool print_scale, bool print_separate);
+void Bdec_to_bin(big_decimal value, bool print_scale, bool print_separate);
 
 /**
  * Печатает s21_decimal в десятичном предствалении.
@@ -39,11 +31,6 @@ void dec_2int(s21_decimal value);
 /**
  * Печатает s21_decimal в двоичном предствалении.
  */
-void dec_2bin(s21_decimal value, bool print_scale, bool print_separate);
-
-/**
- * Конвертирует uint128 в decimal.
- */
-s21_decimal uint128_2decimal(__uint128_t n);
+void dec_to_bin(s21_decimal value, bool print_scale, bool print_separate);
 
 #endif  // DEBUG_HELPER_H
