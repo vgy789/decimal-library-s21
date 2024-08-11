@@ -1,9 +1,9 @@
 #include "s21_decimal.h"
 
-typedef int (*roundness)(big_decimal, big_decimal *);
+typedef void (*roundness)(big_decimal, big_decimal *);
 
-int rounding(s21_decimal value, s21_decimal *result, roundness roundness) {
-  uint8_t err_code = check_scale(value);
+err_t rounding(s21_decimal value, s21_decimal *result, roundness roundness) {
+  err_t err_code = check_scale(value);
   if (err_code == 0) {
     const bool sign = get_sign(value);
     big_decimal big = (big_decimal){{0}};
@@ -15,14 +15,14 @@ int rounding(s21_decimal value, s21_decimal *result, roundness roundness) {
   return err_code;
 }
 
-int s21_truncate(s21_decimal value, s21_decimal *result) {
+err_t s21_truncate(s21_decimal value, s21_decimal *result) {
   return rounding(value, result, Bs21_truncate);
 }
 
-int s21_round(s21_decimal value, s21_decimal *result) {
+err_t s21_round(s21_decimal value, s21_decimal *result) {
   return rounding(value, result, Bs21_round);
 }
 
-int s21_floor(s21_decimal value, s21_decimal *result) {
+err_t s21_floor(s21_decimal value, s21_decimal *result) {
   return rounding(value, result, Bs21_floor);
 }

@@ -32,11 +32,12 @@ static bool is_Bdigits_div10(big_decimal value) {
 }
 
 void Bnormalize_recursive(big_decimal *value, scale_t scale) {
-  if (scale < 0) { /* дополняем нулями */
+  if (scale < 0) {
+    /* дополняем нулями */
     Bdigits_mul10(value);
     Bnormalize_recursive(value, scale + 1);
-  } else if (scale > 0 &&
-             is_Bdigits_div10(*value) == 0) { /* обрезаем лишние нули */
+  } else if (scale > 0 && is_Bdigits_div10(*value) == 0) {
+    /* обрезаем лишние нули */
     Bdigits_div10(value);
     Bnormalize_recursive(value, scale - 1);
   } else {

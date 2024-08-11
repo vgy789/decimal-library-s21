@@ -1,16 +1,15 @@
 #include "big_decimal.h"
 
-int Bs21_truncate(big_decimal value, big_decimal *result) {
+void Bs21_truncate(big_decimal value, big_decimal *result) {
   scale_t count = Bget_scale(value);
   Bset_scale(&value, 0);
   for (uint16_t i = 0; i < count; i++) {
     Bdigits_division(value, (big_decimal){{10}}, &value, whole);
   }
   *result = value;
-  return 0;
 }
 
-int Bs21_round(big_decimal value, big_decimal *result) {
+void Bs21_round(big_decimal value, big_decimal *result) {
   scale_t count = Bget_scale(value);
   big_decimal temp = {{0}};
   Bs21_truncate(value, &temp);
@@ -27,10 +26,9 @@ int Bs21_round(big_decimal value, big_decimal *result) {
   } else {
     *result = temp;
   }
-  return 0;
 }
 
-int Bs21_floor(big_decimal value, big_decimal *result) {
+void Bs21_floor(big_decimal value, big_decimal *result) {
   int count = Bget_scale(value);
   big_decimal temp = {{0}};
   Bs21_truncate(value, &temp);
@@ -43,5 +41,4 @@ int Bs21_floor(big_decimal value, big_decimal *result) {
   } else {
     *result = temp;
   }
-  return 0;
 }

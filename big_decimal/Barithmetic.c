@@ -16,31 +16,31 @@ void Bcompliment2(big_decimal value, big_decimal *result) {
   Bincrement(value, result);
 }
 
-bool Bdigits_div10(big_decimal *value) {
-  const uint8_t err_code = Bdigits_division(
+err_t Bdigits_div10(big_decimal *value) {
+  const err_t err_code = Bdigits_division(
       *value, (big_decimal){{10, 0, 0, 0, 0, 0}}, value, divide);
   return err_code;
 }
 
-bool Bdigits_mul10(big_decimal *value) {
-  const uint8_t err_code =
+err_t Bdigits_mul10(big_decimal *value) {
+  const err_t err_code =
       Bdigits_mul(*value, (big_decimal){{10, 0, 0, 0, 0, 0}}, value);
   return err_code;
 }
 
-int Bdecriment(big_decimal value, big_decimal *result) {
+err_t Bdecriment(big_decimal value, big_decimal *result) {
   const big_decimal one = (big_decimal){{1, 0, 0, 0, 0, 0, 0}};
-  Bdigits_sub(value, one, result);
-  return 0;
+  const err_t err_code = Bdigits_sub(value, one, result);
+  return err_code;
 }
 
-int Bincrement(big_decimal value, big_decimal *result) {
+err_t Bincrement(big_decimal value, big_decimal *result) {
   const big_decimal one = (big_decimal){{1, 0, 0, 0, 0, 0, 0}};
-  Bdigits_add(value, one, result);
-  return 0;
+  return Bdigits_add(value, one, result);
 }
 
-int Bdigits_add(big_decimal value_1, big_decimal value_2, big_decimal *result) {
+err_t Bdigits_add(big_decimal value_1, big_decimal value_2,
+                  big_decimal *result) {
   const big_decimal value_1_orig = value_1;
   const big_decimal value_2_orig = value_2;
   *result = (big_decimal){{0}};
@@ -75,14 +75,8 @@ int Bdigits_add(big_decimal value_1, big_decimal value_2, big_decimal *result) {
     Bcompliment2(*result, result);
   }
 
-  uint8_t err_code = 0;
+  err_t err_code = 0;
 
-  // if (result->bits[3] != 0) {
-  //   err_code = 1;
-  //   if (result_sign == minus) {
-  //     err_code = 2;
-  //   }
-  // }
   if (sign_1_orig == sign_2_orig) { /* проверка переполнения big_decimal */
     // если результат суммы положительных/отрицательных меньше/больше, значит
     // ошибка переполнения.
@@ -99,13 +93,15 @@ int Bdigits_add(big_decimal value_1, big_decimal value_2, big_decimal *result) {
   return err_code;
 }
 
-int Bdigits_sub(big_decimal value_1, big_decimal value_2, big_decimal *result) {
+err_t Bdigits_sub(big_decimal value_1, big_decimal value_2,
+                  big_decimal *result) {
   Bset_sign(&value_2, !Bget_sign(value_2));
-  const uint8_t err_code = Bdigits_add(value_1, value_2, result);
+  const err_t err_code = Bdigits_add(value_1, value_2, result);
   return err_code;
 }
 
-int Bdigits_mul(big_decimal value_1, big_decimal value_2, big_decimal *result) {
+err_t Bdigits_mul(big_decimal value_1, big_decimal value_2,
+                  big_decimal *result) {
   *result = (big_decimal){{0}};
   const bool sign_1_orig = Bget_sign(value_1);
   const bool sign_2_orig = Bget_sign(value_2);
@@ -125,7 +121,7 @@ int Bdigits_mul(big_decimal value_1, big_decimal value_2, big_decimal *result) {
   }
   Bset_sign(result, result_sign);
 
-  uint8_t err_code = 0;
+  err_t err_code = 0;
   if (overflow) {
     if (result_sign == plus) {
       err_code = 1;
@@ -136,17 +132,19 @@ int Bdigits_mul(big_decimal value_1, big_decimal value_2, big_decimal *result) {
   return err_code;
 }
 
-int Bdigits_div(big_decimal value_1, big_decimal value_2, big_decimal *result) {
-  return Bdigits_division(value_1, value_2, result, divide);
+err_t Bdigits_div(big_decimal value_1, big_decimal value_2,
+                  big_decimal *result) {
+  const err_t err_code = Bdigits_division(value_1, value_2, result, divide);
+  return err_code;
 }
 
 // https://en.wikipedia.org/wiki/Division_algorithm#Integer_division_(unsigned)_with_remainder
-int Bdigits_division(big_decimal value_1, big_decimal value_2,
-                     big_decimal *result, uint8_t mode) {
+err_t Bdigits_division(big_decimal value_1, big_decimal value_2,
+                       big_decimal *result, uint8_t mode) {
   if (Bdigits_eq(value_2, (big_decimal){{0}})) /* если делим на 0 */
     return 3;
 
-  uint8_t err_code = 0;
+  err_t err_code = 0;
   const bool sign_1 = Bget_sign(value_1);
   const bool sign_2 = Bget_sign(value_2);
   const bool result_sign = (sign_1 == minus || sign_2 == minus) &&

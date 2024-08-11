@@ -23,35 +23,52 @@ typedef struct {
   int bits[4];
 } s21_decimal;
 
+void alignment(s21_decimal *value1, s21_decimal *value2, bool for_add);
+
+/**
+ * Возвращает значение scale в s21_decimal.
+ *
+ * @param value s21_decimal.
+ * @return значение scale.
+ */
+scale_t get_scale(s21_decimal value);
+
+/**
+ * Устанавливает scale для s21_decimal.
+ *
+ * @param value Указатель на изменяемый s21_decimal.
+ * @param scale Новый масштаб для s21_decimal.
+ * @return false если операция прошла успешно, true в противном случае.
+ */
 bool set_scale(s21_decimal *value, scale_t scale);
 
+/**
+ * Возвращает значение указанного бита в s21_decimal. Отсчёт с нуля.
+ *
+ * @param value s21_decimal.
+ * @param bit_pos Позиция бита, значение которого нужно получить.
+ * @return true если бит равен 1, false в противном случае.
+ */
 bool get_bit(s21_decimal value, uint8_t bit_pos);
 
 /**
  * Устанавливает указанный бит числа s21_decimal. Отсчёт с нуля.
+ *
+ * @param value Указатель на изменяемый s21_decimal.
+ * @param bit_pos Позиция бита, который нужно установить.
+ * @param state Новое значение бита (true для 1, false для 0).
  */
 void set_bit(s21_decimal *value, uint8_t bit_pos, bool state);
 
-uint8_t modulus10(s21_decimal value, s21_decimal *result);
-
-uint8_t divide10(s21_decimal value, s21_decimal *result);
-
-void alignment(s21_decimal *value1, s21_decimal *value2, bool for_add);
-
-uint8_t big_to_decimal(big_decimal value, s21_decimal *result);
+err_t big_to_decimal(big_decimal value, s21_decimal *result);
 
 int big_to_int(big_decimal value);
 
 void circumcision(s21_decimal *value);
 
+err_t check_scale(s21_decimal value);
+
 void decimal_to_big(s21_decimal value, big_decimal *result);
-
-uint8_t check_scale(s21_decimal value);
-
-/**
- * Возвращает десятичную точку числа s21_decimal.
- */
-uint8_t get_scale(s21_decimal value);
 
 /**
  * Возварщает знак s21_decimal.
@@ -69,6 +86,10 @@ bool get_sign(s21_decimal value);
  */
 void set_sign(s21_decimal *value, bool sign);
 
+err_t modulus10(s21_decimal value, s21_decimal *result);
+
+err_t divide10(s21_decimal value, s21_decimal *result);
+
 /**
  * Складывает два десятичных значения.
  *
@@ -80,7 +101,7 @@ void set_sign(s21_decimal *value, bool sign);
  * @return Код ошибки (0 - ок, 1 - число слишком велико или равно бесконечности,
  *         2 - число слишком мало или равно отрицательной бесконечности).
  */
-int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
+err_t s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 
 /**
  * Вычитает одно десятичное значение из другого.
@@ -93,7 +114,7 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
  * @return Код ошибки (0 - ок, 1 - число слишком велико или равно бесконечности,
  *         2 - число слишком мало или равно отрицательной бесконечности).
  */
-int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
+err_t s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 
 /**
  * Умножает два десятичных значения.
@@ -106,7 +127,7 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
  * @return Код ошибки (0 - ок, 1 - число слишком велико или равно бесконечности,
  *         2 - число слишком мало или равно отрицательной бесконечности).
  */
-int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
+err_t s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 
 /**
  * Делит одно десятичное значение на другое.
@@ -120,7 +141,7 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
  *         2 - число слишком мало или равно отрицательной бесконечности,
  *         3 - деление на 0).
  */
-int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
+err_t s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 
 /**
  * Проверяет, равны ли два десятичных значения.
@@ -231,7 +252,7 @@ int s21_from_float_to_decimal(float src, s21_decimal *dst);
  * @param result Указатель на результат изменения знака.
  * @return Код ошибки (0 - ок, 1 - ошибка вычисления).
  */
-int s21_negate(s21_decimal value, s21_decimal *result);
+err_t s21_negate(s21_decimal value, s21_decimal *result);
 
 /**
  * Округляет десятичное значение до ближайшего целого числа в меньшую сторону.
@@ -240,7 +261,7 @@ int s21_negate(s21_decimal value, s21_decimal *result);
  * @param result Указатель на результат округления.
  * @return Код ошибки (0 - ок, 1 - ошибка вычисления).
  */
-int s21_floor(s21_decimal value, s21_decimal *result);
+err_t s21_floor(s21_decimal value, s21_decimal *result);
 
 /**
  * Округляет десятичное значение до ближайшего целого числа.
@@ -249,7 +270,7 @@ int s21_floor(s21_decimal value, s21_decimal *result);
  * @param result Указатель на результат округления.
  * @return Код ошибки (0 - ок, 1 - ошибка вычисления).
  */
-int s21_round(s21_decimal value, s21_decimal *result);
+err_t s21_round(s21_decimal value, s21_decimal *result);
 
 /**
  * Усекание десятичного значения до целого числа.
@@ -258,6 +279,6 @@ int s21_round(s21_decimal value, s21_decimal *result);
  * @param result Указатель на результат усечения.
  * @return Код ошибки (0 - ок, 1 - ошибка вычисления).
  */
-int s21_truncate(s21_decimal value, s21_decimal *result);
+err_t s21_truncate(s21_decimal value, s21_decimal *result);
 
 #endif  // S21_DECIMAL_H

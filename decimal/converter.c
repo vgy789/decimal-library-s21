@@ -13,7 +13,7 @@ int big_to_int(big_decimal value) {
   return result;
 }
 
-uint8_t big_to_decimal(big_decimal value, s21_decimal *result) {
+err_t big_to_decimal(big_decimal value, s21_decimal *result) {
   *result = (s21_decimal){{0}};
   for (uint8_t i = 3; i < 6; ++i) {
     if (value.bits[i] != 0) { /* is overflow? */
@@ -29,6 +29,7 @@ uint8_t big_to_decimal(big_decimal value, s21_decimal *result) {
     result->bits[i] = value.bits[i];
   }
   result->bits[3] = value.bits[6];
+
   return 0;
 }
 
@@ -68,8 +69,8 @@ static void s21_strrev(char *str) {
   }
 }
 
-int s21_from_decimal_to_int(s21_decimal src, int *dst) {
-  uint8_t err_code = check_scale(src);
+err_t s21_from_decimal_to_int(s21_decimal src, int *dst) {
+  err_t err_code = check_scale(src);
   if (err_code != 0) return err_code;
   if (src.bits[1] != 0 && src.bits[2] != 0) { /* is not overflow? */
     if (get_sign(src) == plus) {
@@ -92,7 +93,7 @@ int s21_from_decimal_to_int(s21_decimal src, int *dst) {
   return 0;
 }
 
-int s21_from_int_to_decimal(int src, s21_decimal *dst) {
+err_t s21_from_int_to_decimal(int src, s21_decimal *dst) {
   *dst = (s21_decimal){{0}};
   if (src < 0) { /* is negative? */
     src = -src;
@@ -103,7 +104,7 @@ int s21_from_int_to_decimal(int src, s21_decimal *dst) {
   return 0;
 }
 
-int s21_from_decimal_to_float(s21_decimal src, float *dst) {
+err_t s21_from_decimal_to_float(s21_decimal src, float *dst) {
   *dst = 0;
   const bool sign = get_sign(src);
   if (sign == minus) {
@@ -140,7 +141,7 @@ int s21_from_decimal_to_float(s21_decimal src, float *dst) {
   return 0;
 }
 
-int s21_from_float_to_decimal(float src, s21_decimal *dst) {
+err_t s21_from_float_to_decimal(float src, s21_decimal *dst) {
   const bool sign = signbit(src);
   if (isinf(src)) {      /* inf */
     if (sign == minus) { /* -inf */

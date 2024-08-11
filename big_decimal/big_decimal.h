@@ -18,6 +18,7 @@ typedef struct {
 } big_decimal;
 
 typedef int8_t scale_t;
+typedef int err_t;
 
 /**
  * Знак числа.
@@ -36,16 +37,16 @@ void Bswap(big_decimal *value_1, big_decimal *value_2);
 /**
  * Вычитает из числа big_decimal единицу.
  */
-int Bdecriment(big_decimal value, big_decimal *result);
+err_t Bdecriment(big_decimal value, big_decimal *result);
 
 /**
  * Прибавляет к числу big_decimal единицу.
  */
-int Bincrement(big_decimal value, big_decimal *result);
+err_t Bincrement(big_decimal value, big_decimal *result);
 
-bool Bdigits_div10(big_decimal *value);
+err_t Bdigits_div10(big_decimal *value);
 
-bool Bdigits_mul10(big_decimal *value);
+err_t Bdigits_mul10(big_decimal *value);
 
 int Bdigits_eq(big_decimal value_1, big_decimal value_2);
 
@@ -65,29 +66,17 @@ int Bmod(big_decimal value_1, big_decimal value_2);
  * Складывает два десятичных значения.
  *
  * Оператор '+'
- *
- * @param value_1 Первое десятичное значение.
- * @param value_2 Второе десятичное значение.
- * @param result Указатель на результат сложения.
- * @return Код ошибки (0 - ок, 1 - число слишком велико или равно
- бесконечности,
- *         2 - число слишком мало или равно отрицательной бесконечности).
  */
-int Bdigits_add(big_decimal value_1, big_decimal value_2, big_decimal *result);
+err_t Bdigits_add(big_decimal value_1, big_decimal value_2,
+                  big_decimal *result);
 
 /**
  * Вычитает одно десятичное значение из другого.
  *
  * Оператор '-'
- *
- * @param value_1 Первое десятичное значение.
- * @param value_2 Второе десятичное значение.
- * @param result Указатель на результат вычитания.
- * @return Код ошибки (0 - ок, 1 - число слишком велико или равно
- бесконечности,
- *         2 - число слишком мало или равно отрицательной бесконечности).
  */
-int Bdigits_sub(big_decimal value_1, big_decimal value_2, big_decimal *result);
+err_t Bdigits_sub(big_decimal value_1, big_decimal value_2,
+                  big_decimal *result);
 
 /**
  * Возвращает указанный бит числа big_decimal. Отсчёт с нуля.
@@ -111,17 +100,11 @@ void Bset_scale(big_decimal *value, scale_t scale);
 
 /**
  * Возварщает знак big_decimal.
- *
- * @param value Проверяемое число.
- * @return 0 — положительный, 1 — отрицательный.
  */
 bool Bget_sign(big_decimal value);
 
 /**
  * Устанавливает знак числа decimal.
- *
- * @param *value Указатель на изменяемое число.
- * @param sign Знак числа (0 — положительный, 1 — отрицательный).
  */
 void Bset_sign(big_decimal *value, bool sign);
 
@@ -135,12 +118,12 @@ void Bcompliment2(big_decimal value, big_decimal *result);
 /**
  * Сдвиг битов мантиссы влево на один.
  */
-bool Bleft_shift(big_decimal *value);
+err_t Bleft_shift(big_decimal *value);
 
 /**
  * Сдвиг битов мантиссы враво на один.
  */
-bool Bright_shift(big_decimal *value);
+err_t Bright_shift(big_decimal *value);
 
 void Bset_result_sign(big_decimal *value, bool sign);
 
@@ -148,42 +131,25 @@ void Bset_result_sign(big_decimal *value, bool sign);
  * Умножает два десятичных значения.
  *
  * Оператор '*'
- *
- * @param value_1 Первое десятичное значение.
- * @param value_2 Второе десятичное значение.
- * @param result Указатель на результат умножения.
- * @return Код ошибки (0 - ок, 1 - число слишком велико или равно
- бесконечности,
- *         2 - число слишком мало или равно отрицательной бесконечности).
  */
-int Bdigits_mul(big_decimal value_1, big_decimal value_2, big_decimal *result);
+err_t Bdigits_mul(big_decimal value_1, big_decimal value_2,
+                  big_decimal *result);
 
-int Bdigits_division(big_decimal value_1, big_decimal value_2,
-                     big_decimal *result, uint8_t mode);
+err_t Bdigits_division(big_decimal value_1, big_decimal value_2,
+                       big_decimal *result, uint8_t mode);
 
 /**
  * Делит одно десятичное значение на другое.
  *
  * Оператор '/'
- *
- * @param value_1 Первое десятичное значение.
- * @param value_2 Второе десятичное значение.
- * @param result Указатель на результат деления.
- * @return Код ошибки (0 - ок, 1 - число слишком велико или равно
- бесконечности,
- *         2 - число слишком мало или равно отрицательной бесконечности,
- *         3 - деление на 0).
  */
-int Bdigits_div(big_decimal value_1, big_decimal value_2, big_decimal *result);
+err_t Bdigits_div(big_decimal value_1, big_decimal value_2,
+                  big_decimal *result);
 
 /**
  * Проверяет, равны ли два десятичных значения.
  *
  * Оператор '=='
- *
- * @param value_1 Первое десятичное значение.
- * @param value_2 Второе десятичное значение.
- * @return 1 если value_1 равно value_2, иначе 0.
  */
 int Bs21_is_equal(big_decimal value_1, big_decimal value_2);
 
@@ -191,10 +157,6 @@ int Bs21_is_equal(big_decimal value_1, big_decimal value_2);
  * Проверяет, не равны ли два десятичных значения.
  *
  * Оператор '!='
- *
- * @param value_1 Первое десятичное значение.
- * @param value_2 Второе десятичное значение.
- * @return 1 если value_1 не равно value_2, иначе 0.
  */
 int Bs21_is_not_equal(big_decimal value_1, big_decimal value_2);
 
@@ -202,10 +164,6 @@ int Bs21_is_not_equal(big_decimal value_1, big_decimal value_2);
  * Проверяет, является ли первое десятичное значение больше второго.
  *
  * Оператор '>'
- *
- * @param value_1 Первое десятичное значение.
- * @param value_2 Второе десятичное значение.
- * @return 1 если value_1 больше value_2, иначе 0.
  */
 int Bs21_is_greater(big_decimal value_1, big_decimal value_2);
 
@@ -214,10 +172,6 @@ int Bs21_is_greater(big_decimal value_1, big_decimal value_2);
  второму.
  *
  * Оператор '>='
- *
- * @param value_1 Первое десятичное значение.
- * @param value_2 Второе десятичное значение.
- * @return 1 если value_1 больше или равно value_2, иначе 0.
  */
 int Bs21_is_greater_or_equal(big_decimal value_1, big_decimal value_2);
 
@@ -225,10 +179,6 @@ int Bs21_is_greater_or_equal(big_decimal value_1, big_decimal value_2);
  * Проверяет, является ли первое десятичное значение меньше второго.
  *
  * Оператор '<'
- *
- * @param value_1 Первое десятичное значение.
- * @param value_2 Второе десятичное значение.
- * @return 1 если value_1 меньше value_2, иначе 0.
  */
 int Bs21_is_less(big_decimal value_1, big_decimal value_2);
 
@@ -237,84 +187,49 @@ int Bs21_is_less(big_decimal value_1, big_decimal value_2);
  второму.
  *
  * Оператор '<='
- *
- * @param value_1 Первое десятичное значение.
- * @param value_2 Второе десятичное значение.
- * @return 1 если value_1 меньше или равно value_2, иначе 0.
  */
 int Bs21_is_less_or_equal(big_decimal value_1, big_decimal value_2);
 
 /**
  * Преобразует десятичное значение в целое число.
- *
- * @param src Исходное десятичное значение.
- * @param dst Указатель на результат преобразования.
- * @return Код ошибки (0 - ок, 1 - ошибка конвертации).
  */
 int Bs21_from_decimal_to_int(big_decimal src, int *dst);
 
 /**
  * Преобразует десятичное значение в число с плавающей запятой.
- *
- * @param src Исходное десятичное значение.
- * @param dst Указатель на результат преобразования.
- * @return Код ошибки (0 - ок, 1 - ошибка конвертации).
  */
 int Bs21_from_decimal_to_float(big_decimal src, float *dst);
 
 /**
  * Преобразует целое число в десятичное значение.
  *
- * @param src Исходное целое число.
- * @param dst Указатель на результат преобразования.
- * @return Код ошибки (0 - ок, 1 - ошибка конвертации).
  */
 int Bs21_from_int_to_decimal(int src, big_decimal *dst);
 
 /**
  * Преобразует число с плавающей запятой в десятичное значение.
- *
- * @param src Исходное число с плавающей запятой.
- * @param dst Указатель на результат преобразования.
- * @return Код ошибки (0 - ок, 1 - ошибка конвертации).
  */
 int Bs21_from_float_to_decimal(float src, big_decimal *dst);
 
 /**
  * Изменяет знак десятичного значения на противоположный.
- *
- * @param value Исходное десятичное значение.
- * @param result Указатель на результат изменения знака.
- * @return Код ошибки (0 - ок, 1 - ошибка вычисления).
  */
 int Bs21_negate(big_decimal value, big_decimal *result);
 
 /**
  * Округляет десятичное значение до ближайшего целого числа в меньшую
  сторону.
- *
- * @param value Исходное десятичное значение.
- * @param result Указатель на результат округления.
- * @return Код ошибки (0 - ок, 1 - ошибка вычисления).
  */
-int Bs21_floor(big_decimal value, big_decimal *result);
+void Bs21_floor(big_decimal value, big_decimal *result);
 
 /**
  * Округляет десятичное значение до ближайшего целого числа.
- *
- * @param value Исходное десятичное значение.
- * @param result Указатель на результат округления.
- * @return Код ошибки (0 - ок, 1 - ошибка вычисления).
  */
-int Bs21_round(big_decimal value, big_decimal *result);
+void Bs21_round(big_decimal value, big_decimal *result);
 
 /**
  * Усекание десятичного значения до целого числа.
- *
- * @param value Исходное десятичное значение.
- * @param result Указатель на результат усечения.
- * @return Код ошибки (0 - ок, 1 - ошибка вычисления).
  */
-int Bs21_truncate(big_decimal value, big_decimal *result);
+void Bs21_truncate(big_decimal value, big_decimal *result);
 
 #endif  // BIG_DECIMAL_H
