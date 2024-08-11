@@ -485,7 +485,7 @@ ck_assert(return_code == 0);
 #test add_positive_float_big_scale
  s21_decimal value_1 = {{1, 0, 0, 0}};
  s21_decimal value_2 = {{2, 0, 0, 0}};
- set_scale(&value_1, 28);
+ set_scale(&value_1, MAX_SCALE);
  set_scale(&value_2, 27);
  s21_decimal result;
  s21_decimal expected = {{21, 0, 0, 0}};
@@ -499,7 +499,7 @@ ck_assert(return_code == 0);
 #test add_negative_float_big_scale_
  s21_decimal value_1 = {{1, 0, 0, 0x80000000}};
  s21_decimal value_2 = {{2, 0, 0, 0x80000000}};
- set_scale(&value_1, 28);
+ set_scale(&value_1, MAX_SCALE);
  set_scale(&value_2, 27);
  s21_decimal result;
  s21_decimal expected = {{21, 0, 0, 0x80000000}};
@@ -514,7 +514,7 @@ ck_assert(return_code == 0);
 #test add_negative_and_positive_float_big_scale_
  s21_decimal value_1 = {{1, 0, 0, 0x80000000}};
  s21_decimal value_2 = {{2, 0, 0, 0}};
- set_scale(&value_1, 28);
+ set_scale(&value_1, MAX_SCALE);
  set_scale(&value_2, 27);
  s21_decimal result;
  s21_decimal expected = {{19, 0, 0, 0}};
@@ -529,7 +529,7 @@ ck_assert(return_code == 0);
 #test add_positive_and_negative_float_big_scale
  s21_decimal value_1 = {{1, 0, 0, 0}};
  s21_decimal value_2 = {{2, 0, 0, 0x80000000}};
- set_scale(&value_1, 28);
+ set_scale(&value_1, MAX_SCALE);
  set_scale(&value_2, 27);
  s21_decimal result;
  s21_decimal expected = {{19, 0, 0, 0x80000000}};
@@ -545,7 +545,7 @@ ck_assert(return_code == 0);
 // #test add_positive_float_big_scale
 //  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
 //  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-//  set_scale(&value_1, 28);
+//  set_scale(&value_1, MAX_SCALE);
 //  set_scale(&value_2, 27);
 //  s21_decimal result;
 //  s21_decimal expected = ???;
@@ -560,7 +560,7 @@ ck_assert(return_code == 0);
 //#test add_negative_float_big_scale
 // s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
 // s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-// set_scale(&value_1, 28);
+// set_scale(&value_1, MAX_SCALE);
 // set_scale(&value_2, 27);
 // s21_decimal result;
 // s21_decimal expected = ???;
@@ -575,7 +575,7 @@ ck_assert(return_code == 0);
 //#test add_negative_and_positive_float_big_scale
 // s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
 // s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-// set_scale(&value_1, 28);
+// set_scale(&value_1, MAX_SCALE);
 // set_scale(&value_2, 27);
 // s21_decimal result;
 // s21_decimal expected = ???;
@@ -590,7 +590,7 @@ ck_assert(return_code == 0);
 //#test add_positive_and_negative_float_big_scale
 // s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
 // s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-// set_scale(&value_1, 28);
+// set_scale(&value_1, MAX_SCALE);
 // set_scale(&value_2, 27);
 // s21_decimal result;
 // s21_decimal expected = ???;
@@ -881,7 +881,7 @@ ck_assert(return_code == 0);
 #test sub_positive_float_big_scale
 s21_decimal value_1 = {{1, 0, 0, 0}};
 s21_decimal value_2 = {{2, 0, 0, 0}};
-set_scale(&value_1, 28);
+set_scale(&value_1, MAX_SCALE);
 set_scale(&value_2, 27);
 s21_decimal result;
 s21_decimal expected = {{19, 0, 0, 0x80000000}};
@@ -897,7 +897,7 @@ ck_assert(return_code == 0);
  s21_decimal value_2 = {{2, 0, 0, 0}};
  set_sign(&value_1, minus);
  set_sign(&value_2, minus);
- set_scale(&value_1, 28);
+ set_scale(&value_1, MAX_SCALE);
  set_scale(&value_2, 27);
  s21_decimal result;
  s21_decimal expected = {{19, 0, 0, 0}};
@@ -913,7 +913,7 @@ ck_assert(return_code == 0);
  s21_decimal value_1 = {{1, 0, 0, 0}};
  s21_decimal value_2 = {{2, 0, 0, 0}};
  set_sign(&value_1, minus);
- set_scale(&value_1, 28);
+ set_scale(&value_1, MAX_SCALE);
  set_scale(&value_2, 27);
  s21_decimal result;
  s21_decimal expected = {{21, 0, 0, 0x80000000}};
@@ -929,7 +929,7 @@ ck_assert(return_code == 0);
  s21_decimal value_1 = {{1, 0, 0, 0}};
  s21_decimal value_2 = {{2, 0, 0, 0}};
  set_sign(&value_2, minus);
- set_scale(&value_1, 28);
+ set_scale(&value_1, MAX_SCALE);
  set_scale(&value_2, 27);
  s21_decimal result;
  s21_decimal expected = {{21, 0, 0, 0}};
@@ -1050,7 +1050,7 @@ ck_assert(return_code == 0);
 // #test sub_positive_float_big_scale
 //  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
 //  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-//  set_scale(&value_1, 28);
+//  set_scale(&value_1, MAX_SCALE);
 //  set_scale(&value_2, 27);
 //  s21_decimal result;
 //  int return_code = s21_sub(value_1, value_2, &result);
@@ -1063,7 +1063,7 @@ ck_assert(return_code == 0);
 //#test sub_negative_float_big_scale
 // s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
 // s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-// set_scale(&value_1, 28);
+// set_scale(&value_1, MAX_SCALE);
 // set_scale(&value_2, 27);
 // s21_decimal result;
 // s21_decimal expected = ???;
@@ -1078,7 +1078,7 @@ ck_assert(return_code == 0);
 //#test sub_negative_and_positive_float_big_scale
 // s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
 // s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-// set_scale(&value_1, 28);
+// set_scale(&value_1, MAX_SCALE);
 // set_scale(&value_2, 27);
 // s21_decimal result;
 // s21_decimal expected = ???;
@@ -1093,7 +1093,7 @@ ck_assert(return_code == 0);
 //#test sub_positive_and_negative_float_big_scale
 // s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
 // s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-// set_scale(&value_1, 28);
+// set_scale(&value_1, MAX_SCALE);
 // set_scale(&value_2, 27);
 // s21_decimal result;
 // s21_decimal expected = ???;
@@ -1504,7 +1504,7 @@ ck_assert(return_code == 0);
 #test mul_positive_float_big_scale
   s21_decimal value_1 = {{1, 0, 0, 0}};
   s21_decimal value_2 = {{2, 0, 0, 0}};
-  set_scale(&value_1, 28);
+  set_scale(&value_1, MAX_SCALE);
   set_scale(&value_2, 27);
   s21_decimal result;
 
@@ -1516,7 +1516,7 @@ ck_assert(return_code == 0);
 #test mul_negative_float_big_scale
   s21_decimal value_1 = {{1, 0, 0, 0x80000000}};
   s21_decimal value_2 = {{2, 0, 0, 0x80000000}};
-  set_scale(&value_1, 28);
+  set_scale(&value_1, MAX_SCALE);
   set_scale(&value_2, 27);
   s21_decimal result;
 
@@ -1529,7 +1529,7 @@ ck_assert(return_code == 0);
 #test mul_negative_and_positive_float_big_scale
  s21_decimal value_1 = {{1, 0, 0, 0x80000000}};
  s21_decimal value_2 = {{2, 0, 0, 0}};
- set_scale(&value_1, 28);
+ set_scale(&value_1, MAX_SCALE);
  set_scale(&value_2, 27);
  s21_decimal result;
 
@@ -1542,7 +1542,7 @@ ck_assert(return_code == 0);
 #test mul_positive_and_negative_float_big_scale
  s21_decimal value_1 = {{1, 0, 0, 0}};
  s21_decimal value_2 = {{2, 0, 0, 0x80000000}};
- set_scale(&value_1, 28);
+ set_scale(&value_1, MAX_SCALE);
  set_scale(&value_2, 27);
  s21_decimal result;
 
@@ -1555,7 +1555,7 @@ ck_assert(return_code == 0);
 #test mul_positive_float_big_scale_not_zero
  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
- set_scale(&value_1, 28);
+ set_scale(&value_1, MAX_SCALE);
  set_scale(&value_2, 27);
  s21_decimal result;
 
@@ -1568,7 +1568,7 @@ ck_assert(return_code == 0);
 #test mul_negative_float_big_scale_not_zero
  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
- set_scale(&value_1, 28);
+ set_scale(&value_1, MAX_SCALE);
  set_scale(&value_2, 27);
  s21_decimal result;
 
@@ -1581,7 +1581,7 @@ ck_assert(return_code == 0);
 #test mul_negative_and_positive_float_big_scale_not_zero
  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
- set_scale(&value_1, 28);
+ set_scale(&value_1, MAX_SCALE);
  set_scale(&value_2, 27);
  s21_decimal result;
 
@@ -1594,7 +1594,7 @@ ck_assert(return_code == 0);
 #test mul_positive_and_negative_float_big_scale_not_zero
  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
- set_scale(&value_1, 28);
+ set_scale(&value_1, MAX_SCALE);
  set_scale(&value_2, 27);
  s21_decimal result;
 
@@ -1634,7 +1634,7 @@ ck_assert(return_code == 0);
 #test alignment_both_zero_with_scale
 s21_decimal value_1 = {{0, 0, 0, 0}};
 s21_decimal value_2 = {{0, 0, 0, 0}};
-set_scale(&value_1, 28);
+set_scale(&value_1, MAX_SCALE);
 set_scale(&value_2, 27);
 alignment(&value_1, &value_2, 1);
 
@@ -1663,7 +1663,7 @@ ck_assert(s21_is_equal(value_2, expected2) == 1);
 #test alignment_both_zero_without_scale_and_with_scale
 s21_decimal value_1 = {{0, 0, 0, 0}};
 s21_decimal value_2 = {{0, 0, 0, 0}};
-set_scale(&value_2, 28);
+set_scale(&value_2, MAX_SCALE);
 
 alignment(&value_1, &value_2, 1);
 
@@ -1678,7 +1678,7 @@ ck_assert(s21_is_equal(value_2, expected2) == 1);
 #test alignment_both_zero_with_scale_and_without_scale
 s21_decimal value_1 = {{0, 0, 0, 0}};
 s21_decimal value_2 = {{0, 0, 0, 0}};
-set_scale(&value_1, 28);
+set_scale(&value_1, MAX_SCALE);
 
 alignment(&value_1, &value_2, 1);
 
@@ -1727,7 +1727,7 @@ ck_assert(s21_is_equal(value_2, expected2) == 1);
 #test alignment_big_float_big_scale_and_min_scale_
 s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
 s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-set_scale(&value_1, 28);
+set_scale(&value_1, MAX_SCALE);
 set_scale(&value_2, 1);
 alignment(&value_1, &value_2, 1);
 
@@ -1744,7 +1744,7 @@ ck_assert(s21_is_equal(value_2, expected2) == 1);
 s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
 s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
 set_scale(&value_1, 1);
-set_scale(&value_2, 28);
+set_scale(&value_2, MAX_SCALE);
 alignment(&value_1, &value_2, 1);
 
 s21_decimal expected1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
@@ -1759,7 +1759,7 @@ ck_assert(s21_is_equal(value_2, expected2) == 1);
 #test alignment_min_float_big_scale_and_min_scale_
 s21_decimal value_1 = {{1, 0, 0, 0}};
 s21_decimal value_2 = {{1, 0, 0, 0}};
-set_scale(&value_1, 28);
+set_scale(&value_1, MAX_SCALE);
 set_scale(&value_2, 1);
 alignment(&value_1, &value_2, 1);
 
@@ -1776,7 +1776,7 @@ ck_assert(s21_is_equal(value_2, expected2) == 1);
 s21_decimal value_1 = {{1, 0, 0, 0}};
 s21_decimal value_2 = {{1, 0, 0, 0}};
 set_scale(&value_1, 1);
-set_scale(&value_2, 28);
+set_scale(&value_2, MAX_SCALE);
 alignment(&value_1, &value_2, 1);
 
 s21_decimal expected1 = {{1, 0, 0, 0}};

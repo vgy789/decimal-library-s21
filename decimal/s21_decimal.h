@@ -6,6 +6,7 @@
 
 #include "../big_decimal/big_decimal.h"
 
+#define MAX_SCALE (28)
 #define MAGNITUDE_BIT_COUNT (96)
 
 /**
