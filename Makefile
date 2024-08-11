@@ -3,7 +3,6 @@ CC = gcc
 SRCMODULES = ./decimal/alignment.c ./decimal/arithmetic.c ./decimal/comparison.c ./decimal/converter.c ./decimal/rounding.c ./decimal/various.c ./big_decimal/Balignment.c ./big_decimal/Barithmetic.c ./big_decimal/Bcomparison.c ./big_decimal/Brounding.c ./big_decimal/Bvarious.c
 OBJMODULES = $(SRCMODULES:.c=.o)
 CFLAGS = -O2 -flto -Wall -Werror -Wextra -std=c11 -Wunused-function
-# CFLAGS = -Wall -Werror -Wextra -std=c11
 LDFLAGS = `pkg-config --cflags --libs check`
 
 TEST_EXEC = run_test.out
