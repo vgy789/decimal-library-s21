@@ -127,8 +127,6 @@ void Bset_sign(big_decimal *value, bool sign);
 
 void Balignment(big_decimal *value_1, big_decimal *value_2, bool for_add);
 
-void Bcircumcision(big_decimal *value);
-
 /**
  * Перевод мантиссы в дополнительный код (дополнение до двух).
  */
