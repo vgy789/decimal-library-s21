@@ -17,18 +17,14 @@ void Bcompliment2(big_decimal value, big_decimal *result) {
 }
 
 bool Bdigits_div10(big_decimal *value) {
-  // const uint8_t scale = Bget_scale(*value);
   const uint8_t err_code = Bdigits_division(
       *value, (big_decimal){{10, 0, 0, 0, 0, 0}}, value, divide);
-  // Bset_scale(value, scale - 1);
   return err_code;
 }
 
 bool Bdigits_mul10(big_decimal *value) {
-  // const uint8_t scale = Bget_scale(*value);
   const uint8_t err_code =
       Bdigits_mul(*value, (big_decimal){{10, 0, 0, 0, 0, 0}}, value);
-  // Bset_scale(value, scale + 1);
   return err_code;
 }
 

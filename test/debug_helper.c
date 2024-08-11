@@ -11,7 +11,7 @@ void str_to_decimal(char *number, s21_decimal *result) {
   }
 
   bool radix_point = false;
-  uint8_t scale = 0;
+  scale_t scale = 0;
   for (int i = 0; number[i] != '\0'; ++i) {
     if (number[i] == '.' || number[i] == ',') {
       radix_point = true;
@@ -39,7 +39,7 @@ void str_to_bigdecimal(char *number, big_decimal *result) {
   }
 
   bool radix_point = false;
-  uint8_t scale = 0;
+  scale_t scale = 0;
   for (int i = 0; number[i] != '\0'; ++i) {
     if (number[i] == '.' || number[i] == ',') {
       radix_point = true;

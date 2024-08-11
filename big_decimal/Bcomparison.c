@@ -35,8 +35,8 @@ static int Bcomparison(big_decimal a, big_decimal b) {
   } else if (sign_a < sign_b) {
     result = gt;  // b - отрицательное число, a - положительное
   } else { /* a == b */
-    uint8_t scale_a = Bget_scale(a);
-    uint8_t scale_b = Bget_scale(b);
+    scale_t scale_a = Bget_scale(a);
+    scale_t scale_b = Bget_scale(b);
     if (scale_a == scale_b)
       result = Bcomparison_digits(a, b);  // если экспоненты равны
     else {

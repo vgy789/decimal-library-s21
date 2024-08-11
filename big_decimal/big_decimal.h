@@ -17,6 +17,8 @@ typedef struct {
   int bits[7];
 } big_decimal;
 
+typedef int8_t scale_t;
+
 /**
  * Знак числа.
  *
@@ -26,6 +28,8 @@ enum sign { plus, minus };
 
 // divide деление, whole целое от деления, reside остаток от деления
 enum { divide, whole, reside };
+
+void Bnormalize(big_decimal *value);
 
 void Bswap(big_decimal *value_1, big_decimal *value_2);
 
@@ -103,7 +107,7 @@ uint8_t Bget_scale(big_decimal value);
 /**
  * Устанавливает десятичную точку в числе big_decimal.
  */
-void Bset_scale(big_decimal *value, uint8_t scale);
+void Bset_scale(big_decimal *value, scale_t scale);
 
 /**
  * Возварщает знак big_decimal.

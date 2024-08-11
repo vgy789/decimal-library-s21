@@ -48,9 +48,8 @@ uint8_t Bget_scale(big_decimal value) {
   return (value.bits[6] & (0b11111111 << 16)) >> 16;
 }
 
-void Bset_scale(big_decimal *value, uint8_t scale) {
+void Bset_scale(big_decimal *value, scale_t scale) {
   const bool sign = Bget_sign(*value);
-
   value->bits[6] = (0b11111111 << 16) & scale << 16;
   Bset_sign(value, sign);
 }

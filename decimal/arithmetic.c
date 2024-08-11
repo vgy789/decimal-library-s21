@@ -22,7 +22,7 @@ uint8_t modulus10(s21_decimal value, s21_decimal *result) {
 
 static int8_t calculate_scale(big_decimal value_1, big_decimal value_2,
                               big_decimal result, const calc_func calc) {
-  int8_t scale_result = 0;
+  scale_t scale_result = 0;
   if (calc == Bdigits_add) {
     scale_result = Bget_scale(value_1);
   } else if (calc == Bdigits_mul) {
@@ -49,7 +49,7 @@ static int calculate(s21_decimal value_1, s21_decimal value_2,
   }
 
   if (err_code == 0) {
-    int8_t scale_result = 0;
+    scale_t scale_result = 0;
     decimal_to_big(value_1, &big_1);
     decimal_to_big(value_2, &big_2);
 
@@ -60,17 +60,13 @@ static int calculate(s21_decimal value_1, s21_decimal value_2,
     scale_result = calculate_scale(big_1, big_2, big_result, calc);
     if (calc == Bdigits_div) {
       if (err_code) return err_code;
-      while (scale_result < 0) {
-        Bdigits_mul10(&big_result);
-        ++scale_result;
-      }
     }
     if (scale_result > MAX_SCALE) { /* слишком большой scale */
       return Bget_sign(big_result) + 1;
     }
 
     Bset_scale(&big_result, scale_result);
-    Bcircumcision(&big_result);
+    Bnormalize(&big_result);
     err_code = big_to_decimal(big_result, result);
   }
 

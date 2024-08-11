@@ -16,6 +16,6 @@ void alignment(s21_decimal *value_1, s21_decimal *value_2, bool for_add) {
 void circumcision(s21_decimal *value) {
   big_decimal big = (big_decimal){{0}};
   decimal_to_big(*value, &big);
-  Bcircumcision(&big);
+  Bnormalize(&big);
   big_to_decimal(big, value);
 }

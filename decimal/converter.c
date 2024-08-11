@@ -79,7 +79,7 @@ int s21_from_decimal_to_int(s21_decimal src, int *dst) {
     }
   }
 
-  uint8_t scale_src = get_scale(src);
+  scale_t scale_src = get_scale(src);
   while (scale_src > 0) {
     divide10(src, &src);
     scale_src--;
@@ -111,7 +111,7 @@ int s21_from_decimal_to_float(s21_decimal src, float *dst) {
   }
 
   s21_decimal buf = (s21_decimal){{0}};
-  uint8_t scale = get_scale(src);
+  scale_t scale = get_scale(src);
 
   char digits[33] = {'\0'};
   int digit = 0;
@@ -158,7 +158,7 @@ int s21_from_float_to_decimal(float src, s21_decimal *dst) {
   big_decimal Bdst = (big_decimal){{0}};
   src = fabs(src);
   bool has_point = false;
-  uint8_t scale = 0;
+  scale_t scale = 0;
 
   for (int i = 0; digits[i] != '\0'; ++i) {
     if (has_point) {
@@ -174,7 +174,7 @@ int s21_from_float_to_decimal(float src, s21_decimal *dst) {
   }
 
   Bset_scale(&Bdst, scale);
-  Bcircumcision(&Bdst);
+  Bnormalize(&Bdst);
   Bset_sign(&Bdst, sign);
 
   big_to_decimal(Bdst, dst);

@@ -1,7 +1,8 @@
 #include "s21_decimal.h"
 
 uint8_t check_scale(s21_decimal value) {
-  if (get_scale(value) > 28) { /* max scale test */
+  const scale_t scale = get_scale(value);
+  if (scale > 28 || scale < 0) { /* max scale test */
     return get_sign(value) + 1;
   }
   return 0;  // correct scale
@@ -30,7 +31,7 @@ uint8_t get_scale(s21_decimal value) {
   return Bget_scale(big);
 }
 
-bool set_scale(s21_decimal *value, uint8_t scale) {
+bool set_scale(s21_decimal *value, scale_t scale) {
   const bool is_err = check_scale(*value);
   big_decimal big = (big_decimal){{0}};
   decimal_to_big(*value, &big);

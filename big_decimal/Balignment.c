@@ -31,19 +31,27 @@ static bool is_Bdigits_div10(big_decimal value) {
   return 0;
 }
 
-void Bcircumcision(big_decimal *value) {
-  int8_t mant_size = Bget_scale(*value);
-
-  while (mant_size > 0 && is_Bdigits_div10(*value) == 0) {
+void Bnormalize_recursive(big_decimal *value, scale_t scale) {
+  if (scale < 0) { /* дополняем нулями */
+    Bdigits_mul10(value);
+    Bnormalize_recursive(value, scale + 1);
+  } else if (scale > 0 &&
+             is_Bdigits_div10(*value) == 0) { /* обрезаем лишние нули */
     Bdigits_div10(value);
-    mant_size--;
+    Bnormalize_recursive(value, scale - 1);
+  } else {
+    Bset_scale(value, scale);
   }
-  Bset_scale(value, mant_size);
+}
+
+void Bnormalize(big_decimal *value) {
+  scale_t scale = Bget_scale(*value);
+  Bnormalize_recursive(value, scale);
 }
 
 void Balignment(big_decimal *value_1, big_decimal *value_2, bool for_add) {
-  uint8_t scale_1 = Bget_scale(*value_1);
-  uint8_t scale_2 = Bget_scale(*value_2);
+  scale_t scale_1 = Bget_scale(*value_1);
+  scale_t scale_2 = Bget_scale(*value_2);
 
   if (for_add) {
     if (Bdigits_eq(*value_1, *value_2)) {

@@ -23,7 +23,7 @@ typedef struct {
   int bits[4];
 } s21_decimal;
 
-bool set_scale(s21_decimal *value, uint8_t scale);
+bool set_scale(s21_decimal *value, scale_t scale);
 
 bool get_bit(s21_decimal value, uint8_t bit_pos);
 
