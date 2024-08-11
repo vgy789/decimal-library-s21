@@ -5,7 +5,7 @@ enum { eq, gt, lt };
 // сравнивает мантиссы без учёта знака и scale
 static int Bcomparison_digits(big_decimal value_1, big_decimal value_2) {
   int16_t bit_pos = BDIGITS_BIT_COUNT - 1;
-  u_int8_t result = eq;
+  uint8_t result = eq;
 
   while (bit_pos >= 0) {
     bool pos_a = Bget_bit(value_1, bit_pos);

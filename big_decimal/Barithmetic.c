@@ -161,7 +161,7 @@ int Bdigits_division(big_decimal value_1, big_decimal value_2,
   big_decimal Q = (big_decimal){{0}};  // частное quotient
   big_decimal R;                       // остаток reside
   while (1) {
-    for (u_int8_t i = 0; i < 6; ++i) { /* сбрасывает значение Q */
+    for (uint8_t i = 0; i < 6; ++i) { /* сбрасывает значение Q */
       Q.bits[i] = 0;
     }
     R = (big_decimal){{0}};
@@ -212,7 +212,7 @@ int Bmod(big_decimal value_1, big_decimal value_2) {
   big_decimal Q = (big_decimal){{0}};  // частное quotient
   big_decimal R = (big_decimal){{0}};  // остаток reside
 
-  for (u_int8_t i = 0; i < 6; ++i) { /* сбрасывает значение Q */
+  for (uint8_t i = 0; i < 6; ++i) { /* сбрасывает значение Q */
     Q.bits[i] = 0;
   }
   R = (big_decimal){{0}};

@@ -8,7 +8,7 @@ static bool is_Bdigits_div10(big_decimal value) {
   big_decimal R;                       // остаток reside
 
   while (1) {
-    for (u_int8_t i = 0; i < 6; ++i) { /* сбрасывает значение Q */
+    for (uint8_t i = 0; i < 6; ++i) { /* сбрасывает значение Q */
       Q.bits[i] = 0;
     }
     R = (big_decimal){{0}};
