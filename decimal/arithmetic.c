@@ -64,9 +64,9 @@ static int calculate(s21_decimal value_1, s21_decimal value_2,
         Bdigits_mul10(&big_result);
         ++scale_result;
       }
-      if (scale_result > 28) { /* слишком большой scale */
-        return Bget_sign(big_result) + 1;
-      }
+    }
+    if (scale_result > MAX_SCALE) { /* слишком большой scale */
+      return Bget_sign(big_result) + 1;
     }
 
     Bset_scale(&big_result, scale_result);
