@@ -2110,8 +2110,6 @@ set_scale(&value_1, 25);
 set_scale(&value_2, 26);
 bool result = s21_is_greater_or_equal(value_1, value_2);
 ck_assert(result == 1);
-<<<<<<< HEAD
-=======
 
 #test truncate_1
 s21_decimal value = {{25, 0, 0, 0}};
@@ -2357,4 +2355,3 @@ float result = 0;
 str_to_decimal("78123", &value_1);
 s21_from_decimal_to_float(value_1, &result);
 ck_assert(78123.0 == result);
->>>>>>> develop
