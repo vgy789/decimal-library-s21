@@ -1,7 +1,6 @@
 #ifndef DEBUG_HELPER_H
 #define DEBUG_HELPER_H
 
-#include <ctype.h>
 #include <inttypes.h>
 #include <limits.h>
 #include <math.h>

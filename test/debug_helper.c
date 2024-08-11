@@ -21,7 +21,7 @@ void str_to_decimal(char *number, s21_decimal *result) {
       scale += 1;
     }
 
-    uint8_t digit = digittoint(number[i]);
+    uint8_t digit = number[i] - '0';
     s21_decimal dec_digit = (s21_decimal){{digit}};
     s21_mul(*result, (s21_decimal){{10}}, result);
     s21_add(*result, dec_digit, result);
@@ -49,7 +49,7 @@ void str_to_bigdecimal(char *number, big_decimal *result) {
       scale += 1;
     }
 
-    uint8_t digit = digittoint(number[i]);
+    uint8_t digit = number[i] - '0';
     big_decimal dec_digit = (big_decimal){{digit}};
     Bdigits_mul(*result, (big_decimal){{10}}, result);
     Bdigits_add(*result, dec_digit, result);
