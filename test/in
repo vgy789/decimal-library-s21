@@ -538,6 +538,7 @@ int return_code = s21_add(value_1, value_2, &result);
 
 ck_assert(s21_is_equal(result, expected) == 1);
 ck_assert(return_code == 0);
+
 //
 //  ОКРУГЛЕНИЕ - поменять название тестов
 //   Функция s21_add сложение двух положительных чисел с большой мантиссой с

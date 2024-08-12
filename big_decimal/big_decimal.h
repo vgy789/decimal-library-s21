@@ -232,4 +232,9 @@ void Bs21_round(big_decimal value, big_decimal *result);
  */
 void Bs21_truncate(big_decimal value, big_decimal *result);
 
+/**
+ * Банковское округление (в сторону четного числа).
+ */
+void Bbank_round(big_decimal value, big_decimal *result);
+
 #endif  // BIG_DECIMAL_H

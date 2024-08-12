@@ -144,7 +144,6 @@ void dec_to_bin(s21_decimal value, bool print_scale, bool print_separate) {
     printf("(-)");
   else
     printf("(+)");
-
   if (print_scale) {
     uint_to_bin(value.bits[3]);
   }

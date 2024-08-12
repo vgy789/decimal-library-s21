@@ -26,3 +26,7 @@ err_t s21_round(s21_decimal value, s21_decimal *result) {
 err_t s21_floor(s21_decimal value, s21_decimal *result) {
   return rounding(value, result, Bs21_floor);
 }
+
+err_t bank_round(s21_decimal value, s21_decimal *result) {
+  return rounding(value, result, Bbank_round);
+}

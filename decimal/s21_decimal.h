@@ -281,4 +281,13 @@ err_t s21_round(s21_decimal value, s21_decimal *result);
  */
 err_t s21_truncate(s21_decimal value, s21_decimal *result);
 
+/**
+ * Банковское округление (в сторону четного числа).
+ *
+ * @param value Исходное десятичное значение.
+ * @param result Указатель на результат усечения.
+ * @return Код ошибки (0 - ок, 1 - ошибка вычисления).
+ */
+err_t bank_round(s21_decimal value, s21_decimal *result);
+
 #endif  // S21_DECIMAL_H
