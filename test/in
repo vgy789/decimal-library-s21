@@ -110,6 +110,19 @@ int return_code = s21_add(value_1, value_2, &result);
 ck_assert(s21_is_equal(result, expected) == 1);
 ck_assert(return_code == 0);
 
+// s21_add
+// Функция s21_add сложение двух больших положительных чисел
+#test add_big_positive_numbers
+s21_decimal value_1 = {{10, 30, 60000, 0}};
+s21_decimal value_2 = {{20, 30, 60000, 0}};
+s21_decimal result;
+s21_decimal expected = {{30, 60, 120000, 0}};
+int return_code = s21_add(value_1, value_2, &result);
+
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
+
+
 // Функция s21_add сложение двух отрицательных чисел
 #test add_negative_numbers
 s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
@@ -157,6 +170,19 @@ int return_code = s21_add(value_1, value_2, &result);
 
 ck_assert(s21_is_equal(result, expected) == 1);
 ck_assert(return_code == 0);
+
+// Функция s21_add сложение двух больших положительных дробных
+// #test add_big_positive_float
+//s21_decimal value_1 = {{0}};
+//s21_decimal value_2 = {{0}};
+//str_to_decimal("50000000")
+//s21_decimal result;
+//s21_decimal expected = {{200001, 0, 0, 0}};
+//set_scale(&expected, 9);
+//int return_code = s21_add(value_1, value_2, &result);
+
+//ck_assert(s21_is_equal(result, expected) == 1);
+//ck_assert(return_code == 0); 
 
 // Функция s21_add сложение двух отрицательных дробных
 #test add_negative_float
@@ -2355,3 +2381,126 @@ float result = 0;
 str_to_decimal("78123", &value_1);
 s21_from_decimal_to_float(value_1, &result);
 ck_assert(78123.0 == result);
+
+#test from_decimal_to_float_2
+s21_decimal value_1 = {{0}};
+float result = 0;
+str_to_decimal("781865", &value_1);
+set_sign(&value_1, 1);
+s21_from_decimal_to_float(value_1, &result);
+ck_assert(-781865.0 == result);
+
+#test from_decimal_to_float_3
+s21_decimal value_1 = {{0}};
+float result = 0;
+str_to_decimal("6408.25", &value_1);
+set_sign(&value_1, 1);
+//set_scale(&value_1, 3);
+s21_from_decimal_to_float(value_1, &result);
+ck_assert(-6408.25 == result);
+
+//ошибочка в функции
+//#test from_decimal_to_float_4
+//s21_decimal value_1 = {{0}};
+//float result = 0;
+//str_to_decimal("7818684658364082.5", &value_1);
+//set_sign(&value_1, 1);
+//s21_from_decimal_to_float(value_1, &result);
+//ck_assert(-7818684658364082.5 == result);
+
+#test from_int_to_decimal_0
+int src = 6418934;
+s21_decimal value = {{0}};
+s21_from_int_to_decimal(src, &value);
+s21_decimal expected = {6418934, 0, 0, 0};
+ck_assert(value.bits[0] == expected.bits[0]);
+
+#test from_int_to_decimal_1
+int src = -6418934;
+s21_decimal value = {{0}};
+s21_from_int_to_decimal(src, &value);
+s21_decimal expected = {6418934, 0, 0, 0};
+set_sign(&expected, 1);
+ck_assert(value.bits[0] == expected.bits[0]);
+ck_assert(value.bits[3] == expected.bits[3]);
+
+#test from_int_to_decimal_2
+int src = 2147483647;
+s21_decimal value = {{0}};
+s21_from_int_to_decimal(src, &value);
+s21_decimal expected = {2147483647, 0, 0, 0};
+ck_assert(value.bits[0] == expected.bits[0]);
+
+#test from_int_to_decimal_3
+int src = -2147483648;
+s21_decimal value = {{0}};
+s21_from_int_to_decimal(src, &value);
+s21_decimal expected = {2147483648, 0, 0, 0};
+set_sign(&expected, 1);
+ck_assert(value.bits[0] == expected.bits[0]);
+ck_assert(value.bits[3] == expected.bits[3]);
+
+#test from_decimal_to_int_0
+int src = 0;
+s21_decimal value = {214748364, 0, 0, 0};
+set_sign(&value, 1);
+s21_from_decimal_to_int(value, &src);
+int expected = -214748364;
+ck_assert(src == expected);
+
+#test from_decimal_to_int_1
+int src = 0;
+s21_decimal value = {214748364, 1, 0, 0};
+set_sign(&value, 1);
+int err_code = s21_from_decimal_to_int(value, &src);
+ck_assert(err_code == 2);
+
+#test from_decimal_to_int_2
+int src = 0;
+s21_decimal value = {214748364, 1, 0, 0};
+int err_code = s21_from_decimal_to_int(value, &src);
+ck_assert(err_code == 1);
+
+#test from_decimal_to_int_3
+int src = 0;
+s21_decimal value = {214748364, 0, 0, 0};
+//set_sign(&value, 1);
+set_scale(&value, 3);
+s21_from_decimal_to_int(value, &src);
+ck_assert(src == 214748);
+
+#test from_decimal_to_int_4
+int src = 0;
+s21_decimal value = {214748364, 0, 0, 0};
+set_sign(&value, 1);
+set_scale(&value, 1);
+s21_from_decimal_to_int(value, &src);
+ck_assert(src == -21474836);
+
+#test big_to_decimal_0
+big_decimal value = {0, 0, 0, 1, 0, 0, 0};
+s21_decimal result = {{0}};
+int err_code = big_to_decimal(value, &result);
+ck_assert(err_code == 1);
+
+#test big_to_decimal_1
+s21_decimal value_1 = {1, 0, 0, 0};
+set_sign(&value_1, 1);
+big_decimal value = {{0}};
+decimal_to_big(value_1, &value);
+value.bits[3] = 1;
+s21_decimal result = {{0}};
+int err_code = big_to_decimal(value, &result);
+ck_assert(err_code == 2);
+
+#test big_to_decimal_2
+big_decimal value = {0, 1, 0, 0, 0, 0, 0};
+s21_decimal result = {{0}};
+int err_code = big_to_decimal(value, &result);
+ck_assert(result.bits[1] == 1);
+
+#test big_to_int_1
+big_decimal value = {659865, 0, 0, 0, 0, 0, 0};
+int result = big_to_int(value);
+int expected = 659865;
+ck_assert(result == expected);

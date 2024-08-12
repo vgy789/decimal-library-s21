@@ -72,21 +72,21 @@ static void s21_strrev(char *str) {
 err_t s21_from_decimal_to_int(s21_decimal src, int *dst) {
   err_t err_code = check_scale(src);
   if (err_code != 0) return err_code;
-  if (src.bits[1] != 0 && src.bits[2] != 0) { /* is not overflow? */
+  if (src.bits[1] != 0 || src.bits[2] != 0) { /* is not overflow? */
     if (get_sign(src) == plus) {
       return 1;
     } else {
       return 2;
     }
   }
-
+  int sigh_src = get_sign(src);
   scale_t scale_src = get_scale(src);
   while (scale_src > 0) {
     divide10(src, &src);
     scale_src--;
   }
   *dst = src.bits[0];
-  if (get_sign(src) == 1) {
+  if (sigh_src == 1) {
     *dst = -*dst;
   }
 
