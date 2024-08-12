@@ -50,7 +50,7 @@ void Bbank_round(big_decimal value, big_decimal *result) {
   big_decimal last_digit = {{0}};
   Bs21_truncate(value, &last_digit);
   const int mod = Bmod(last_digit, (big_decimal){{10}});
-  if (mod == 5 && Bget_bit(temp, 0) == 1 || mod > 5) {
+  if ((mod == 5 && Bget_bit(temp, 0) == 1) || mod > 5) {
     Bdigits_add(temp, (big_decimal){{1}}, result);
   } else {
     *result = temp;

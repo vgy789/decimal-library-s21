@@ -180,8 +180,14 @@ err_t Bdigits_division(big_decimal value_1, big_decimal value_2,
     // домножаем на 10 и снова делим, пока остаток не станет 0.
     if (Bdigits_ne(R, (big_decimal){{0}})) {
       const bool overflow = Bdigits_mul10(&value_1);
-      Bset_scale(&Q, Bget_scale(Q) + 1);
-      if (overflow) { /* слишком много цифр после запятой */
+      const scale_t new_scale = Bget_scale(Q) + 1;
+      Bset_scale(&Q, new_scale);
+      // if (new_scale > MAX_SCALE && result->bits[3] != 0) { /* слишком много цифр после запятой */
+      if (new_scale > MAX_SCALE) {// когда починишь вывод числа пи, то почини округление и расскоментируй предыдущее. или нет? aaaaaaaaa
+        err_code = 0;
+        break;
+      }
+      if (overflow) { /* переполнение */
         *result = Q;
         if (result_sign == plus) {
           err_code = 1;

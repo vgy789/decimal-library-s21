@@ -2259,17 +2259,21 @@ ck_assert(return_code == 3);
 #test inf_div
 s21_decimal value_1 = {{20, 0, 0, 0}};
 s21_decimal value_2 = {{7, 0, 0, 0}};
+s21_decimal expected = {{0, 0, 0, 0}};
 s21_decimal result;
 int return_code = s21_div(value_1, value_2, &result);
-ck_assert(return_code == 1);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 #test neginf_div
 s21_decimal value_1 = {{22, 0, 0, 0}};
 s21_decimal value_2 = {{7, 0, 0, 0}};
+s21_decimal expected = {{0, 0, 0, 0}};
 set_sign(&value_1, minus);
 s21_decimal result;
 int return_code = s21_div(value_1, value_2, &result);
-ck_assert(return_code == 2);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
 #test div2
 s21_decimal value_1;
