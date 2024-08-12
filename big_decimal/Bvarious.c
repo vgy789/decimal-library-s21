@@ -54,9 +54,7 @@ void Bset_scale(big_decimal *value, scale_t scale) {
   Bset_sign(value, sign);
 }
 
-bool Bget_sign(big_decimal value) {
-  return (((unsigned int)value.bits[6] >> 31) & 1);
-}
+bool Bget_sign(big_decimal value) { return Bget_bit(value, 223); }
 
 void Bset_sign(big_decimal *value, bool sign) {
   if (sign == plus)
