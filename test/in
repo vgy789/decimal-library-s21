@@ -565,68 +565,6 @@ int return_code = s21_add(value_1, value_2, &result);
 ck_assert(s21_is_equal(result, expected) == 1);
 ck_assert(return_code == 0);
 
-//
-//  ОКРУГЛЕНИЕ - поменять название тестов
-//   Функция s21_add сложение двух положительных чисел с большой мантиссой с
-//   ненулевыми разрядами
-// #test add_positive_float_big_scale
-//  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-//  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-//  set_scale(&value_1, MAX_SCALE);
-//  set_scale(&value_2, 27);
-//  s21_decimal result;
-//  s21_decimal expected = ???;
-//  set_scale(&expected, ???);
-//  int return_code = s21_add(value_1, value_2, &result);
-//
-//  ck_assert(s21_is_equal(result, expected) == 1);
-//  ck_assert(return_code == 0);
-//
-//// Функция s21_add сложение двух отрицательных чисел с большой мантиссой с
-/// ненулевыми разрядами
-//#test add_negative_float_big_scale
-// s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-// s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-// set_scale(&value_1, MAX_SCALE);
-// set_scale(&value_2, 27);
-// s21_decimal result;
-// s21_decimal expected = ???;
-// set_scale(&expected, ???);
-// int return_code = s21_add(value_1, value_2, &result);
-//
-// ck_assert(s21_is_equal(result, expected) == 1);
-// ck_assert(return_code == 0);
-//
-//// Функция s21_add сложение отрицательного и положительного с большой
-/// мантиссой с ненулевыми разрядами
-//#test add_negative_and_positive_float_big_scale
-// s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-// s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-// set_scale(&value_1, MAX_SCALE);
-// set_scale(&value_2, 27);
-// s21_decimal result;
-// s21_decimal expected = ???;
-// set_scale(&expected, ???);
-// int return_code = s21_add(value_1, value_2, &result);
-//
-// ck_assert(s21_is_equal(result, expected) == 1);
-// ck_assert(return_code == 0);
-//
-//// Функция s21_add сложение положительного и отрицательного с большой
-/// мантиссой с ненулевыми разрядами
-//#test add_positive_and_negative_float_big_scale
-// s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-// s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-// set_scale(&value_1, MAX_SCALE);
-// set_scale(&value_2, 27);
-// s21_decimal result;
-// s21_decimal expected = ???;
-// set_scale(&expected, ???);
-// int return_code = s21_add(value_1, value_2, &result);
-//
-// ck_assert(s21_is_equal(result, expected) == 1);
-// ck_assert(return_code == 0);
-
 // s21_sub
 // Функция s21_sub вычитание двух положительных целых чисел
 #test sub_positive_numbers
@@ -1070,65 +1008,6 @@ int return_code = s21_sub(value_1, value_2, &result);
 
 ck_assert(s21_is_equal(result, expected) == 1);
 ck_assert(return_code == 0);
-
-//  ОКРУГЛЕНИЕ
-//  Функция s21_sub сложение двух положительных чисел с большой мантиссой с
-//  ненулевыми разрядами
-// #test sub_positive_float_big_scale
-//  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-//  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-//  set_scale(&value_1, MAX_SCALE);
-//  set_scale(&value_2, 27);
-//  s21_decimal result;
-//  int return_code = s21_sub(value_1, value_2, &result);
-//
-//  ck_assert(s21_is_equal(result, expected) == 1);
-//  ck_assert(return_code == 0);
-
-//// Функция s21_sub сложение двух отрицательных чисел с большой мантиссой с
-/// ненулевыми разрядами
-//#test sub_negative_float_big_scale
-// s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-// s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-// set_scale(&value_1, MAX_SCALE);
-// set_scale(&value_2, 27);
-// s21_decimal result;
-// s21_decimal expected = ???;
-// set_scale(&expected, ???);
-// int return_code = s21_sub(value_1, value_2, &result);
-//
-// ck_assert(s21_is_equal(result, expected) == 1);
-// ck_assert(return_code == 0);
-//
-//// Функция s21_sub сложение отрицательного и положительного с большой
-/// мантиссой с ненулевыми разрядами
-//#test sub_negative_and_positive_float_big_scale
-// s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-// s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-// set_scale(&value_1, MAX_SCALE);
-// set_scale(&value_2, 27);
-// s21_decimal result;
-// s21_decimal expected = ???;
-// set_scale(&expected, ???);
-// int return_code = s21_sub(value_1, value_2, &result);
-//
-// ck_assert(s21_is_equal(result, expected) == 1);
-// ck_assert(return_code == 0);
-//
-//// Функция s21_sub сложение положительного и отрицательного с большой
-/// мантиссой с ненулевыми разрядами
-//#test sub_positive_and_negative_float_big_scale
-// s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-// s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-// set_scale(&value_1, MAX_SCALE);
-// set_scale(&value_2, 27);
-// s21_decimal result;
-// s21_decimal expected = ???;
-// set_scale(&expected, ???);
-// int return_code = s21_sub(value_1, value_2, &result);
-//
-// ck_assert(s21_is_equal(result, expected) == 1);
-// ck_assert(return_code == 0);
 
 // s21_mul
 // s21_mul
@@ -3185,3 +3064,164 @@ big_decimal value = {659865, 0, 0, 0, 0, 0, 0};
 int result = big_to_int(value);
 int expected = 659865;
 ck_assert(result == expected);
+
+// Функция s21_add сложение с домножением нулей
+#test add_multiplying_zeros
+s21_decimal value_1 = {{100, 0, 0, 0}};
+s21_decimal value_2 = {{1, 0, 0, 0}};
+set_scale(&value_2, 2);
+s21_decimal result;
+s21_decimal expected = {{10001, 0, 0, 0}};
+set_scale(&expected, 2);
+
+int return_code = s21_add(value_1, value_2, &result);
+
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
+
+// Функция s21_sub сложение с домножением нулей
+#test sub_multiplying_zeros
+s21_decimal value_1 = {{100, 0, 0, 0}};
+s21_decimal value_2 = {{1, 0, 0, 0}};
+set_scale(&value_2, 2);
+s21_decimal result;
+s21_decimal expected = {{9999, 0, 0, 0}};
+set_scale(&expected, 2);
+
+int return_code = s21_sub(value_1, value_2, &result);
+
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
+
+// Функция s21_sub переполнение с округлением
+#test sub_overflow_bank_round
+s21_decimal value_1;
+s21_decimal value_2;
+s21_decimal expected;
+s21_decimal result;
+str_to_decimal("79228162514264337593543950335", &value_1);
+str_to_decimal("0.6", &value_2);
+str_to_decimal("79228162514264337593543950334", &expected);
+int return_code = s21_sub(value_1, value_2, &result);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
+
+//  ОКРУГЛЕНИЕ
+//  Функция s21_add сложение двух положительных чисел с большой мантиссой с
+//  ненулевыми разрядами
+#test add_positive_float_big_scale_bank_round
+s21_decimal value_1;
+s21_decimal value_2;
+s21_decimal expected;
+s21_decimal result;
+str_to_decimal("7.9228162514264337593543950335", &value_1);
+str_to_decimal("79.28162514264337593543950335", &value_2);
+str_to_decimal("87.20444139406980969479389838", &expected);
+int return_code = s21_add(value_1, value_2, &result);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
+
+// Функция s21_add сложение двух отрицательных чисел с большой мантиссой с
+// ненулевыми разрядами
+#test add_negative_float_big_scale_bank_round
+s21_decimal value_1;
+s21_decimal value_2;
+s21_decimal expected;
+s21_decimal result;
+str_to_decimal("-7.9228162514264337593543950335", &value_1);
+str_to_decimal("-79.28162514264337593543950335", &value_2);
+str_to_decimal("-87.20444139406980969479389838", &expected);
+int return_code = s21_add(value_1, value_2, &result);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
+
+// Функция s21_add сложение отрицательного и положительного с большой
+// мантиссой с ненулевыми разрядами
+#test add_negative_and_positive_float_big_scale_bank_round
+s21_decimal value_1;
+s21_decimal value_2;
+s21_decimal expected;
+s21_decimal result;
+str_to_decimal("-7.9228162514264337593543950335", &value_1);
+str_to_decimal("79.28162514264337593543950335", &value_2);
+str_to_decimal("71.358808891216942176085108316", &expected);
+int return_code = s21_add(value_1, value_2, &result);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
+
+//// Функция s21_add сложение положительного и отрицательного с большой
+/// мантиссой с ненулевыми разрядами
+//#test add_positive_and_negative_float_big_scale
+// s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+// s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
+// set_scale(&value_1, MAX_SCALE);
+// set_scale(&value_2, 27);
+// s21_decimal result;
+// s21_decimal expected = ???;
+// set_scale(&expected, ???);
+// int return_code = s21_add(value_1, value_2, &result);
+//
+// ck_assert(s21_is_equal(result, expected) == 1);
+// ck_assert(return_code == 0);
+
+//вычитание
+//  ОКРУГЛЕНИЕ - поменять название тестов
+//   Функция s21_add сложение двух положительных чисел с большой мантиссой с
+//   ненулевыми разрядами
+// #test add_positive_float_big_scale
+//  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+//  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+//  set_scale(&value_1, MAX_SCALE);
+//  set_scale(&value_2, 27);
+//  s21_decimal result;
+//  s21_decimal expected = ???;
+//  set_scale(&expected, ???);
+//  int return_code = s21_add(value_1, value_2, &result);
+//
+//  ck_assert(s21_is_equal(result, expected) == 1);
+//  ck_assert(return_code == 0);
+//
+//// Функция s21_add сложение двух отрицательных чисел с большой мантиссой с
+/// ненулевыми разрядами
+//#test add_negative_float_big_scale
+// s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
+// s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
+// set_scale(&value_1, MAX_SCALE);
+// set_scale(&value_2, 27);
+// s21_decimal result;
+// s21_decimal expected = ???;
+// set_scale(&expected, ???);
+// int return_code = s21_add(value_1, value_2, &result);
+//
+// ck_assert(s21_is_equal(result, expected) == 1);
+// ck_assert(return_code == 0);
+//
+//// Функция s21_add сложение отрицательного и положительного с большой
+/// мантиссой с ненулевыми разрядами
+//#test add_negative_and_positive_float_big_scale
+// s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
+// s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+// set_scale(&value_1, MAX_SCALE);
+// set_scale(&value_2, 27);
+// s21_decimal result;
+// s21_decimal expected = ???;
+// set_scale(&expected, ???);
+// int return_code = s21_add(value_1, value_2, &result);
+//
+// ck_assert(s21_is_equal(result, expected) == 1);
+// ck_assert(return_code == 0);
+//
+//// Функция s21_add сложение положительного и отрицательного с большой
+/// мантиссой с ненулевыми разрядами
+//#test add_positive_and_negative_float_big_scale
+// s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+// s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
+// set_scale(&value_1, MAX_SCALE);
+// set_scale(&value_2, 27);
+// s21_decimal result;
+// s21_decimal expected = ???;
+// set_scale(&expected, ???);
+// int return_code = s21_add(value_1, value_2, &result);
+//
+// ck_assert(s21_is_equal(result, expected) == 1);
+// ck_assert(return_code == 0);
