@@ -79,11 +79,6 @@ void Balignment(big_decimal *value_1, big_decimal *value_2, bool for_add) {
   }
 
   Bset_scale(value_1, scale_1);
-  while (scale_1 < scale_2) {
-    if ((*value_2).bits[0] % 10 != 0) break;
-    Bdigits_div10(value_2);
-    scale_2--;
-  }
 
   Bset_scale(value_2, scale_2);
   while (scale_1 < scale_2) {

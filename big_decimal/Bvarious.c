@@ -1,12 +1,5 @@
 #include "big_decimal.h"
 
-err_t Bs21_negate(big_decimal value, big_decimal *result) {
-  enum { minus_bit = 0x80000000 };
-  err_t err_code =
-      Bdigits_mul(value, (big_decimal){{1, 0, 0, 0, 0, 0, minus_bit}}, result);
-  return err_code;
-}
-
 void Bset_result_sign(big_decimal *value, bool sign) {
   if (Bdigits_eq(*value, (big_decimal){{0}})) { /* -0 to +0 */
     Bset_sign(value, plus);
