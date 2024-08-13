@@ -143,13 +143,9 @@ err_t s21_from_decimal_to_float(s21_decimal src, float *dst) {
 err_t s21_from_float_to_decimal(float src, s21_decimal *dst) {
   const bool sign = signbit(src);
   src = fabs(src);
-  if (isinf(src) || src > 79228162514264337593543950335.f) { /* inf */
-    if (sign == minus) {                                     /* -inf */
-      *dst = (s21_decimal){{0}};
-    }
-    return 1;
-  }
-  if (isnan(src)) { /* nan or -nan */
+  if (isinf(src) || src > 79228162514264337593543950335.f ||
+      (0 < src && src < 1e-28) || isnan(src)) {
+    *dst = (s21_decimal){{0}};
     return 1;
   }
 
@@ -160,7 +156,8 @@ err_t s21_from_float_to_decimal(float src, s21_decimal *dst) {
   bool has_point = false;
   scale_t scale = 0;
 
-  bool is_first_zero = 0;
+  bool is_first_zero = false;
+  bool significant = false;
   for (int i = 0; digits[i] != '\0'; ++i) {
     if (digits[i] == '0') {
       /* первый нуль в целой части не является значимым 0.0456 */
@@ -179,7 +176,7 @@ err_t s21_from_float_to_decimal(float src, s21_decimal *dst) {
     Bdigits_mul10(&Bdst);
     Bdigits_add(Bdst, (big_decimal){{digits[i] - '0'}}, &Bdst);
     if (i - has_point - is_first_zero == 7) { /* не больше 7 значимых цифр */
-      break;
+      significant = true;
     }
   }
 

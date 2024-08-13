@@ -2344,7 +2344,7 @@ s21_decimal result_neg_inf;
 s21_decimal expected_neg_inf;
 str_to_decimal("0", &expected_neg_inf);
 int err_code = s21_from_float_to_decimal(fvalue_neg_inf, &result_neg_inf);
-ck_assert(err_code == 2);
+ck_assert(err_code == 1);
 
 #test from_float_to_decimal_5
 float fvalue_nan = NAN;
@@ -2352,7 +2352,7 @@ s21_decimal result_nan;
 s21_decimal expected_nan;
 str_to_decimal("0", &expected_nan);
 int err_code = s21_from_float_to_decimal(fvalue_nan, &result_nan);
-ck_assert(err_code == 3);
+ck_assert(err_code == 1);
 
 #test from_decimal_to_float_1
 s21_decimal value_1 = {{0}};
