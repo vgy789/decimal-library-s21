@@ -2,7 +2,13 @@
 
 #include "../big_decimal/big_decimal.h"
 
-void str_to_decimal(char *number, s21_decimal *result) {
+#define P10_UINT64 10000000000000000000ULL /* 19 zeroes */
+#define E10_UINT64 19
+
+#define STRINGIZER(x) #x
+#define TO_STRING(x) STRINGIZER(x)
+
+void str_to_decimal(const char *number, s21_decimal *result) {
   *result = (s21_decimal){{0}};
   bool sign = plus;
   if (*number == '-') {
@@ -30,7 +36,7 @@ void str_to_decimal(char *number, s21_decimal *result) {
   set_sign(result, sign);
 }
 
-void str_to_bigdecimal(char *number, big_decimal *result) {
+void str_to_bigdecimal(const char *number, big_decimal *result) {
   *result = (big_decimal){{0}};
   bool sign = plus;
   if (*number == '-') {
@@ -79,6 +85,43 @@ static void uint_to_bin(uint32_t value) {
   }
 }
 
+static int print_u128_u(__uint128_t u128) {
+  int rc;
+  if (u128 > UINT64_MAX) {
+    __uint128_t leading = u128 / P10_UINT64;
+    uint64_t trailing = u128 % P10_UINT64;
+    rc = print_u128_u(leading);
+    rc += printf("%." TO_STRING(E10_UINT64) PRIu64, trailing);
+  } else {
+    uint64_t u64 = u128;
+    rc = printf("%" PRIu64, u64);
+  }
+  return rc;
+}
+
+static __uint128_t pow_uint128(__uint128_t x, __uint128_t y) {
+  __uint128_t result = 1;
+  while (y) {
+    if (y & 1) {
+      result *= x;
+    }
+    y >>= 1;
+    x *= x;
+  }
+  return result;
+}
+
+void dec_2int(s21_decimal value) {
+  __uint128_t number = 0u;
+
+  for (int bit_i = 0; bit_i < 96; ++bit_i) {
+    const bool bit = get_bit(value, bit_i);
+    if (bit) number += pow_uint128(2, bit_i);
+  }
+
+  print_u128_u(number);
+}
+
 void Bdec_to_bin(big_decimal value, bool print_scale, bool print_separate) {
   if (Bget_sign(value))
     printf("(-)");
@@ -101,7 +144,6 @@ void dec_to_bin(s21_decimal value, bool print_scale, bool print_separate) {
     printf("(-)");
   else
     printf("(+)");
-
   if (print_scale) {
     uint_to_bin(value.bits[3]);
   }

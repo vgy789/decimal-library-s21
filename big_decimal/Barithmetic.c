@@ -1,4 +1,4 @@
-#include "../decimal/s21_decimal.h"
+#include "../s21_decimal.h"
 #include "big_decimal.h"
 
 static bool Badd_word(uint32_t *result, uint32_t value_1, uint32_t value_2,
@@ -7,6 +7,30 @@ static bool Badd_word(uint32_t *result, uint32_t value_1, uint32_t value_2,
   overflow += __builtin_uadd_overflow(value_1, value_2, result);
   overflow += __builtin_uadd_overflow(*result, transfer, result);
   return overflow;
+}
+
+void Bfix_bank_overflow(big_decimal *value) {
+  uint8_t scale = Bget_scale(*value);
+  const uint8_t scale_orig = scale;
+  big_decimal Blast_digit = (big_decimal){{0}};
+  int8_t last_digit = -1;
+  uint8_t counter = 0;
+
+  while ((value->bits[3] != 0 || value->bits[4] != 0 || value->bits[5] != 0) &&
+         scale > 0) {
+    Bmodulus10(*value, &Blast_digit);
+    last_digit = Blast_digit.bits[0] % 10;
+    Bdivide10(*value, value);
+    scale -= 1;
+    ++counter;
+  }
+  if (last_digit > -1) {
+    Bdigits_mul10(value);
+    Bdigits_add(*value, (big_decimal){{last_digit}}, value);
+    Bset_scale(value, 1);
+    Bbank_round(*value, value);
+    Bset_scale(value, scale_orig - counter);
+  }
 }
 
 void Bcompliment2(big_decimal value, big_decimal *result) {
@@ -25,6 +49,18 @@ err_t Bdigits_div10(big_decimal *value) {
 err_t Bdigits_mul10(big_decimal *value) {
   const err_t err_code =
       Bdigits_mul(*value, (big_decimal){{10, 0, 0, 0, 0, 0}}, value);
+  return err_code;
+}
+
+err_t Bdivide10(big_decimal value, big_decimal *result) {
+  const err_t err_code =
+      Bdigits_division(value, (big_decimal){{10}}, result, whole);
+  return err_code;
+}
+
+err_t Bmodulus10(big_decimal value, big_decimal *result) {
+  const err_t err_code =
+      Bdigits_division(value, (big_decimal){{10}}, result, reside);
   return err_code;
 }
 
@@ -180,8 +216,17 @@ err_t Bdigits_division(big_decimal value_1, big_decimal value_2,
     // домножаем на 10 и снова делим, пока остаток не станет 0.
     if (Bdigits_ne(R, (big_decimal){{0}})) {
       const bool overflow = Bdigits_mul10(&value_1);
-      Bset_scale(&Q, Bget_scale(Q) + 1);
-      if (overflow) { /* слишком много цифр после запятой */
+      const scale_t new_scale = Bget_scale(Q) + 1;
+      Bset_scale(&Q, new_scale);
+      // if (new_scale > MAX_SCALE && result->bits[3] != 0) { /* слишком много
+      // цифр после запятой */
+      if (new_scale >
+          MAX_SCALE) {  // когда починишь вывод числа пи, то почини округление и
+                        // расскоментируй предыдущее. или нет? aaaaaaaaa
+        err_code = 0;
+        break;
+      }
+      if (overflow) { /* переполнение */
         *result = Q;
         if (result_sign == plus) {
           err_code = 1;

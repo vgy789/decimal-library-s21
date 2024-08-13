@@ -1,4 +1,4 @@
-#include "s21_decimal.h"
+#include "../s21_decimal.h"
 
 err_t check_scale(s21_decimal value) {
   const scale_t scale = get_scale(value);
@@ -40,11 +40,7 @@ bool set_scale(s21_decimal *value, scale_t scale) {
   return is_err;
 }
 
-bool get_sign(s21_decimal value) {
-  big_decimal big = (big_decimal){{0}};
-  decimal_to_big(value, &big);
-  return Bget_sign(big);
-}
+bool get_sign(s21_decimal value) { return get_bit(value, 127); }
 
 void set_sign(s21_decimal *value, bool sign) {
   big_decimal big = (big_decimal){{0}};

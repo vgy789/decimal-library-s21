@@ -1,4 +1,4 @@
-#include "s21_decimal.h"
+#include "../s21_decimal.h"
 
 typedef int (*calc_func)(big_decimal, big_decimal, big_decimal *);
 
@@ -70,6 +70,7 @@ static err_t calculate(s21_decimal value_1, s21_decimal value_2,
     }
   }
   if (err_code == 0) {
+    Bfix_bank_overflow(&big_result);
     err_code = big_to_decimal(big_result, result);
   }
 
