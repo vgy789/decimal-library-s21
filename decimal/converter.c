@@ -157,7 +157,7 @@ err_t s21_from_float_to_decimal(float src, s21_decimal *dst) {
   scale_t scale = 0;
 
   bool is_first_zero = false;
-  bool significant = false;
+  // bool significant = false;
   for (int i = 0; digits[i] != '\0'; ++i) {
     if (digits[i] == '0') {
       /* первый нуль в целой части не является значимым 0.0456 */
@@ -176,7 +176,7 @@ err_t s21_from_float_to_decimal(float src, s21_decimal *dst) {
     Bdigits_mul10(&Bdst);
     Bdigits_add(Bdst, (big_decimal){{digits[i] - '0'}}, &Bdst);
     if (i - has_point - is_first_zero == 7) { /* не больше 7 значимых цифр */
-      significant = true;
+      // significant = true;
     }
   }
 
