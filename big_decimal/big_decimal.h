@@ -144,6 +144,10 @@ err_t Bdigits_mul(big_decimal value_1, big_decimal value_2,
 
 err_t Bdigits_division(big_decimal value_1, big_decimal value_2,
                        big_decimal *result, uint8_t mode);
+/**
+ * Делит на 10, отсекая разряд.
+ */
+err_t Bdivide10(big_decimal value, big_decimal *result);
 
 /**
  * Делит одно десятичное значение на другое.

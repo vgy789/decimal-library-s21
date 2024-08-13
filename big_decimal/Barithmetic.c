@@ -244,6 +244,13 @@ err_t Bdigits_division(big_decimal value_1, big_decimal value_2,
   return err_code;
 }
 
+err_t Bdivide10(big_decimal value, big_decimal *result) {
+  big_decimal big = (big_decimal){{0}};
+  const err_t err_code =
+      Bdigits_division(big, (big_decimal){{10}}, &big, whole);
+  return err_code;
+}
+
 int Bmod(big_decimal value_1, big_decimal value_2) {
   Bset_sign(&value_1, plus);
   Bset_sign(&value_2, plus);

@@ -35,6 +35,17 @@ static scale_t calculate_scale(big_decimal value_1, big_decimal value_2,
 
   return scale_result;
 }
+static void poop(big_decimal *value) {
+  uint8_t scale = Bget_scale(*value);
+  while ((value->bits[3] != 0 || value->bits[4] != 0 || value->bits[5] != 0) &&
+         scale > 0) {
+    Bdivide10(*value, value);
+    --scale;
+  }
+  Bset_scale(value, 1);
+  Bbank_round(*value, value);
+  Bset_scale(value, scale);
+}
 
 // calc ← Bdigits_add or Bdigits_mul
 static err_t calculate(s21_decimal value_1, s21_decimal value_2,
