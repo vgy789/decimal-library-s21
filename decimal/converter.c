@@ -78,14 +78,14 @@ err_t s21_from_decimal_to_int(s21_decimal src, int *dst) {
       return 2;
     }
   }
-
+  int sigh_src = get_sign(src);
   scale_t scale_src = get_scale(src);
   while (scale_src > 0) {
     divide10(src, &src);
     scale_src--;
   }
   *dst = src.bits[0];
-  if (get_sign(src) == 1) {
+  if (sigh_src == 1) {
     *dst = -*dst;
   }
 
