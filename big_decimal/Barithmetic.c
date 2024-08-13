@@ -1,4 +1,4 @@
-#include "../decimal/s21_decimal.h"
+#include "../s21_decimal.h"
 #include "big_decimal.h"
 
 static bool Badd_word(uint32_t *result, uint32_t value_1, uint32_t value_2,

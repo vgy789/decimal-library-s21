@@ -1,4 +1,4 @@
-#include "s21_decimal.h"
+#include "../s21_decimal.h"
 
 typedef void (*roundness)(big_decimal, big_decimal *);
 

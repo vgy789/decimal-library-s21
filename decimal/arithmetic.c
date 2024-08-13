@@ -1,4 +1,4 @@
-#include "s21_decimal.h"
+#include "../s21_decimal.h"
 
 typedef int (*calc_func)(big_decimal, big_decimal, big_decimal *);
 
