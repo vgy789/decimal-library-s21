@@ -2467,7 +2467,7 @@ ck_assert(s21_is_equal(result, expected) == 1);
 ck_assert(return_code == 0);
 
 // Функция s21_div - деление двух положительных дробных
-#test div_positive_float
+#test div_positive_float1
 s21_decimal value_1 = {{100, 0, 0, 0}};
 s21_decimal value_2 = {{25, 0, 0, 0}};
 s21_decimal result;
@@ -2480,7 +2480,7 @@ ck_assert(s21_is_equal(result, expected) == 1);
 ck_assert(return_code == 0);
 
 // Функция s21_div - деление двух отрицательных дробных
-#test div_negative_float
+#test div_negative_float2
 s21_decimal value_1 = {{100, 0, 0, 0x80000000}};
 s21_decimal value_2 = {{25, 0, 0, 0x80000000}};
 s21_decimal result;
@@ -2493,7 +2493,7 @@ ck_assert(s21_is_equal(result, expected) == 1);
 ck_assert(return_code == 0);
 
 // Функция s21_div - деление положительного на отрицательное
-#test div_positive_negative
+#test div_positive_negative3
 s21_decimal value_1 = {{100, 0, 0, 0}};
 s21_decimal value_2 = {{25, 0, 0, 0x80000000}};
 s21_decimal result;
@@ -2507,7 +2507,7 @@ ck_assert(s21_is_equal(result, expected) == 1);
 ck_assert(return_code == 0);
 
 // Функция s21_div - деление отрицательного на положительное
-#test div_negative_positive
+#test div_negative_positive4
 s21_decimal value_1 = {{100, 0, 0, 0x80000000}};
 s21_decimal value_2 = {{25, 0, 0, 0}};
 s21_decimal result;
@@ -3330,60 +3330,158 @@ ck_assert(return_code == 0);
 #test div_big_positive_numbers
 s21_decimal value_1;
 s21_decimal value_2;
+s21_decimal expected;
+s21_decimal result;
+str_to_decimal("79228162514264337593543950335", &value_1);
+str_to_decimal("7928162514264337593543950335", &value_2);
+str_to_decimal("9.993256618001605231407880075", &expected);
+int return_code = s21_div(value_1, value_2, &result);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
+
+// Функция s21_div деление двух больших отрицательных чисел
+#test div_big_negative_numbers
+s21_decimal value_1;
+s21_decimal value_2;
+s21_decimal expected;
+s21_decimal result;
+str_to_decimal("-79228162514264337593543950335", &value_1);
+str_to_decimal("-7928162514264337593543950335", &value_2);
+str_to_decimal("9.993256618001605231407880075", &expected);
+int return_code = s21_div(value_1, value_2, &result);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
+
+// Функция s21_div деление двух больших отрицательныого и положительного чисел
+#test div_big_negative_positive_numbers
+s21_decimal value_1;
+s21_decimal value_2;
+s21_decimal expected;
+s21_decimal result;
+str_to_decimal("-79228162514264337593543950335", &value_1);
+str_to_decimal("7928162514264337593543950335", &value_2);
+str_to_decimal("-9.993256618001605231407880075", &expected);
+int return_code = s21_div(value_1, value_2, &result);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
+
+// Функция s21_div деление двух больших положительного и отрицательного чисел
+#test div_big_positive_negative_numbers
+s21_decimal value_1;
+s21_decimal value_2;
+s21_decimal expected;
+s21_decimal result;
+str_to_decimal("79228162514264337593543950335", &value_1);
+str_to_decimal("-7928162514264337593543950335", &value_2);
+str_to_decimal("-9.993256618001605231407880075", &expected);
+int return_code = s21_div(value_1, value_2, &result);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
+
+// Функция s21_div деление двух больших положительных чисел одинаковых
+#test div_big_positive_numbers_the_one
+s21_decimal value_1;
+s21_decimal value_2;
+s21_decimal expected;
 s21_decimal result;
 str_to_decimal("79228162514264337593543950335", &value_1);
 str_to_decimal("79228162514264337593543950335", &value_2);
+str_to_decimal("1", &expected);
 int return_code = s21_div(value_1, value_2, &result);
-ck_assert(return_code == 1);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
 
-//// Функция s21_div деление двух отрицательных чисел
-//#test_div_negative_numbers
-//s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
-//s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
-//s21_decimal result;
-//s21_decimal expected = {{30, 0, 0, 0x80000000}};
-//
-//int return_code = s21_div(value_1, value_2, &result);
-//
-//ck_assert(s21_is_equal(result, expected) == 1);
-//ck_assert(return_code == 0);
-//
-//// Функция s21_div деление положительного и отрицательного чисел
-//#test_div_positive_and_negative
-//s21_decimal value_1 = {{10, 0, 0, 0}};
-//s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
-//s21_decimal result;
-//s21_decimal expected = {{10, 0, 0, 0x80000000}};
-//int return_code = s21_div(value_1, value_2, &result);
-//
-//ck_assert(s21_is_equal(result, expected) == 1);
-//ck_assert(return_code == 0);
-//
-//// Функция s21_div деление отрицательного и положительного чисел
-//#test_div_negative_and_positive
-//s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
-//s21_decimal value_2 = {{20, 0, 0, 0}};
-//s21_decimal result;
-//s21_decimal expected = {{10, 0, 0, 0}};
-//int return_code = s21_div(value_1, value_2, &result);
-//
-//ck_assert(s21_is_equal(result, expected) == 1);
-//ck_assert(return_code == 0);
-//
-//// Функция s21_div деление двух положительных дробных
-//#test_div_positive_float
-//s21_decimal value_1 = {{10, 0, 0, 0}};
-//s21_decimal value_2 = {{20, 0, 0, 0}};
-//set_scale(&value_1, 10);
-//set_scale(&value_2, 5);
-//s21_decimal result;
-//s21_decimal expected = {{200001, 0, 0, 0}};
-//set_scale(&expected, 9);
-//int return_code = s21_div(value_1, value_2, &result);
-//
-//ck_assert(s21_is_equal(result, expected) == 1);
-//ck_assert(return_code == 0);
-//
+// Функция s21_div деление двух больших отрицательных чисел одинаковых
+#test div_big_positive_numbers_the_one_minus
+s21_decimal value_1;
+s21_decimal value_2;
+s21_decimal expected;
+s21_decimal result;
+str_to_decimal("-79228162514264337593543950335", &value_1);
+str_to_decimal("-79228162514264337593543950335", &value_2);
+str_to_decimal("1", &expected);
+int return_code = s21_div(value_1, value_2, &result);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
+
+// Функция s21_div деление двух больших отрицательных чисел одинаковых
+#test div_big_positive_numbers_the_one_minus_plus
+s21_decimal value_1;
+s21_decimal value_2;
+s21_decimal expected;
+s21_decimal result;
+str_to_decimal("-79228162514264337593543950335", &value_1);
+str_to_decimal("79228162514264337593543950335", &value_2);
+str_to_decimal("-1", &expected);
+int return_code = s21_div(value_1, value_2, &result);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
+
+// Функция s21_div деление двух больших отрицательных чисел одинаковых
+#test div_big_positive_numbers_the_one_plus_minus
+s21_decimal value_1;
+s21_decimal value_2;
+s21_decimal expected;
+s21_decimal result;
+str_to_decimal("79228162514264337593543950335", &value_1);
+str_to_decimal("-79228162514264337593543950335", &value_2);
+str_to_decimal("-1", &expected);
+int return_code = s21_div(value_1, value_2, &result);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
+
+// Функция s21_div деление двух отрицательных чисел
+#test div_negative_numbers
+s21_decimal value_1;
+s21_decimal value_2;
+s21_decimal expected;
+s21_decimal result;
+str_to_decimal("-100", &value_1);
+str_to_decimal("-20", &value_2);
+str_to_decimal("5", &expected);
+int return_code = s21_div(value_1, value_2, &result);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
+
+// Функция s21_div деление положительного и отрицательного чисел
+#test div_positive_and_negative
+s21_decimal value_1;
+s21_decimal value_2;
+s21_decimal expected;
+s21_decimal result;
+str_to_decimal("100", &value_1);
+str_to_decimal("-20", &value_2);
+str_to_decimal("-5", &expected);
+int return_code = s21_div(value_1, value_2, &result);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
+
+// Функция s21_div деление отрицательного и положительного чисел
+#test div_negative_and_positive
+s21_decimal value_1;
+s21_decimal value_2;
+s21_decimal expected;
+s21_decimal result;
+str_to_decimal("-100", &value_1);
+str_to_decimal("20", &value_2);
+str_to_decimal("-5", &expected);
+int return_code = s21_div(value_1, value_2, &result);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
+
+// Функция s21_div деление двух положительных дробных
+#test div_positive_float
+s21_decimal value_1;
+s21_decimal value_2;
+s21_decimal expected;
+s21_decimal result;
+str_to_decimal("150.18", &value_1);
+str_to_decimal("1.2", &value_2);
+str_to_decimal("125.15", &expected);
+int return_code = s21_div(value_1, value_2, &result);
+ck_assert(s21_is_equal(result, expected) == 1);
+ck_assert(return_code == 0);
+
 //// Функция s21_div деление двух больших положительных дробных
 ////#test_div_big_positive_float
 ////s21_decimal value_1 = {1, 0, 565264864, 0};
