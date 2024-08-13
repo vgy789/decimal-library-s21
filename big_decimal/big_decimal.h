@@ -44,11 +44,6 @@ err_t Bdecriment(big_decimal value, big_decimal *result);
  */
 err_t Bincrement(big_decimal value, big_decimal *result);
 
-/**
- * Делит на 10, отсекая разряд.
- */
-err_t Bdivide10(big_decimal value, big_decimal *result);
-
 err_t Bmodulus10(big_decimal value, big_decimal *result);
 
 err_t Bdigits_div10(big_decimal *value);
@@ -121,6 +116,11 @@ void Balignment(big_decimal *value_1, big_decimal *value_2, bool for_add);
  * Перевод мантиссы в дополнительный код (дополнение до двух).
  */
 void Bcompliment2(big_decimal value, big_decimal *result);
+
+/**
+ * Делит на 10.
+ */
+err_t Bdivide10(big_decimal value, big_decimal *result);
 
 /**
  * Сдвиг битов мантиссы влево на один.
