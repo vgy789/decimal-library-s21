@@ -32,6 +32,8 @@ enum { divide, whole, reside };
 
 void Bnormalize(big_decimal *value);
 
+void Bfix_bank_overflow(big_decimal *value);
+
 void Bswap(big_decimal *value_1, big_decimal *value_2);
 
 /**
@@ -43,6 +45,13 @@ err_t Bdecriment(big_decimal value, big_decimal *result);
  * Прибавляет к числу big_decimal единицу.
  */
 err_t Bincrement(big_decimal value, big_decimal *result);
+
+/**
+ * Делит на 10, отсекая разряд.
+ */
+err_t Bdivide10(big_decimal value, big_decimal *result);
+
+err_t Bmodulus10(big_decimal value, big_decimal *result);
 
 err_t Bdigits_div10(big_decimal *value);
 

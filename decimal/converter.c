@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #include "../big_decimal/big_decimal.h"
-#include "s21_decimal.h"
+#include "../s21_decimal.h"
 
 int big_to_int(big_decimal value) {
   s21_decimal dec_result = (s21_decimal){{0}};
@@ -35,11 +35,13 @@ err_t big_to_decimal(big_decimal value, s21_decimal *result) {
 
 void decimal_to_big(s21_decimal value, big_decimal *result) {
   *result = (big_decimal){{0}};
-  if (value.bits[0] == 0 && value.bits[1] == 0 &&
-      value.bits[2] == 0) { /* is zero? */
-    /* -0 to 0 */
-    value.bits[3] = 0;
-  }
+  // TODO: не забудь удалить. Я убрал это, чтобы в результате мог быть -0,
+  // например при умножении отрицательного на 0 или отрицательного 0 на любое
+  // число if (value.bits[0] == 0 && value.bits[1] == 0 &&
+  //     value.bits[2] == 0) { /* is zero? */
+  //   /* -0 to 0 */
+  //   value.bits[3] = 0;
+  // }
   /* converter */
   for (uint8_t i = 0; i < 3; ++i) {
     result->bits[i] = value.bits[i];
@@ -70,23 +72,15 @@ static void s21_strrev(char *str) {
 }
 
 err_t s21_from_decimal_to_int(s21_decimal src, int *dst) {
-  err_t err_code = check_scale(src);
-  if (err_code != 0) return err_code;
-  if (src.bits[1] != 0 && src.bits[2] != 0) { /* is not overflow? */
-    if (get_sign(src) == plus) {
-      return 1;
-    } else {
-      return 2;
-    }
+  const bool sign = get_sign(src);
+  s21_truncate(src, &src);
+
+  if (src.bits[1] != 0 || src.bits[2] != 0) { /* is overflow? */
+    return 1;
   }
 
-  scale_t scale_src = get_scale(src);
-  while (scale_src > 0) {
-    divide10(src, &src);
-    scale_src--;
-  }
   *dst = src.bits[0];
-  if (get_sign(src) == 1) {
+  if (sign == minus) {
     *dst = -*dst;
   }
 
@@ -143,35 +137,68 @@ err_t s21_from_decimal_to_float(s21_decimal src, float *dst) {
 
 err_t s21_from_float_to_decimal(float src, s21_decimal *dst) {
   const bool sign = signbit(src);
-  if (isinf(src)) {      /* inf */
-    if (sign == minus) { /* -inf */
-      return 2;
-    }
+  src = fabs(src);
+  if (isinf(src) || src > 79228162514264337593543950335.f ||
+      (0 < src && src < 1e-28) || isnan(src)) {
+    *dst = (s21_decimal){{0}};
     return 1;
   }
-  if (isnan(src)) { /* nan or -nan */
-    return 3;
-  }
 
-  char digits[38] = {'\0'};
-  sprintf(digits, "%f", src);
-
+  char digits[50] = {'\0'};
+  sprintf(digits, "%.7f", src);
   big_decimal Bdst = (big_decimal){{0}};
-  src = fabs(src);
+  big_decimal Bdst_for_test = (big_decimal){{0}};
   bool has_point = false;
   scale_t scale = 0;
 
+  bool first_zero_check = false;
+  bool significant = false;
+  bool is_first_zero = 0;
+  bool make_round = false;
   for (int i = 0; digits[i] != '\0'; ++i) {
-    if (has_point) {
-      scale += 1;
-    }
     if ((digits[i] == '.')) {
       has_point = true;
       continue;
     }
+    if (significant) {
+      digits[i] = '0';
+    }
 
+    if (first_zero_check == false && digits[i] == '0') {
+      /* первый нуль в целой части не является значимым 0.0456 */
+      is_first_zero = true;
+      first_zero_check = true;
+      continue;
+    }
+    first_zero_check = true;
+    if (has_point) {
+      scale += 1;
+    }
+
+    if (i + 1 - has_point - is_first_zero == 7) {
+      /* не больше 7 значимых цифр */
+      significant = true;
+      make_round = true;
+    }
     Bdigits_mul10(&Bdst);
-    Bdigits_add(Bdst, (big_decimal){{digits[i] - '0'}}, &Bdst);
+    Bdigits_mul10(&Bdst_for_test);
+    const uint8_t value = digits[i] - '0';
+    Bdigits_add(Bdst_for_test, (big_decimal){{value}}, &Bdst_for_test);
+
+    if (!make_round) {
+      Bdigits_add(Bdst, (big_decimal){{value}}, &Bdst);
+    } else {
+      const uint8_t next_value = digits[i + 1] - '0';
+      if (digits[i + 1] != '\0') {
+        Bdigits_add(
+            Bdst,
+            (big_decimal){{roundf((float)(value * 10 + next_value) / 10.f)}},
+            &Bdst);
+      } else {
+        Bdigits_add(Bdst, (big_decimal){{value}}, &Bdst);
+      }
+    }
+    make_round = false;
   }
 
   Bset_scale(&Bdst, scale);
@@ -179,6 +206,6 @@ err_t s21_from_float_to_decimal(float src, s21_decimal *dst) {
   Bset_sign(&Bdst, sign);
 
   big_to_decimal(Bdst, dst);
-
-  return 0;
+  s21_decimal tmp = (s21_decimal){{0}};
+  return (bool)big_to_decimal(Bdst_for_test, &tmp);
 }

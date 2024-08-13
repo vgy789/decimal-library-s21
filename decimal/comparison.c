@@ -1,5 +1,5 @@
 #include "../big_decimal/big_decimal.h"
-#include "s21_decimal.h"
+#include "../s21_decimal.h"
 
 typedef int (*compare_func)(big_decimal, big_decimal);
 
