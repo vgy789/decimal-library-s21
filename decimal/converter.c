@@ -127,6 +127,29 @@ err_t s21_from_decimal_to_float(s21_decimal src, float *dst) {
 
   char *err;
   s21_strrev(digits);
+  bool is_first_zero = 0;
+  bool has_point = false;   /* найдена . */
+  bool significant = false; /* пройдено 7 значимых знаков */
+  for (int i = 0; digits[i] != '\0'; ++i) {
+    if (digits[i] == '.') {
+      has_point = true;
+      continue;
+    }
+    if (significant) {
+      digits[i] = '0';
+      continue;
+    }
+    if (i + 1 - has_point - is_first_zero == 7) {
+      significant = true;
+      if (digits[i + 1] != '\0') {
+        const uint8_t curr_value = digits[i] - '0';
+        const uint8_t next_value = digits[i + 1] - '0';
+        digits[i] =
+            (roundf((float)(curr_value * 10 + next_value) / 10.f)) + '0';
+      }
+    }
+  }
+
   *dst = strtof(digits, &err);
   if (sign == minus) {
     *dst = -*dst;
@@ -182,20 +205,20 @@ err_t s21_from_float_to_decimal(float src, s21_decimal *dst) {
     }
     Bdigits_mul10(&Bdst);
     Bdigits_mul10(&Bdst_for_test);
-    const uint8_t value = digits[i] - '0';
-    Bdigits_add(Bdst_for_test, (big_decimal){{value}}, &Bdst_for_test);
+    const uint8_t curr_value = digits[i] - '0';
+    Bdigits_add(Bdst_for_test, (big_decimal){{curr_value}}, &Bdst_for_test);
 
     if (!make_round) {
-      Bdigits_add(Bdst, (big_decimal){{value}}, &Bdst);
+      Bdigits_add(Bdst, (big_decimal){{curr_value}}, &Bdst);
     } else {
       const uint8_t next_value = digits[i + 1] - '0';
       if (digits[i + 1] != '\0') {
-        Bdigits_add(
-            Bdst,
-            (big_decimal){{roundf((float)(value * 10 + next_value) / 10.f)}},
-            &Bdst);
+        Bdigits_add(Bdst,
+                    (big_decimal){
+                        {roundf((float)(curr_value * 10 + next_value) / 10.f)}},
+                    &Bdst);
       } else {
-        Bdigits_add(Bdst, (big_decimal){{value}}, &Bdst);
+        Bdigits_add(Bdst, (big_decimal){{curr_value}}, &Bdst);
       }
     }
     make_round = false;
