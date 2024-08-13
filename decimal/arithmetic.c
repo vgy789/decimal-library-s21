@@ -70,6 +70,7 @@ static err_t calculate(s21_decimal value_1, s21_decimal value_2,
     }
   }
   if (err_code == 0) {
+    Bfix_bank_overflow(&big_result);
     err_code = big_to_decimal(big_result, result);
   }
 

@@ -9,6 +9,30 @@ static bool Badd_word(uint32_t *result, uint32_t value_1, uint32_t value_2,
   return overflow;
 }
 
+void Bfix_bank_overflow(big_decimal *value) {
+  uint8_t scale = Bget_scale(*value);
+  const uint8_t scale_orig = scale;
+  big_decimal Blast_digit = (big_decimal){{0}};
+  int8_t last_digit = -1;
+  uint8_t counter = 0;
+
+  while ((value->bits[3] != 0 || value->bits[4] != 0 || value->bits[5] != 0) &&
+         scale > 0) {
+    Bmodulus10(*value, &Blast_digit);
+    last_digit = Blast_digit.bits[0] % 10;
+    Bdivide10(*value, value);
+    scale -= 1;
+    ++counter;
+  }
+  if (last_digit > -1) {
+    Bdigits_mul10(value);
+    Bdigits_add(*value, (big_decimal){{last_digit}}, value);
+    Bset_scale(value, 1);
+    Bbank_round(*value, value);
+    Bset_scale(value, scale_orig - counter);
+  }
+}
+
 void Bcompliment2(big_decimal value, big_decimal *result) {
   for (uint8_t i = 0; i < 6; ++i) {
     value.bits[i] = ~value.bits[i];
