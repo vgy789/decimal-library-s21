@@ -172,8 +172,8 @@ ck_assert(s21_is_equal(result, expected) == 1);
 ck_assert(return_code == 0);
 
 // Функция s21_add сложение двух больших положительных дробных
-// #test add_big_positive_float
-//s21_decimal value_1 = {{0}};
+//#test add_big_positive_float
+//s21_decimal value_1 = {1, 0, 565264864, 0};
 //s21_decimal value_2 = {{0}};
 //str_to_decimal("50000000")
 //s21_decimal result;
