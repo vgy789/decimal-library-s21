@@ -149,35 +149,53 @@ err_t s21_from_float_to_decimal(float src, s21_decimal *dst) {
     return 1;
   }
 
-  char digits[38] = {'\0'};
-  sprintf(digits, "%f", src);
-
+  char digits[50] = {'\0'};
+  sprintf(digits, "%.7f", src);
   big_decimal Bdst = (big_decimal){{0}};
   bool has_point = false;
   scale_t scale = 0;
 
-  bool is_first_zero = false;
-  // bool significant = false;
+  bool first_zero_check = false;
+  bool significant = false;
+  bool is_first_zero = 0;
+  bool make_round = false;
   for (int i = 0; digits[i] != '\0'; ++i) {
-    if (digits[i] == '0') {
-      /* первый нуль в целой части не является значимым 0.0456 */
-      is_first_zero = 1;
-      continue;
-    }
-
-    if (has_point) {
-      scale += 1;
-    }
     if ((digits[i] == '.')) {
       has_point = true;
       continue;
     }
-
-    Bdigits_mul10(&Bdst);
-    Bdigits_add(Bdst, (big_decimal){{digits[i] - '0'}}, &Bdst);
-    if (i - has_point - is_first_zero == 7) { /* не больше 7 значимых цифр */
-      // significant = true;
+    if (significant) {
+      digits[i] = '0';
     }
+
+    if (first_zero_check == false && digits[i] == '0') {
+      /* первый нуль в целой части не является значимым 0.0456 */
+      is_first_zero = true;
+      first_zero_check = true;
+      continue;
+    }
+    first_zero_check = true;
+    if (has_point) {
+      scale += 1;
+    }
+
+    if (i + 1 - has_point - is_first_zero ==
+        7) { /* не больше 7 значимых цифр */
+      significant = true;
+      make_round = true;
+    }
+    Bdigits_mul10(&Bdst);
+    const uint8_t value = digits[i] - '0';
+    if (!make_round) {
+      Bdigits_add(Bdst, (big_decimal){{value}}, &Bdst);
+    } else {
+      const uint8_t next_value = digits[i + 1] - '0';
+      Bdigits_add(
+          Bdst,
+          (big_decimal){{roundf((float)(value * 10 + next_value) / 10.f)}},
+          &Bdst);
+    }
+    make_round = false;
   }
 
   Bset_scale(&Bdst, scale);
