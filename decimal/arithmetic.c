@@ -35,17 +35,6 @@ static scale_t calculate_scale(big_decimal value_1, big_decimal value_2,
 
   return scale_result;
 }
-static void poop(big_decimal *value) {
-  uint8_t scale = Bget_scale(*value);
-  while ((value->bits[3] != 0 || value->bits[4] != 0 || value->bits[5] != 0) &&
-         scale > 0) {
-    Bdivide10(*value, value);
-    --scale;
-  }
-  Bset_scale(value, 1);
-  Bbank_round(*value, value);
-  Bset_scale(value, scale);
-}
 
 // calc ← Bdigits_add or Bdigits_mul
 static err_t calculate(s21_decimal value_1, s21_decimal value_2,
@@ -60,7 +49,7 @@ static err_t calculate(s21_decimal value_1, s21_decimal value_2,
   if (err_code == 0) {
     err_code = check_scale(value_2);
   }
-
+  bool add_sign = 0;
   if (err_code == 0) {
     scale_t scale_result = 0;
     decimal_to_big(value_1, &big_1);
@@ -71,6 +60,7 @@ static err_t calculate(s21_decimal value_1, s21_decimal value_2,
     }
     err_code = calc(big_1, big_2, &big_result);
     scale_result = calculate_scale(big_1, big_2, big_result, calc);
+    add_sign = Bget_sign(big_result);
     if (calc == Bdigits_div) {
       if (err_code) return err_code;
     }
@@ -80,8 +70,12 @@ static err_t calculate(s21_decimal value_1, s21_decimal value_2,
       err_code = Bget_sign(big_result) + 1;
     }
   }
+
   if (err_code == 0) {
     Bfix_bank_overflow(&big_result);
+    if (calc == Bdigits_add || calc == Bdigits_sub) {
+      Bset_sign(&big_result, add_sign);
+    }
     err_code = big_to_decimal(big_result, result);
   }
 
