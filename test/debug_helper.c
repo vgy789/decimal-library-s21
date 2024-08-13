@@ -8,7 +8,7 @@
 #define STRINGIZER(x) #x
 #define TO_STRING(x) STRINGIZER(x)
 
-void str_to_decimal(char *number, s21_decimal *result) {
+void str_to_decimal(const char *number, s21_decimal *result) {
   *result = (s21_decimal){{0}};
   bool sign = plus;
   if (*number == '-') {
@@ -36,7 +36,7 @@ void str_to_decimal(char *number, s21_decimal *result) {
   set_sign(result, sign);
 }
 
-void str_to_bigdecimal(char *number, big_decimal *result) {
+void str_to_bigdecimal(const char *number, big_decimal *result) {
   *result = (big_decimal){{0}};
   bool sign = plus;
   if (*number == '-') {

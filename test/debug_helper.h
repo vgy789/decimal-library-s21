@@ -15,7 +15,12 @@
 /**
  * Конвертирует число из строкового литерала в s21_decimal.
  */
-void str_to_decimal(char *number, s21_decimal *result);
+void str_to_decimal(const char *number, s21_decimal *result);
+
+/**
+ * Конвертирует число из строкового литерала в big_decimal.
+ */
+void str_to_bigdecimal(const char *number, big_decimal *result);
 
 /**
  * Печатает big_decimal в двоичном предствалении.

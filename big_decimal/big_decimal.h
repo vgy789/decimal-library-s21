@@ -44,6 +44,13 @@ err_t Bdecriment(big_decimal value, big_decimal *result);
  */
 err_t Bincrement(big_decimal value, big_decimal *result);
 
+/**
+ * Делит на 10, отсекая разряд.
+ */
+err_t Bdivide10(big_decimal value, big_decimal *result);
+
+err_t Bmodulus10(big_decimal value, big_decimal *result);
+
 err_t Bdigits_div10(big_decimal *value);
 
 err_t Bdigits_mul10(big_decimal *value);

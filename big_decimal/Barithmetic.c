@@ -28,6 +28,18 @@ err_t Bdigits_mul10(big_decimal *value) {
   return err_code;
 }
 
+err_t Bdivide10(big_decimal value, big_decimal *result) {
+  const err_t err_code =
+      Bdigits_division(value, (big_decimal){{10}}, result, whole);
+  return err_code;
+}
+
+err_t Bmodulus10(big_decimal value, big_decimal *result) {
+  const err_t err_code =
+      Bdigits_division(value, (big_decimal){{10}}, result, reside);
+  return err_code;
+}
+
 err_t Bdecriment(big_decimal value, big_decimal *result) {
   const big_decimal one = (big_decimal){{1, 0, 0, 0, 0, 0, 0}};
   const err_t err_code = Bdigits_sub(value, one, result);
@@ -182,8 +194,11 @@ err_t Bdigits_division(big_decimal value_1, big_decimal value_2,
       const bool overflow = Bdigits_mul10(&value_1);
       const scale_t new_scale = Bget_scale(Q) + 1;
       Bset_scale(&Q, new_scale);
-      // if (new_scale > MAX_SCALE && result->bits[3] != 0) { /* слишком много цифр после запятой */
-      if (new_scale > MAX_SCALE) {// когда починишь вывод числа пи, то почини округление и расскоментируй предыдущее. или нет? aaaaaaaaa
+      // if (new_scale > MAX_SCALE && result->bits[3] != 0) { /* слишком много
+      // цифр после запятой */
+      if (new_scale >
+          MAX_SCALE) {  // когда починишь вывод числа пи, то почини округление и
+                        // расскоментируй предыдущее. или нет? aaaaaaaaa
         err_code = 0;
         break;
       }
