@@ -34,8 +34,6 @@ void Bnormalize(big_decimal *value);
 
 void Bfix_bank_overflow(big_decimal *value);
 
-void Bswap(big_decimal *value_1, big_decimal *value_2);
-
 /**
  * Вычитает из числа big_decimal единицу.
  */

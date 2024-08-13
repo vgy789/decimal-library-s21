@@ -2763,9 +2763,10 @@ s21_decimal value_2;
 s21_decimal expected;
 s21_decimal result;
 str_to_decimal("20", &value_1);
-str_to_decimal("7", &value_1);
+str_to_decimal("7", &value_2);
 str_to_decimal("2.8571428571428571428571428571", &expected);
 int return_code = s21_div(value_1, value_2, &result);
+
 ck_assert(s21_is_equal(result, expected) == 1);
 ck_assert(return_code == 0);
 
@@ -2775,7 +2776,7 @@ s21_decimal value_2;
 s21_decimal expected;
 s21_decimal result;
 str_to_decimal("-20", &value_1);
-str_to_decimal("7", &value_1);
+str_to_decimal("7", &value_2);
 str_to_decimal("-2.8571428571428571428571428571", &expected);
 int return_code = s21_div(value_1, value_2, &result);
 ck_assert(s21_is_equal(result, expected) == 1);
@@ -3005,6 +3006,14 @@ ck_assert(0 == err_code);
 ck_assert(0.f == result);
 
 #test from_decimal_to_float_6
+s21_decimal value_1;
+float result = 0;
+str_to_decimal("0", &value_1);
+int err_code = s21_from_decimal_to_float(value_1, &result);
+ck_assert(0 == err_code);
+ck_assert(0.f == result);
+
+#test from_decimal_to_float_7
 s21_decimal value_1;
 float result = 0;
 str_to_decimal("0", &value_1);

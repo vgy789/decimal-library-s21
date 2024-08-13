@@ -1,11 +1,5 @@
 #include "big_decimal.h"
 
-void Bswap(big_decimal *value_1, big_decimal *value_2) {
-  big_decimal buf = *value_1;
-  *value_1 = *value_2;
-  *value_2 = buf;
-}
-
 err_t Bs21_negate(big_decimal value, big_decimal *result) {
   enum { minus_bit = 0x80000000 };
   err_t err_code =
