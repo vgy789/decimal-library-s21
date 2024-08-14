@@ -404,7 +404,7 @@ ck_assert(return_code == 0);
 #test add_negative_numbers_zero
 s21_decimal value_1 = {{0, 0, 0, 0x80000000}};
 s21_decimal value_2 = {{0, 0, 0, 0x80000000}};
-s21_decimal expected = {{0, 0, 0, 0}};
+s21_decimal expected = {{0, 0, 0, 0x80000000}};
 s21_decimal result;
 int return_code = s21_add(value_1, value_2, &result);
 
@@ -823,7 +823,8 @@ s21_decimal value_1 = {{0, 0, 0, 0}};
 s21_decimal value_2 = {{0, 0, 0, 0}};
 set_sign(&value_1, minus);
 s21_decimal result;
-s21_decimal expected = {{0, 0, 0, 0}};
+s21_decimal expected;
+str_to_decimal("-0", &expected);
 int return_code = s21_sub(value_1, value_2, &result);
 
 ck_assert(s21_is_equal(result, expected) == 1);
@@ -1388,7 +1389,7 @@ s21_decimal value_1 = {{15, 0, 0, 0x80000000}};
 s21_decimal value_2 = {{0, 0, 0, 0}};
 set_scale(&value_1, 7);
 s21_decimal result;
-s21_decimal expected = {{0, 0, 0, 0}};
+s21_decimal expected = {{0, 0, 0, 0x80000000}};
 int return_code = s21_mul(value_1, value_2, &result);
 
 ck_assert(s21_is_equal(result, expected) == 1);
@@ -1400,7 +1401,7 @@ s21_decimal value_1 = {{0, 0, 0, 0}};
 s21_decimal value_2 = {{15, 0, 0, 0x80000000}};
 set_scale(&value_2, 7);
 s21_decimal result;
-s21_decimal expected = {{0, 0, 0, 0}};
+s21_decimal expected = {{0, 0, 0, 0x80000000}};
 int return_code = s21_mul(value_1, value_2, &result);
 
 ck_assert(s21_is_equal(result, expected) == 1);
@@ -3809,7 +3810,7 @@ s21_decimal expected;
 s21_decimal result;
 str_to_decimal("0", &value_1);
 str_to_decimal("-79228162514264337593543950335", &value_2);
-str_to_decimal("0", &expected);
+str_to_decimal("-0", &expected);
 int return_code = s21_div(value_1, value_2, &result);
 ck_assert(s21_is_equal(result, expected) == 1);
 ck_assert(return_code == 0);
@@ -3832,7 +3833,7 @@ s21_decimal expected;
 s21_decimal result;
 str_to_decimal("0", &value_1);
 str_to_decimal("-792281625142643.37593543950335", &value_2);
-str_to_decimal("0", &expected);
+str_to_decimal("-0", &expected);
 int return_code = s21_div(value_1, value_2, &result);
 ck_assert(s21_is_equal(result, expected) == 1);
 ck_assert(return_code == 0);

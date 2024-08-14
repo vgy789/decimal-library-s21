@@ -3,7 +3,7 @@
 typedef void (*roundness)(big_decimal, big_decimal *);
 
 err_t rounding(s21_decimal value, s21_decimal *result, roundness roundness) {
-  err_t err_code = check_scale(value);
+  err_t err_code = (bool)check_scale(value);
   if (err_code == 0) {
     const bool sign = get_sign(value);
     big_decimal big = (big_decimal){{0}};

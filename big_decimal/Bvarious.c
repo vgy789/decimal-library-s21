@@ -1,13 +1,5 @@
 #include "big_decimal.h"
 
-void Bset_result_sign(big_decimal *value, bool sign) {
-  if (Bdigits_eq(*value, (big_decimal){{0}})) { /* -0 to +0 */
-    Bset_sign(value, plus);
-  } else {
-    Bset_sign(value, sign);
-  }
-}
-
 bool Bget_bit(big_decimal value, uint8_t bit_pos) {
   uint8_t int_part = 0; /* индекс ячейки в массиве */
 

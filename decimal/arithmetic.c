@@ -39,43 +39,39 @@ static scale_t calculate_scale(big_decimal value_1, big_decimal value_2,
 // calc ← Bdigits_add or Bdigits_mul
 static err_t calculate(s21_decimal value_1, s21_decimal value_2,
                        s21_decimal *result, const calc_func calc) {
+  err_t err_code = 0;
+  // scale должен быть в пределах (0, 28]
+  err_code = check_scale(value_1);
+  if (err_code) return err_code;
+  err_code = check_scale(value_2);
+  if (err_code) return err_code;
+
   big_decimal big_1 = (big_decimal){{0}};
   big_decimal big_2 = (big_decimal){{0}};
   big_decimal big_result = (big_decimal){{0}};
-  err_t err_code = 0;
   *result = (s21_decimal){{0}};
+  scale_t scale_result = 0;
+  decimal_to_big(value_1, &big_1);
+  decimal_to_big(value_2, &big_2);
 
-  err_code = check_scale(value_1);
-  if (err_code == 0) {
-    err_code = check_scale(value_2);
+  if (calc == Bdigits_add) {
+    Balignment(&big_1, &big_2, 1);
   }
-  bool add_sign = 0;
-  if (err_code == 0) {
-    scale_t scale_result = 0;
-    decimal_to_big(value_1, &big_1);
-    decimal_to_big(value_2, &big_2);
+  err_code = calc(big_1, big_2, &big_result);
+  scale_result = calculate_scale(big_1, big_2, big_result, calc);
 
-    if (calc == Bdigits_add) {
-      Balignment(&big_1, &big_2, 1);
-    }
-    err_code = calc(big_1, big_2, &big_result);
-    scale_result = calculate_scale(big_1, big_2, big_result, calc);
-    add_sign = Bget_sign(big_result);
-    if (calc == Bdigits_div) {
-      if (err_code) return err_code;
-    }
-    Bset_scale(&big_result, scale_result);
-    Bnormalize(&big_result);
-    if (Bget_scale(big_result) > MAX_SCALE) { /* слишком большой scale */
-      err_code = Bget_sign(big_result) + 1;
-    }
+  if (calc == Bdigits_div) {
+    if (err_code) return err_code;
+  }
+  Bset_scale(&big_result, scale_result);
+  Bnormalize(&big_result);
+
+  if (Bget_scale(big_result) > MAX_SCALE) { /* слишком большой scale */
+    err_code = Bget_sign(big_result) + 1;
   }
 
   if (err_code == 0) {
     Bfix_bank_overflow(&big_result);
-    if (calc == Bdigits_add || calc == Bdigits_sub) {
-      Bset_sign(&big_result, add_sign);
-    }
     err_code = big_to_decimal(big_result, result);
   }
 

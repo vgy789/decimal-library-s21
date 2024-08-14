@@ -132,8 +132,6 @@ err_t Bleft_shift(big_decimal *value);
  */
 err_t Bright_shift(big_decimal *value);
 
-void Bset_result_sign(big_decimal *value, bool sign);
-
 /**
  * Умножает два десятичных значения.
  *

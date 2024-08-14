@@ -10,6 +10,9 @@ static bool Badd_word(uint32_t *result, uint32_t value_1, uint32_t value_2,
 }
 
 void Bfix_bank_overflow(big_decimal *value) {
+  const bool sign = Bget_sign(*value);  // сохранить знак, т.к. в процессе
+                                        // вычислений он станет невалидным
+
   uint8_t scale = Bget_scale(*value);
   const uint8_t scale_orig = scale;
   big_decimal Blast_digit = (big_decimal){{0}};
@@ -31,6 +34,7 @@ void Bfix_bank_overflow(big_decimal *value) {
     Bbank_round(*value, value);
     Bset_scale(value, scale_orig - counter);
   }
+  Bset_sign(value, sign);
 }
 
 void Bcompliment2(big_decimal value, big_decimal *result) {
@@ -124,7 +128,7 @@ err_t Bdigits_add(big_decimal value_1, big_decimal value_2,
       }
     }
   }
-  Bset_result_sign(result, result_sign);
+  Bset_sign(result, result_sign);
 
   return err_code;
 }
@@ -218,11 +222,7 @@ err_t Bdigits_division(big_decimal value_1, big_decimal value_2,
       const bool overflow = Bdigits_mul10(&value_1);
       const scale_t new_scale = Bget_scale(Q) + 1;
       Bset_scale(&Q, new_scale);
-      // if (new_scale > MAX_SCALE && result->bits[3] != 0) { /* слишком много
-      // цифр после запятой */
-      if (new_scale >
-          MAX_SCALE) {  // когда починишь вывод числа пи, то почини округление и
-                        // расскоментируй предыдущее. или нет? aaaaaaaaa
+      if (new_scale > MAX_SCALE) {
         err_code = 0;
         break;
       }
@@ -239,8 +239,7 @@ err_t Bdigits_division(big_decimal value_1, big_decimal value_2,
       break;
     }
   }
-  Bset_result_sign(result, result_sign);
-
+  Bset_sign(result, result_sign);
   return err_code;
 }
 

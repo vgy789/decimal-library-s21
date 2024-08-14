@@ -35,13 +35,6 @@ err_t big_to_decimal(big_decimal value, s21_decimal *result) {
 
 void decimal_to_big(s21_decimal value, big_decimal *result) {
   *result = (big_decimal){{0}};
-  // TODO: не забудь удалить. Я убрал это, чтобы в результате мог быть -0,
-  // например при умножении отрицательного на 0 или отрицательного 0 на любое
-  // число if (value.bits[0] == 0 && value.bits[1] == 0 &&
-  //     value.bits[2] == 0) { /* is zero? */
-  //   /* -0 to 0 */
-  //   value.bits[3] = 0;
-  // }
   /* converter */
   for (uint8_t i = 0; i < 3; ++i) {
     result->bits[i] = value.bits[i];
