@@ -145,10 +145,10 @@ START_TEST(set_bit_overflow_false_one) {
 END_TEST
 
 START_TEST(add_positive_numbers) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
-  s21_decimal result;
-  s21_decimal expected = {{30, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{30, 0, 0, 0}};
   int return_code = s21_add(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -160,10 +160,10 @@ START_TEST(add_positive_numbers) {
 END_TEST
 
 START_TEST(add_big_positive_numbers) {
-  s21_decimal value_1 = {{10, 30, 60000, 0}};
-  s21_decimal value_2 = {{20, 30, 60000, 0}};
-  s21_decimal result;
-  s21_decimal expected = {{30, 60, 120000, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 30, 60000, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 30, 60000, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{30, 60, 120000, 0}};
   int return_code = s21_add(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -174,10 +174,10 @@ START_TEST(add_big_positive_numbers) {
 END_TEST
 
 START_TEST(add_negative_numbers) {
-  s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
-  s21_decimal result;
-  s21_decimal expected = {{30, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{30, 0, 0, 0x80000000}};
 
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -189,10 +189,10 @@ START_TEST(add_negative_numbers) {
 END_TEST
 
 START_TEST(add_positive_and_negative) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
-  s21_decimal result;
-  s21_decimal expected = {{10, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{10, 0, 0, 0x80000000}};
   int return_code = s21_add(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -203,10 +203,10 @@ START_TEST(add_positive_and_negative) {
 END_TEST
 
 START_TEST(add_negative_and_positive) {
-  s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
-  s21_decimal result;
-  s21_decimal expected = {{10, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{10, 0, 0, 0}};
   int return_code = s21_add(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -217,12 +217,12 @@ START_TEST(add_negative_and_positive) {
 END_TEST
 
 START_TEST(add_positive_float) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
   set_scale(&value_1, 10);
   set_scale(&value_2, 5);
-  s21_decimal result;
-  s21_decimal expected = {{200001, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{200001, 0, 0, 0}};
   set_scale(&expected, 9);
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -232,10 +232,10 @@ START_TEST(add_positive_float) {
   // Функция s21_add сложение двух больших положительных дробных
   // #test add_big_positive_float
   // s21_decimal value_1 = {1, 0, 565264864, 0};
-  // s21_decimal value_2 = {{0}};
+  // s21_decimal value_2 = (s21_decimal){{0}};
   // str_to_decimal("50000000")
-  // s21_decimal result;
-  // s21_decimal expected = {{200001, 0, 0, 0}};
+  // s21_decimal result = (s21_decimal){{0}};
+  // s21_decimal expected = (s21_decimal){{200001, 0, 0, 0}};
   // set_scale(&expected, 9);
   // int return_code = s21_add(value_1, value_2, &result);
 
@@ -247,12 +247,12 @@ START_TEST(add_positive_float) {
 END_TEST
 
 START_TEST(add_negative_float) {
-  s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0x80000000}};
   set_scale(&value_1, 10);
   set_scale(&value_2, 5);
-  s21_decimal result;
-  s21_decimal expected = {{200001, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{200001, 0, 0, 0x80000000}};
   set_scale(&expected, 9);
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -264,12 +264,12 @@ START_TEST(add_negative_float) {
 END_TEST
 
 START_TEST(add_positive_and_negative_float) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0x80000000}};
   set_scale(&value_1, 10);
   set_scale(&value_2, 5);
-  s21_decimal result;
-  s21_decimal expected = {{199999, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{199999, 0, 0, 0x80000000}};
   set_scale(&expected, 9);
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -281,12 +281,12 @@ START_TEST(add_positive_and_negative_float) {
 END_TEST
 
 START_TEST(add_negative_and_positive_float) {
-  s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
   set_scale(&value_1, 10);
   set_scale(&value_2, 5);
-  s21_decimal result;
-  s21_decimal expected = {{199999, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{199999, 0, 0, 0}};
   set_scale(&expected, 9);
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -297,11 +297,11 @@ START_TEST(add_negative_and_positive_float) {
 END_TEST
 
 START_TEST(add_positive_float_int) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
   set_scale(&value_1, 10);
-  s21_decimal result;
-  s21_decimal expected = {{2820130817U, 4, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{2820130817U, 4, 0, 0}};
   set_scale(&expected, 9);
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -313,11 +313,11 @@ START_TEST(add_positive_float_int) {
 END_TEST
 
 START_TEST(add_negative_float_int) {
-  s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0x80000000}};
   set_scale(&value_1, 10);
-  s21_decimal result;
-  s21_decimal expected = {{2820130817U, 4, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{2820130817U, 4, 0, 0x80000000}};
   set_scale(&expected, 9);
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -329,11 +329,11 @@ START_TEST(add_negative_float_int) {
 END_TEST
 
 START_TEST(add_negative_float_positive_int) {
-  s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
   set_scale(&value_1, 10);
-  s21_decimal result;
-  s21_decimal expected = {{2820130815U, 4, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{2820130815U, 4, 0, 0}};
   set_scale(&expected, 9);
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -345,11 +345,11 @@ START_TEST(add_negative_float_positive_int) {
 END_TEST
 
 START_TEST(add_positive_float_negative_int) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0x80000000}};
   set_scale(&value_1, 10);
-  s21_decimal result;
-  s21_decimal expected = {{2820130815U, 4, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{2820130815U, 4, 0, 0x80000000}};
   set_scale(&expected, 9);
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -361,11 +361,11 @@ START_TEST(add_positive_float_negative_int) {
 END_TEST
 
 START_TEST(add_positive_int_negative_float) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0x80000000}};
   set_scale(&value_2, 5);
-  s21_decimal result;
-  s21_decimal expected = {{99998, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{99998, 0, 0, 0}};
   set_scale(&expected, 4);
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -377,11 +377,11 @@ START_TEST(add_positive_int_negative_float) {
 END_TEST
 
 START_TEST(add_negative_int_positive_float) {
-  s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
   set_scale(&value_2, 5);
-  s21_decimal result;
-  s21_decimal expected = {{99998, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{99998, 0, 0, 0x80000000}};
   set_scale(&expected, 4);
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -393,9 +393,9 @@ START_TEST(add_negative_int_positive_float) {
 END_TEST
 
 START_TEST(add_overflow) {
-  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal value_2 = {{1, 0, 0, 0}};
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal value_2 = (s21_decimal){{1, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -406,9 +406,9 @@ START_TEST(add_overflow) {
 END_TEST
 
 START_TEST(add_overflow_two) {
-  s21_decimal value_1 = {{1, 0, 0, 0}};
-  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -420,9 +420,9 @@ START_TEST(add_overflow_two) {
 END_TEST
 
 START_TEST(add_overflow_three) {
-  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal value_2 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -434,9 +434,10 @@ START_TEST(add_overflow_three) {
 END_TEST
 
 START_TEST(add_overflow_negative) {
-  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-  s21_decimal value_2 = {{1, 0, 0, 0x80000000}};
-  s21_decimal result;
+  s21_decimal value_1 =
+      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{1, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -448,9 +449,10 @@ START_TEST(add_overflow_negative) {
 END_TEST
 
 START_TEST(add_overflow_negative_two) {
-  s21_decimal value_1 = {{1, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0x80000000}};
+  s21_decimal value_2 =
+      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -463,9 +465,11 @@ START_TEST(add_overflow_negative_two) {
 END_TEST
 
 START_TEST(add_overflow_negative_three) {
-  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-  s21_decimal result;
+  s21_decimal value_1 =
+      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
+  s21_decimal value_2 =
+      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -476,10 +480,10 @@ START_TEST(add_overflow_negative_three) {
 END_TEST
 
 START_TEST(add_positive_numbers_zero) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
-  s21_decimal result;
-  s21_decimal expected = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0, 0, 0, 0}};
   int return_code = s21_add(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -490,10 +494,10 @@ START_TEST(add_positive_numbers_zero) {
 END_TEST
 
 START_TEST(add_positive_and_negative_zero) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0x80000000}};
-  s21_decimal result;
-  s21_decimal expected = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0, 0, 0, 0}};
   int return_code = s21_add(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -504,10 +508,10 @@ START_TEST(add_positive_and_negative_zero) {
 END_TEST
 
 START_TEST(add_negative_and_positive_zero) {
-  s21_decimal value_1 = {{0, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
-  s21_decimal result;
-  s21_decimal expected = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0, 0, 0, 0}};
   int return_code = s21_add(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -518,10 +522,10 @@ START_TEST(add_negative_and_positive_zero) {
 END_TEST
 
 START_TEST(add_negative_numbers_zero) {
-  s21_decimal value_1 = {{0, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{0, 0, 0, 0x80000000}};
-  s21_decimal expected = {{0, 0, 0, 0x80000000}};
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0x80000000}};
+  s21_decimal expected = (s21_decimal){{0, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
   int return_code = s21_add(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -532,10 +536,10 @@ START_TEST(add_negative_numbers_zero) {
 END_TEST
 
 START_TEST(add_positive_numbers_and_zero) {
-  s21_decimal value_1 = {{15, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
-  s21_decimal result;
-  s21_decimal expected = {{15, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{15, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{15, 0, 0, 0}};
   int return_code = s21_add(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -546,10 +550,10 @@ START_TEST(add_positive_numbers_and_zero) {
 END_TEST
 
 START_TEST(add_zero_and_positive_numbers) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{15, 0, 0, 0}};
-  s21_decimal result;
-  s21_decimal expected = {{15, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{15, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{15, 0, 0, 0}};
   int return_code = s21_add(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -560,11 +564,11 @@ START_TEST(add_zero_and_positive_numbers) {
 END_TEST
 
 START_TEST(add_positive_float_and_zero) {
-  s21_decimal value_1 = {{15, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{15, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
   set_scale(&value_1, 7);
-  s21_decimal result;
-  s21_decimal expected = {{15, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{15, 0, 0, 0}};
   set_scale(&expected, 7);
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -576,11 +580,11 @@ START_TEST(add_positive_float_and_zero) {
 END_TEST
 
 START_TEST(add_zero_and_positive_float) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{15, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{15, 0, 0, 0}};
   set_scale(&value_2, 7);
-  s21_decimal result;
-  s21_decimal expected = {{15, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{15, 0, 0, 0}};
   set_scale(&expected, 7);
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -592,10 +596,10 @@ START_TEST(add_zero_and_positive_float) {
 END_TEST
 
 START_TEST(add_negative_numbers_and_zero) {
-  s21_decimal value_1 = {{15, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
-  s21_decimal result;
-  s21_decimal expected = {{15, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{15, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{15, 0, 0, 0x80000000}};
   int return_code = s21_add(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -606,10 +610,10 @@ START_TEST(add_negative_numbers_and_zero) {
 END_TEST
 
 START_TEST(add_zero_and_negative_numbers) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{15, 0, 0, 0x80000000}};
-  s21_decimal result;
-  s21_decimal expected = {{15, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{15, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{15, 0, 0, 0x80000000}};
   int return_code = s21_add(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -620,11 +624,11 @@ START_TEST(add_zero_and_negative_numbers) {
 END_TEST
 
 START_TEST(add_negative_float_and_zero) {
-  s21_decimal value_1 = {{15, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{15, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
   set_scale(&value_1, 7);
-  s21_decimal result;
-  s21_decimal expected = {{15, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{15, 0, 0, 0x80000000}};
   set_scale(&expected, 7);
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -636,11 +640,11 @@ START_TEST(add_negative_float_and_zero) {
 END_TEST
 
 START_TEST(add_zero_and_negative_float) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{15, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{15, 0, 0, 0x80000000}};
   set_scale(&value_2, 7);
-  s21_decimal result;
-  s21_decimal expected = {{15, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{15, 0, 0, 0x80000000}};
   set_scale(&expected, 7);
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -652,12 +656,12 @@ START_TEST(add_zero_and_negative_float) {
 END_TEST
 
 START_TEST(add_positive_float_big_scale) {
-  s21_decimal value_1 = {{1, 0, 0, 0}};
-  s21_decimal value_2 = {{2, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{2, 0, 0, 0}};
   set_scale(&value_1, 28);
   set_scale(&value_2, 27);
-  s21_decimal result;
-  s21_decimal expected = {{21, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{21, 0, 0, 0}};
   set_scale(&expected, 28);
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -669,12 +673,12 @@ START_TEST(add_positive_float_big_scale) {
 END_TEST
 
 START_TEST(add_negative_float_big_scale_) {
-  s21_decimal value_1 = {{1, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{2, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{2, 0, 0, 0x80000000}};
   set_scale(&value_1, 28);
   set_scale(&value_2, 27);
-  s21_decimal result;
-  s21_decimal expected = {{21, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{21, 0, 0, 0x80000000}};
   set_scale(&expected, 28);
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -687,12 +691,12 @@ START_TEST(add_negative_float_big_scale_) {
 END_TEST
 
 START_TEST(add_negative_and_positive_float_big_scale_) {
-  s21_decimal value_1 = {{1, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{2, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{2, 0, 0, 0}};
   set_scale(&value_1, 28);
   set_scale(&value_2, 27);
-  s21_decimal result;
-  s21_decimal expected = {{19, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{19, 0, 0, 0}};
   set_scale(&expected, 28);
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -705,12 +709,12 @@ START_TEST(add_negative_and_positive_float_big_scale_) {
 END_TEST
 
 START_TEST(add_positive_and_negative_float_big_scale) {
-  s21_decimal value_1 = {{1, 0, 0, 0}};
-  s21_decimal value_2 = {{2, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{2, 0, 0, 0x80000000}};
   set_scale(&value_1, 28);
   set_scale(&value_2, 27);
-  s21_decimal result;
-  s21_decimal expected = {{19, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{19, 0, 0, 0x80000000}};
   set_scale(&expected, 28);
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -723,10 +727,10 @@ START_TEST(add_positive_and_negative_float_big_scale) {
 END_TEST
 
 START_TEST(sub_positive_numbers) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
-  s21_decimal result;
-  s21_decimal expected = {{10, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{10, 0, 0, 0x80000000}};
   int return_code = s21_sub(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -737,12 +741,12 @@ START_TEST(sub_positive_numbers) {
 END_TEST
 
 START_TEST(sub_negative_numbers) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
   set_sign(&value_1, minus);
   set_sign(&value_2, minus);
-  s21_decimal expected = {{10, 0, 0, 0}};
-  s21_decimal result;
+  s21_decimal expected = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
   int return_code = s21_sub(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -753,11 +757,11 @@ START_TEST(sub_negative_numbers) {
 END_TEST
 
 START_TEST(sub_positive_and_negative) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
   set_sign(&value_2, minus);
-  s21_decimal result;
-  s21_decimal expected = {{30, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{30, 0, 0, 0}};
   int return_code = s21_sub(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -768,11 +772,11 @@ START_TEST(sub_positive_and_negative) {
 END_TEST
 
 START_TEST(sub_negative_and_positive) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
   set_sign(&value_1, minus);
-  s21_decimal result;
-  s21_decimal expected = {{30, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{30, 0, 0, 0x80000000}};
   int return_code = s21_sub(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -783,12 +787,12 @@ START_TEST(sub_negative_and_positive) {
 END_TEST
 
 START_TEST(sub_positive_float) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
   set_scale(&value_1, 10);
   set_scale(&value_2, 5);
-  s21_decimal result;
-  s21_decimal expected = {{199999, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{199999, 0, 0, 0x80000000}};
   set_scale(&expected, 9);
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -800,14 +804,14 @@ START_TEST(sub_positive_float) {
 END_TEST
 
 START_TEST(sub_negative_float) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
   set_sign(&value_1, minus);
   set_sign(&value_2, minus);
   set_scale(&value_1, 10);
   set_scale(&value_2, 5);
-  s21_decimal result;
-  s21_decimal expected = {{199999, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{199999, 0, 0, 0}};
   set_scale(&expected, 9);
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -819,13 +823,13 @@ START_TEST(sub_negative_float) {
 END_TEST
 
 START_TEST(sub_positive_and_negative_float) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
   set_sign(&value_2, minus);
   set_scale(&value_1, 10);
   set_scale(&value_2, 5);
-  s21_decimal result;
-  s21_decimal expected = {{200001, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{200001, 0, 0, 0}};
   set_scale(&expected, 9);
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -837,13 +841,13 @@ START_TEST(sub_positive_and_negative_float) {
 END_TEST
 
 START_TEST(sub_negative_and_positive_float) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
   set_sign(&value_1, minus);
   set_scale(&value_1, 10);
   set_scale(&value_2, 5);
-  s21_decimal result;
-  s21_decimal expected = {{200001, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{200001, 0, 0, 0x80000000}};
   set_scale(&expected, 9);
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -855,11 +859,11 @@ START_TEST(sub_negative_and_positive_float) {
 END_TEST
 
 START_TEST(sub_positive_float_int) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
   set_scale(&value_1, 10);
-  s21_decimal result;
-  s21_decimal expected = {{2820130815U, 4, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{2820130815U, 4, 0, 0x80000000}};
   set_scale(&expected, 9);
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -871,13 +875,13 @@ START_TEST(sub_positive_float_int) {
 END_TEST
 
 START_TEST(sub_negative_float_int) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
   set_sign(&value_1, minus);
   set_sign(&value_2, minus);
   set_scale(&value_1, 10);
-  s21_decimal result;
-  s21_decimal expected = {{2820130815U, 4, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{2820130815U, 4, 0, 0}};
   set_scale(&expected, 9);
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -889,12 +893,12 @@ START_TEST(sub_negative_float_int) {
 END_TEST
 
 START_TEST(sub_negative_float_positive_int) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
   set_sign(&value_1, minus);
   set_scale(&value_1, 10);
-  s21_decimal result;
-  s21_decimal expected = {{2820130817U, 4, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{2820130817U, 4, 0, 0x80000000}};
   set_scale(&expected, 9);
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -906,12 +910,12 @@ START_TEST(sub_negative_float_positive_int) {
 END_TEST
 
 START_TEST(sub_positive_float_negative_int) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
   set_scale(&value_1, 10);
   set_sign(&value_2, minus);
-  s21_decimal result;
-  s21_decimal expected = {{2820130817U, 4, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{2820130817U, 4, 0, 0}};
   set_scale(&expected, 9);
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -923,12 +927,12 @@ START_TEST(sub_positive_float_negative_int) {
 END_TEST
 
 START_TEST(sub_positive_int_negative_float) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
   set_sign(&value_2, minus);
   set_scale(&value_2, 5);
-  s21_decimal result;
-  s21_decimal expected = {{100002, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{100002, 0, 0, 0}};
   set_scale(&expected, 4);
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -940,12 +944,12 @@ START_TEST(sub_positive_int_negative_float) {
 END_TEST
 
 START_TEST(sub_negative_int_positive_float) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
   set_sign(&value_1, minus);
   set_scale(&value_2, 5);
-  s21_decimal result;
-  s21_decimal expected = {{100002, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{100002, 0, 0, 0x80000000}};
   set_scale(&expected, 4);
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -958,10 +962,10 @@ START_TEST(sub_negative_int_positive_float) {
 END_TEST
 
 START_TEST(sub_overflow) {
-  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal value_1 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal value_2 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
   set_sign(&value_1, minus);
-  s21_decimal result;
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -973,10 +977,10 @@ START_TEST(sub_overflow) {
 END_TEST
 
 START_TEST(sub_overflow_two) {
-  s21_decimal value_1 = {{1, 0, 0, 0}};
-  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
   set_sign(&value_1, minus);
-  s21_decimal result;
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -988,10 +992,10 @@ START_TEST(sub_overflow_two) {
 END_TEST
 
 START_TEST(sub_overflow_negative) {
-  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal value_2 = {{1, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal value_2 = (s21_decimal){{1, 0, 0, 0}};
   set_sign(&value_1, minus);
-  s21_decimal result;
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -1002,10 +1006,10 @@ START_TEST(sub_overflow_negative) {
 END_TEST
 
 START_TEST(sub_positive_numbers_zero) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
-  s21_decimal result;
-  s21_decimal expected = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0, 0, 0, 0}};
   int return_code = s21_sub(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -1016,11 +1020,11 @@ START_TEST(sub_positive_numbers_zero) {
 END_TEST
 
 START_TEST(sub_positive_and_negative_zero) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
   set_sign(&value_2, minus);
-  s21_decimal result;
-  s21_decimal expected = {{0, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0, 0, 0, 0}};
   int return_code = s21_sub(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -1031,11 +1035,11 @@ START_TEST(sub_positive_and_negative_zero) {
 END_TEST
 
 START_TEST(sub_negative_and_positive_zero) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
   set_sign(&value_1, minus);
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-0", &expected);
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -1047,12 +1051,12 @@ START_TEST(sub_negative_and_positive_zero) {
 END_TEST
 
 START_TEST(sub_negative_numbers_zero) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
   set_sign(&value_1, minus);
   set_sign(&value_2, minus);
-  s21_decimal expected = {{0, 0, 0, 0}};
-  s21_decimal result;
+  s21_decimal expected = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
   int return_code = s21_sub(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -1063,12 +1067,12 @@ START_TEST(sub_negative_numbers_zero) {
 END_TEST
 
 START_TEST(sub_positive_float_big_scale) {
-  s21_decimal value_1 = {{1, 0, 0, 0}};
-  s21_decimal value_2 = {{2, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{2, 0, 0, 0}};
   set_scale(&value_1, MAX_SCALE);
   set_scale(&value_2, 27);
-  s21_decimal result;
-  s21_decimal expected = {{19, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{19, 0, 0, 0x80000000}};
   set_scale(&expected, 28);
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -1080,14 +1084,14 @@ START_TEST(sub_positive_float_big_scale) {
 END_TEST
 
 START_TEST(sub_negative_float_big_scale) {
-  s21_decimal value_1 = {{1, 0, 0, 0}};
-  s21_decimal value_2 = {{2, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{2, 0, 0, 0}};
   set_sign(&value_1, minus);
   set_sign(&value_2, minus);
   set_scale(&value_1, 28);
   set_scale(&value_2, 27);
-  s21_decimal result;
-  s21_decimal expected = {{19, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{19, 0, 0, 0}};
   set_scale(&expected, 28);
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -1100,13 +1104,13 @@ START_TEST(sub_negative_float_big_scale) {
 END_TEST
 
 START_TEST(sub_negative_and_positive_float_big_scale) {
-  s21_decimal value_1 = {{1, 0, 0, 0}};
-  s21_decimal value_2 = {{2, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{2, 0, 0, 0}};
   set_sign(&value_1, minus);
   set_scale(&value_1, 28);
   set_scale(&value_2, 27);
-  s21_decimal result;
-  s21_decimal expected = {{21, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{21, 0, 0, 0x80000000}};
   set_scale(&expected, 28);
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -1119,13 +1123,13 @@ START_TEST(sub_negative_and_positive_float_big_scale) {
 END_TEST
 
 START_TEST(sub_positive_and_negative_float_big_scale) {
-  s21_decimal value_1 = {{1, 0, 0, 0}};
-  s21_decimal value_2 = {{2, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{2, 0, 0, 0}};
   set_sign(&value_2, minus);
   set_scale(&value_1, 28);
   set_scale(&value_2, 27);
-  s21_decimal result;
-  s21_decimal expected = {{21, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{21, 0, 0, 0}};
   set_scale(&expected, 28);
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -1137,10 +1141,10 @@ START_TEST(sub_positive_and_negative_float_big_scale) {
 END_TEST
 
 START_TEST(sub_positive_numbers_and_zero) {
-  s21_decimal value_1 = {{15, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
-  s21_decimal result;
-  s21_decimal expected = {{15, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{15, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{15, 0, 0, 0}};
   int return_code = s21_sub(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -1151,10 +1155,10 @@ START_TEST(sub_positive_numbers_and_zero) {
 END_TEST
 
 START_TEST(sub_zero_and_positive_numbers) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{15, 0, 0, 0}};
-  s21_decimal result;
-  s21_decimal expected = {{15, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{15, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{15, 0, 0, 0}};
   set_sign(&expected, minus);
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -1166,11 +1170,11 @@ START_TEST(sub_zero_and_positive_numbers) {
 END_TEST
 
 START_TEST(sub_positive_float_and_zero) {
-  s21_decimal value_1 = {{15, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{15, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
   set_scale(&value_1, 7);
-  s21_decimal result;
-  s21_decimal expected = {{15, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{15, 0, 0, 0}};
   set_scale(&expected, 7);
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -1182,11 +1186,11 @@ START_TEST(sub_positive_float_and_zero) {
 END_TEST
 
 START_TEST(sub_zero_and_positive_float) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{15, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{15, 0, 0, 0}};
   set_scale(&value_2, 7);
-  s21_decimal result;
-  s21_decimal expected = {{15, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{15, 0, 0, 0}};
   set_scale(&expected, 7);
   set_sign(&expected, minus);
   int return_code = s21_sub(value_1, value_2, &result);
@@ -1199,11 +1203,11 @@ START_TEST(sub_zero_and_positive_float) {
 END_TEST
 
 START_TEST(sub_negative_numbers_and_zero) {
-  s21_decimal value_1 = {{15, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{15, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
   set_sign(&value_1, minus);
-  s21_decimal result;
-  s21_decimal expected = {{15, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{15, 0, 0, 0}};
   set_sign(&expected, minus);
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -1215,11 +1219,11 @@ START_TEST(sub_negative_numbers_and_zero) {
 END_TEST
 
 START_TEST(sub_zero_and_negative_numbers) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{15, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{15, 0, 0, 0}};
   set_sign(&value_2, minus);
-  s21_decimal result;
-  s21_decimal expected = {{15, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{15, 0, 0, 0}};
   int return_code = s21_sub(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -1230,13 +1234,13 @@ START_TEST(sub_zero_and_negative_numbers) {
 END_TEST
 
 START_TEST(sub_negative_float_and_zero) {
-  s21_decimal value_1 = {{15, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{15, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
   set_scale(&value_1, 7);
   set_sign(&value_1, minus);
 
-  s21_decimal result;
-  s21_decimal expected = {{15, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{15, 0, 0, 0x80000000}};
   set_scale(&expected, 7);
   set_sign(&value_1, minus);
   int return_code = s21_sub(value_1, value_2, &result);
@@ -1249,12 +1253,12 @@ START_TEST(sub_negative_float_and_zero) {
 END_TEST
 
 START_TEST(sub_zero_and_negative_float) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{15, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{15, 0, 0, 0}};
   set_scale(&value_2, 7);
   set_sign(&value_2, minus);
-  s21_decimal result;
-  s21_decimal expected = {{15, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{15, 0, 0, 0}};
   set_scale(&expected, 7);
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -1268,10 +1272,10 @@ START_TEST(sub_zero_and_negative_float) {
 END_TEST
 
 START_TEST(mul_positive_numbers) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
-  s21_decimal result;
-  s21_decimal expected = {{200, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{200, 0, 0, 0}};
   int return_code = s21_mul(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -1282,10 +1286,10 @@ START_TEST(mul_positive_numbers) {
 END_TEST
 
 START_TEST(mul_negative_numbers) {
-  s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
-  s21_decimal result;
-  s21_decimal expected = {{200, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{200, 0, 0, 0}};
   int return_code = s21_mul(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -1296,10 +1300,10 @@ START_TEST(mul_negative_numbers) {
 END_TEST
 
 START_TEST(mul_positive_and_negative) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
-  s21_decimal result;
-  s21_decimal expected = {{200, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{200, 0, 0, 0x80000000}};
   int return_code = s21_mul(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -1310,10 +1314,10 @@ START_TEST(mul_positive_and_negative) {
 END_TEST
 
 START_TEST(mul_negative_and_positive) {
-  s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
-  s21_decimal result;
-  s21_decimal expected = {{200, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{200, 0, 0, 0x80000000}};
   int return_code = s21_mul(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -1324,12 +1328,12 @@ START_TEST(mul_negative_and_positive) {
 END_TEST
 
 START_TEST(mul_positive_float) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
   set_scale(&value_1, 10);
   set_scale(&value_2, 5);
-  s21_decimal result;
-  s21_decimal expected = {{2, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{2, 0, 0, 0}};
   set_scale(&expected, 13);
   int return_code = s21_mul(value_1, value_2, &result);
 
@@ -1341,12 +1345,12 @@ START_TEST(mul_positive_float) {
 END_TEST
 
 START_TEST(mul_negative_float) {
-  s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0x80000000}};
   set_scale(&value_1, 10);
   set_scale(&value_2, 5);
-  s21_decimal result;
-  s21_decimal expected = {{2, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{2, 0, 0, 0}};
   set_scale(&expected, 13);
   int return_code = s21_mul(value_1, value_2, &result);
 
@@ -1358,12 +1362,12 @@ START_TEST(mul_negative_float) {
 END_TEST
 
 START_TEST(mul_positive_and_negative_float) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0x80000000}};
   set_scale(&value_1, 10);
   set_scale(&value_2, 5);
-  s21_decimal result;
-  s21_decimal expected = {{2, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{2, 0, 0, 0x80000000}};
   set_scale(&expected, 13);
   int return_code = s21_mul(value_1, value_2, &result);
 
@@ -1375,12 +1379,12 @@ START_TEST(mul_positive_and_negative_float) {
 END_TEST
 
 START_TEST(mul_negative_and_positive_float) {
-  s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
   set_scale(&value_1, 10);
   set_scale(&value_2, 5);
-  s21_decimal result;
-  s21_decimal expected = {{2, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{2, 0, 0, 0x80000000}};
   set_scale(&expected, 13);
   int return_code = s21_mul(value_1, value_2, &result);
 
@@ -1392,11 +1396,11 @@ START_TEST(mul_negative_and_positive_float) {
 END_TEST
 
 START_TEST(mul_positive_float_int) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
   set_scale(&value_1, 10);
-  s21_decimal result;
-  s21_decimal expected = {{2, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{2, 0, 0, 0}};
   set_scale(&expected, 8);
   int return_code = s21_mul(value_1, value_2, &result);
 
@@ -1408,11 +1412,11 @@ START_TEST(mul_positive_float_int) {
 END_TEST
 
 START_TEST(mul_negative_float_int) {
-  s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0x80000000}};
   set_scale(&value_1, 10);
-  s21_decimal result;
-  s21_decimal expected = {{2, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{2, 0, 0, 0}};
   set_scale(&expected, 8);
   int return_code = s21_mul(value_1, value_2, &result);
 
@@ -1424,11 +1428,11 @@ START_TEST(mul_negative_float_int) {
 END_TEST
 
 START_TEST(mul_negative_float_positive_int) {
-  s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
   set_scale(&value_1, 10);
-  s21_decimal result;
-  s21_decimal expected = {{2, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{2, 0, 0, 0x80000000}};
   set_scale(&expected, 8);
   int return_code = s21_mul(value_1, value_2, &result);
 
@@ -1440,11 +1444,11 @@ START_TEST(mul_negative_float_positive_int) {
 END_TEST
 
 START_TEST(mul_positive_float_negative_int) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0x80000000}};
   set_scale(&value_1, 10);
-  s21_decimal result;
-  s21_decimal expected = {{2, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{2, 0, 0, 0x80000000}};
   set_scale(&expected, 8);
   int return_code = s21_mul(value_1, value_2, &result);
 
@@ -1456,11 +1460,11 @@ START_TEST(mul_positive_float_negative_int) {
 END_TEST
 
 START_TEST(mul_positive_int_negative_float) {
-  s21_decimal value_1 = {{10, 0, 0, 0}};
-  s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0x80000000}};
   set_scale(&value_2, 5);
-  s21_decimal result;
-  s21_decimal expected = {{2, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{2, 0, 0, 0x80000000}};
   set_scale(&expected, 3);
   int return_code = s21_mul(value_1, value_2, &result);
 
@@ -1472,11 +1476,11 @@ START_TEST(mul_positive_int_negative_float) {
 END_TEST
 
 START_TEST(mul_negative_int_positive_float) {
-  s21_decimal value_1 = {{10, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{20, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};
   set_scale(&value_2, 5);
-  s21_decimal result;
-  s21_decimal expected = {{2, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{2, 0, 0, 0x80000000}};
   int return_code = s21_mul(value_1, value_2, &result);
   set_scale(&expected, 3);
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -1487,9 +1491,9 @@ START_TEST(mul_negative_int_positive_float) {
 END_TEST
 
 START_TEST(mul_overflow) {
-  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal value_2 = {{2, 0, 0, 0}};
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal value_2 = (s21_decimal){{2, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_mul(value_1, value_2, &result);
 
@@ -1500,9 +1504,9 @@ START_TEST(mul_overflow) {
 END_TEST
 
 START_TEST(mul_overflow_two) {
-  s21_decimal value_1 = {{2, 0, 0, 0}};
-  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{2, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_mul(value_1, value_2, &result);
   ck_assert(return_code == 1);
@@ -1512,9 +1516,9 @@ START_TEST(mul_overflow_two) {
 END_TEST
 
 START_TEST(mul_overflow_three) {
-  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal value_2 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_mul(value_1, value_2, &result);
 
@@ -1526,9 +1530,10 @@ START_TEST(mul_overflow_three) {
 END_TEST
 
 START_TEST(mul_overflow_four) {
-  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal result;
+  s21_decimal value_1 =
+      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_mul(value_1, value_2, &result);
 
@@ -1540,9 +1545,10 @@ START_TEST(mul_overflow_four) {
 END_TEST
 
 START_TEST(mul_overflow_five) {
-  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal value_2 =
+      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_mul(value_1, value_2, &result);
 
@@ -1554,9 +1560,10 @@ START_TEST(mul_overflow_five) {
 END_TEST
 
 START_TEST(mul_overflow_negative) {
-  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-  s21_decimal value_2 = {{2, 0, 0, 0x80000000}};
-  s21_decimal result;
+  s21_decimal value_1 =
+      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{2, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_mul(value_1, value_2, &result);
 
@@ -1568,9 +1575,10 @@ START_TEST(mul_overflow_negative) {
 END_TEST
 
 START_TEST(mul_overflow_negative_two) {
-  s21_decimal value_1 = {{2, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{2, 0, 0, 0x80000000}};
+  s21_decimal value_2 =
+      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_mul(value_1, value_2, &result);
 
@@ -1581,9 +1589,11 @@ START_TEST(mul_overflow_negative_two) {
 END_TEST
 
 START_TEST(mul_overflow_negative_three) {
-  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-  s21_decimal result;
+  s21_decimal value_1 =
+      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
+  s21_decimal value_2 =
+      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_mul(value_1, value_2, &result);
 
@@ -1594,10 +1604,10 @@ START_TEST(mul_overflow_negative_three) {
 END_TEST
 
 START_TEST(mul_positive_numbers_zero) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
-  s21_decimal result;
-  s21_decimal expected = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0, 0, 0, 0}};
   int return_code = s21_mul(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -1608,10 +1618,10 @@ START_TEST(mul_positive_numbers_zero) {
 END_TEST
 
 START_TEST(mul_positive_and_negative_zero) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0x80000000}};
-  s21_decimal result;
-  s21_decimal expected = {{0, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0, 0, 0, 0x80000000}};
   int return_code = s21_mul(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -1622,10 +1632,10 @@ START_TEST(mul_positive_and_negative_zero) {
 END_TEST
 
 START_TEST(mul_negative_and_positive_zero) {
-  s21_decimal value_1 = {{0, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
-  s21_decimal result;
-  s21_decimal expected = {{0, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0, 0, 0, 0x80000000}};
   int return_code = s21_mul(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -1636,9 +1646,9 @@ START_TEST(mul_negative_and_positive_zero) {
 END_TEST
 
 START_TEST(mul_negative_numbers_zero) {
-  s21_decimal value_1 = {{0, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{0, 0, 0, 0x80000000}};
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_mul(value_1, value_2, &result);
 
@@ -1649,10 +1659,10 @@ START_TEST(mul_negative_numbers_zero) {
 END_TEST
 
 START_TEST(mul_positive_numbers_and_zero) {
-  s21_decimal value_1 = {{15, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
-  s21_decimal result;
-  s21_decimal expected = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{15, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0, 0, 0, 0}};
   int return_code = s21_mul(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -1663,10 +1673,10 @@ START_TEST(mul_positive_numbers_and_zero) {
 END_TEST
 
 START_TEST(mul_zero_and_positive_numbers) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{15, 0, 0, 0}};
-  s21_decimal result;
-  s21_decimal expected = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{15, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0, 0, 0, 0}};
   int return_code = s21_mul(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -1677,11 +1687,11 @@ START_TEST(mul_zero_and_positive_numbers) {
 END_TEST
 
 START_TEST(mul_positive_float_and_zero) {
-  s21_decimal value_1 = {{15, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{15, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
   set_scale(&value_1, 7);
-  s21_decimal result;
-  s21_decimal expected = {{0, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0, 0, 0, 0}};
   int return_code = s21_mul(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -1692,11 +1702,11 @@ START_TEST(mul_positive_float_and_zero) {
 END_TEST
 
 START_TEST(mul_zero_and_positive_float) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{15, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{15, 0, 0, 0}};
   set_scale(&value_2, 7);
-  s21_decimal result;
-  s21_decimal expected = {{0, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0, 0, 0, 0}};
   int return_code = s21_mul(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -1707,10 +1717,10 @@ START_TEST(mul_zero_and_positive_float) {
 END_TEST
 
 START_TEST(mul_negative_numbers_and_zero) {
-  s21_decimal value_1 = {{15, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
-  s21_decimal result;
-  s21_decimal expected = {{0, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{15, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0, 0, 0, 0x80000000}};
   int return_code = s21_mul(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -1721,10 +1731,10 @@ START_TEST(mul_negative_numbers_and_zero) {
 END_TEST
 
 START_TEST(mul_zero_and_negative_numbers) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{15, 0, 0, 0x80000000}};
-  s21_decimal result;
-  s21_decimal expected = {{0, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{15, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0, 0, 0, 0x80000000}};
   int return_code = s21_mul(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -1735,11 +1745,11 @@ START_TEST(mul_zero_and_negative_numbers) {
 END_TEST
 
 START_TEST(mul_negative_float_and_zero) {
-  s21_decimal value_1 = {{15, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{15, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
   set_scale(&value_1, 7);
-  s21_decimal result;
-  s21_decimal expected = {{0, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0, 0, 0, 0x80000000}};
   int return_code = s21_mul(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -1750,11 +1760,11 @@ START_TEST(mul_negative_float_and_zero) {
 END_TEST
 
 START_TEST(mul_zero_and_negative_float) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{15, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{15, 0, 0, 0x80000000}};
   set_scale(&value_2, 7);
-  s21_decimal result;
-  s21_decimal expected = {{0, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0, 0, 0, 0x80000000}};
   int return_code = s21_mul(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -1765,11 +1775,11 @@ START_TEST(mul_zero_and_negative_float) {
 END_TEST
 
 START_TEST(mul_positive_float_big_scale) {
-  s21_decimal value_1 = {{1, 0, 0, 0}};
-  s21_decimal value_2 = {{2, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{2, 0, 0, 0}};
   set_scale(&value_1, 28);
   set_scale(&value_2, 27);
-  s21_decimal result;
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_mul(value_1, value_2, &result);
 
@@ -1780,11 +1790,11 @@ START_TEST(mul_positive_float_big_scale) {
 END_TEST
 
 START_TEST(mul_negative_float_big_scale) {
-  s21_decimal value_1 = {{1, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{2, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{2, 0, 0, 0x80000000}};
   set_scale(&value_1, 28);
   set_scale(&value_2, 27);
-  s21_decimal result;
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_mul(value_1, value_2, &result);
 
@@ -1796,11 +1806,11 @@ START_TEST(mul_negative_float_big_scale) {
 END_TEST
 
 START_TEST(mul_negative_and_positive_float_big_scale) {
-  s21_decimal value_1 = {{1, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{2, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{2, 0, 0, 0}};
   set_scale(&value_1, 28);
   set_scale(&value_2, 27);
-  s21_decimal result;
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_mul(value_1, value_2, &result);
 
@@ -1812,11 +1822,11 @@ START_TEST(mul_negative_and_positive_float_big_scale) {
 END_TEST
 
 START_TEST(mul_positive_and_negative_float_big_scale) {
-  s21_decimal value_1 = {{1, 0, 0, 0}};
-  s21_decimal value_2 = {{2, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{2, 0, 0, 0x80000000}};
   set_scale(&value_1, 28);
   set_scale(&value_2, 27);
-  s21_decimal result;
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_mul(value_1, value_2, &result);
 
@@ -1828,11 +1838,11 @@ START_TEST(mul_positive_and_negative_float_big_scale) {
 END_TEST
 
 START_TEST(mul_positive_float_big_scale_not_zero) {
-  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal value_1 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal value_2 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
   set_scale(&value_1, 28);
   set_scale(&value_2, 27);
-  s21_decimal result;
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_mul(value_1, value_2, &result);
 
@@ -1844,11 +1854,13 @@ START_TEST(mul_positive_float_big_scale_not_zero) {
 END_TEST
 
 START_TEST(mul_negative_float_big_scale_not_zero) {
-  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
+  s21_decimal value_1 =
+      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
+  s21_decimal value_2 =
+      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
   set_scale(&value_1, 28);
   set_scale(&value_2, 27);
-  s21_decimal result;
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_mul(value_1, value_2, &result);
 
@@ -1860,11 +1872,12 @@ START_TEST(mul_negative_float_big_scale_not_zero) {
 END_TEST
 
 START_TEST(mul_negative_and_positive_float_big_scale_not_zero) {
-  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal value_1 =
+      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
   set_scale(&value_1, 28);
   set_scale(&value_2, 27);
-  s21_decimal result;
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_mul(value_1, value_2, &result);
 
@@ -1876,11 +1889,12 @@ START_TEST(mul_negative_and_positive_float_big_scale_not_zero) {
 END_TEST
 
 START_TEST(mul_positive_and_negative_float_big_scale_not_zero) {
-  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal value_2 =
+      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
   set_scale(&value_1, 28);
   set_scale(&value_2, 27);
-  s21_decimal result;
+  s21_decimal result = (s21_decimal){{0}};
 
   int return_code = s21_mul(value_1, value_2, &result);
 
@@ -1895,11 +1909,11 @@ START_TEST(mul_positive_and_negative_float_big_scale_not_zero) {
 END_TEST
 
 START_TEST(mul_positive_float__) {
-  s21_decimal value_1 = {{50, 0, 0, 0}};
-  s21_decimal value_2 = {{10, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{50, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{10, 0, 0, 0}};
   set_scale(&value_2, 2);
-  s21_decimal result;
-  s21_decimal expected = {{5, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{5, 0, 0, 0}};
   int return_code = s21_mul(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -1910,11 +1924,11 @@ START_TEST(mul_positive_float__) {
 END_TEST
 
 START_TEST(mul_positive_float____) {
-  s21_decimal value_1 = {{5, 0, 0, 0}};
-  s21_decimal value_2 = {{10, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{5, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{10, 0, 0, 0}};
   set_scale(&value_2, 1);
-  s21_decimal result;
-  s21_decimal expected = {{5, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{5, 0, 0, 0}};
   int return_code = s21_mul(value_1, value_2, &result);
 
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -1925,14 +1939,14 @@ START_TEST(mul_positive_float____) {
 END_TEST
 
 START_TEST(alignment_both_zero_with_scale) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
   set_scale(&value_1, MAX_SCALE);
   set_scale(&value_2, 27);
   alignment(&value_1, &value_2, 1);
 
-  s21_decimal expected1 = {{0, 0, 0, 0}};
-  s21_decimal expected2 = {{0, 0, 0, 0}};
+  s21_decimal expected1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal expected2 = (s21_decimal){{0, 0, 0, 0}};
   set_scale(&expected1, 0);
   set_scale(&expected2, 0);
 
@@ -1944,13 +1958,13 @@ START_TEST(alignment_both_zero_with_scale) {
 END_TEST
 
 START_TEST(alignment_both_zero_without_scale) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
 
   alignment(&value_1, &value_2, 1);
 
-  s21_decimal expected1 = {{0, 0, 0, 0}};
-  s21_decimal expected2 = {{0, 0, 0, 0}};
+  s21_decimal expected1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal expected2 = (s21_decimal){{0, 0, 0, 0}};
 
   ck_assert(s21_is_equal(value_1, expected1) == 1);
   ck_assert(s21_is_equal(value_2, expected2) == 1);
@@ -1960,14 +1974,14 @@ START_TEST(alignment_both_zero_without_scale) {
 END_TEST
 
 START_TEST(alignment_both_zero_without_scale_and_with_scale) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
   set_scale(&value_2, MAX_SCALE);
 
   alignment(&value_1, &value_2, 1);
 
-  s21_decimal expected1 = {{0, 0, 0, 0}};
-  s21_decimal expected2 = {{0, 0, 0, 0}};
+  s21_decimal expected1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal expected2 = (s21_decimal){{0, 0, 0, 0}};
   set_scale(&expected2, 0);
 
   ck_assert(s21_is_equal(value_1, expected1) == 1);
@@ -1978,14 +1992,14 @@ START_TEST(alignment_both_zero_without_scale_and_with_scale) {
 END_TEST
 
 START_TEST(alignment_both_zero_with_scale_and_without_scale) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
   set_scale(&value_1, MAX_SCALE);
 
   alignment(&value_1, &value_2, 1);
 
-  s21_decimal expected1 = {{0, 0, 0, 0}};
-  s21_decimal expected2 = {{0, 0, 0, 0}};
+  s21_decimal expected1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal expected2 = (s21_decimal){{0, 0, 0, 0}};
   set_scale(&expected1, 0);
 
   ck_assert(s21_is_equal(value_1, expected1) == 1);
@@ -1996,15 +2010,15 @@ START_TEST(alignment_both_zero_with_scale_and_without_scale) {
 END_TEST
 
 START_TEST(alignment_float_with_zero_and_int) {
-  s21_decimal value_1 = {{1234000, 0, 0, 0}};
-  s21_decimal value_2 = {{5678, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{1234000, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{5678, 0, 0, 0}};
   set_scale(&value_1, 7);
   set_scale(&value_2, 0);
 
   alignment(&value_1, &value_2, 1);
 
-  s21_decimal expected1 = {{1234, 0, 0, 0}};
-  s21_decimal expected2 = {{56780000, 0, 0, 0}};
+  s21_decimal expected1 = (s21_decimal){{1234, 0, 0, 0}};
+  s21_decimal expected2 = (s21_decimal){{56780000, 0, 0, 0}};
   set_scale(&expected1, 4);
   set_scale(&expected2, 4);
 
@@ -2016,15 +2030,15 @@ START_TEST(alignment_float_with_zero_and_int) {
 END_TEST
 
 START_TEST(alignment_int_and_float_with_zero) {
-  s21_decimal value_1 = {{1234, 0, 0, 0}};
-  s21_decimal value_2 = {{5678000, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{1234, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{5678000, 0, 0, 0}};
   set_scale(&value_1, 0);
   set_scale(&value_2, 7);
 
   alignment(&value_1, &value_2, 1);
 
-  s21_decimal expected1 = {{12340000, 0, 0, 0}};
-  s21_decimal expected2 = {{5678, 0, 0, 0}};
+  s21_decimal expected1 = (s21_decimal){{12340000, 0, 0, 0}};
+  s21_decimal expected2 = (s21_decimal){{5678, 0, 0, 0}};
   set_scale(&expected1, 4);
   set_scale(&expected2, 4);
 
@@ -2036,14 +2050,16 @@ START_TEST(alignment_int_and_float_with_zero) {
 END_TEST
 
 START_TEST(alignment_big_float_big_scale_and_min_scale_) {
-  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal value_1 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal value_2 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
   set_scale(&value_1, MAX_SCALE);
   set_scale(&value_2, 1);
   alignment(&value_1, &value_2, 1);
 
-  s21_decimal expected1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal expected2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal expected1 =
+      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal expected2 =
+      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
   set_scale(&expected1, 28);
   set_scale(&expected2, 28);
 
@@ -2055,14 +2071,16 @@ START_TEST(alignment_big_float_big_scale_and_min_scale_) {
 END_TEST
 
 START_TEST(alignment_big_float_min_scale_and_big_scale) {
-  s21_decimal value_1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal value_2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal value_1 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal value_2 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
   set_scale(&value_1, 1);
   set_scale(&value_2, MAX_SCALE);
   alignment(&value_1, &value_2, 1);
 
-  s21_decimal expected1 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal expected2 = {{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal expected1 =
+      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
+  s21_decimal expected2 =
+      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
   set_scale(&expected1, 28);
   set_scale(&expected2, 28);
 
@@ -2074,14 +2092,14 @@ START_TEST(alignment_big_float_min_scale_and_big_scale) {
 END_TEST
 
 START_TEST(alignment_min_float_big_scale_and_min_scale_) {
-  s21_decimal value_1 = {{1, 0, 0, 0}};
-  s21_decimal value_2 = {{1, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{1, 0, 0, 0}};
   set_scale(&value_1, MAX_SCALE);
   set_scale(&value_2, 1);
   alignment(&value_1, &value_2, 1);
 
-  s21_decimal expected1 = {{1, 0, 0, 0}};
-  s21_decimal expected2 = {{1, 0, 0, 0}};
+  s21_decimal expected1 = (s21_decimal){{1, 0, 0, 0}};
+  s21_decimal expected2 = (s21_decimal){{1, 0, 0, 0}};
   set_scale(&expected1, 28);
   set_scale(&expected2, 28);
 
@@ -2093,14 +2111,14 @@ START_TEST(alignment_min_float_big_scale_and_min_scale_) {
 END_TEST
 
 START_TEST(alignment_min_float_min_scale_and_big_scale) {
-  s21_decimal value_1 = {{1, 0, 0, 0}};
-  s21_decimal value_2 = {{1, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{1, 0, 0, 0}};
   set_scale(&value_1, 1);
   set_scale(&value_2, MAX_SCALE);
   alignment(&value_1, &value_2, 1);
 
-  s21_decimal expected1 = {{1, 0, 0, 0}};
-  s21_decimal expected2 = {{1, 0, 0, 0}};
+  s21_decimal expected1 = (s21_decimal){{1, 0, 0, 0}};
+  s21_decimal expected2 = (s21_decimal){{1, 0, 0, 0}};
   set_scale(&expected1, 28);
   set_scale(&expected2, 28);
 
@@ -2110,16 +2128,16 @@ START_TEST(alignment_min_float_min_scale_and_big_scale) {
 END_TEST
 
 START_TEST(positive_s21_is_equal_00) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
   bool result = s21_is_equal(value_1, value_2);
   ck_assert(result == 1);
 }
 END_TEST
 
 START_TEST(positive_s21_is_equal_01) {
-  s21_decimal value_1 = {{0, 500, 1, 0}};
-  s21_decimal value_2 = {{0, 500, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 500, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 500, 1, 0}};
   set_sign(&value_1, minus);
   set_sign(&value_2, minus);
   set_scale(&value_1, 27);
@@ -2130,16 +2148,16 @@ START_TEST(positive_s21_is_equal_01) {
 END_TEST
 
 START_TEST(negative_s21_is_equal_00) {
-  s21_decimal value_1 = {{1, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
   bool result = s21_is_equal(value_1, value_2);
   ck_assert(result == 0);
 }
 END_TEST
 
 START_TEST(negative_s21_is_equal_01) {
-  s21_decimal value_1 = {{1, 0, 0, 0}};
-  s21_decimal value_2 = {{1, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{1, 0, 0, 0}};
   set_sign(&value_1, minus);
   bool result = s21_is_equal(value_1, value_2);
   ck_assert(result == 0);
@@ -2147,8 +2165,8 @@ START_TEST(negative_s21_is_equal_01) {
 END_TEST
 
 START_TEST(negative_s21_is_equal_02) {
-  s21_decimal value_1 = {{1, 0, 0, 0}};
-  s21_decimal value_2 = {{1, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{1, 0, 0, 0}};
   set_scale(&value_1, 27);
   bool result = s21_is_equal(value_1, value_2);
   ck_assert(result == 0);
@@ -2156,24 +2174,24 @@ START_TEST(negative_s21_is_equal_02) {
 END_TEST
 
 START_TEST(negative_s21_is_equal_03) {
-  s21_decimal value_1 = {{0, 1, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 1, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
   bool result = s21_is_equal(value_1, value_2);
   ck_assert(result == 0);
 }
 END_TEST
 
 START_TEST(negative_s21_is_not_equal_00) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
   bool result = s21_is_not_equal(value_1, value_2);
   ck_assert(result == 0);
 }
 END_TEST
 
 START_TEST(negative_s21_is_not_equal_01) {
-  s21_decimal value_1 = {{0, 500, 1, 0}};
-  s21_decimal value_2 = {{0, 500, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 500, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 500, 1, 0}};
   set_sign(&value_1, minus);
   set_sign(&value_2, minus);
   set_scale(&value_1, 27);
@@ -2184,16 +2202,16 @@ START_TEST(negative_s21_is_not_equal_01) {
 END_TEST
 
 START_TEST(positive_s21_is_not_equal_00) {
-  s21_decimal value_1 = {{1, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
   bool result = s21_is_not_equal(value_1, value_2);
   ck_assert(result == 1);
 }
 END_TEST
 
 START_TEST(positive_s21_is_not_equal_01) {
-  s21_decimal value_1 = {{1, 0, 0, 0}};
-  s21_decimal value_2 = {{1, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{1, 0, 0, 0}};
   set_sign(&value_1, minus);
   bool result = s21_is_not_equal(value_1, value_2);
   ck_assert(result == 1);
@@ -2201,8 +2219,8 @@ START_TEST(positive_s21_is_not_equal_01) {
 END_TEST
 
 START_TEST(positive_s21_is_not_equal_02) {
-  s21_decimal value_1 = {{1, 0, 0, 0}};
-  s21_decimal value_2 = {{1, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{1, 0, 0, 0}};
   set_scale(&value_1, 27);
   bool result = s21_is_not_equal(value_1, value_2);
   ck_assert(result == 1);
@@ -2210,32 +2228,32 @@ START_TEST(positive_s21_is_not_equal_02) {
 END_TEST
 
 START_TEST(positive_s21_is_not_equal_03) {
-  s21_decimal value_1 = {{0, 1, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 1, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
   bool result = s21_is_not_equal(value_1, value_2);
   ck_assert(result == 1);
 }
 END_TEST
 
 START_TEST(positive_s21_is_less_00) {
-  s21_decimal value_1 = {{0, 1, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 1, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 1, 0}};
   bool result = s21_is_less(value_1, value_2);
   ck_assert(result == 1);
 }
 END_TEST
 
 START_TEST(positive_s21_is_less_01) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 1, 0}};
   bool result = s21_is_less(value_1, value_2);
   ck_assert(result == 1);
 }
 END_TEST
 
 START_TEST(positive_s21_is_less_02) {
-  s21_decimal value_1 = {{0, 0, 1, 0}};
-  s21_decimal value_2 = {{0, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 1, 0}};
   set_sign(&value_1, minus);
   bool result = s21_is_less(value_1, value_2);
   ck_assert(result == 1);
@@ -2243,8 +2261,8 @@ START_TEST(positive_s21_is_less_02) {
 END_TEST
 
 START_TEST(positive_s21_is_less_03) {
-  s21_decimal value_1 = {{1, 0, 1, 0}};
-  s21_decimal value_2 = {{1, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{1, 0, 1, 0}};
   set_scale(&value_1, 27);
   set_scale(&value_2, 26);
   bool result = s21_is_less(value_1, value_2);
@@ -2253,24 +2271,24 @@ START_TEST(positive_s21_is_less_03) {
 END_TEST
 
 START_TEST(negative_s21_is_less_00) {
-  s21_decimal value_1 = {{0, 0, 1, 0}};
-  s21_decimal value_2 = {{0, 1, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 1, 0, 0}};
   bool result = s21_is_less(value_1, value_2);
   ck_assert(result == 0);
 }
 END_TEST
 
 START_TEST(negative_s21_is_less_01) {
-  s21_decimal value_1 = {{0, 0, 1, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
   bool result = s21_is_less(value_1, value_2);
   ck_assert(result == 0);
 }
 END_TEST
 
 START_TEST(negative_s21_is_less_02) {
-  s21_decimal value_1 = {{0, 0, 1, 0}};
-  s21_decimal value_2 = {{0, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 1, 0}};
   set_sign(&value_2, minus);
   bool result = s21_is_less(value_1, value_2);
   ck_assert(result == 0);
@@ -2278,8 +2296,8 @@ START_TEST(negative_s21_is_less_02) {
 END_TEST
 
 START_TEST(negative_s21_is_less_03) {
-  s21_decimal value_1 = {{1, 0, 1, 0}};
-  s21_decimal value_2 = {{1, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{1, 0, 1, 0}};
   set_scale(&value_1, 25);
   set_scale(&value_2, 26);
   bool result = s21_is_less(value_1, value_2);
@@ -2288,32 +2306,32 @@ START_TEST(negative_s21_is_less_03) {
 END_TEST
 
 START_TEST(negative_s21_is_less_04) {
-  s21_decimal value_1 = {{1, 0, 1, 0}};
-  s21_decimal value_2 = {{1, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{1, 0, 1, 0}};
   bool result = s21_is_less(value_1, value_2);
   ck_assert(result == 0);
 }
 END_TEST
 
 START_TEST(negative_s21_is_greater_00) {
-  s21_decimal value_1 = {{0, 1, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 1, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 1, 0}};
   bool result = s21_is_greater(value_1, value_2);
   ck_assert(result == 0);
 }
 END_TEST
 
 START_TEST(negative_s21_is_greater_01) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 1, 0}};
   bool result = s21_is_greater(value_1, value_2);
   ck_assert(result == 0);
 }
 END_TEST
 
 START_TEST(negative_s21_is_greater_02) {
-  s21_decimal value_1 = {{0, 0, 1, 0}};
-  s21_decimal value_2 = {{0, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 1, 0}};
   set_sign(&value_1, minus);
   bool result = s21_is_greater(value_1, value_2);
   ck_assert(result == 0);
@@ -2321,8 +2339,8 @@ START_TEST(negative_s21_is_greater_02) {
 END_TEST
 
 START_TEST(negative_s21_is_greater_03) {
-  s21_decimal value_1 = {{1, 0, 1, 0}};
-  s21_decimal value_2 = {{1, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{1, 0, 1, 0}};
   set_scale(&value_1, 27);
   set_scale(&value_2, 26);
   bool result = s21_is_greater(value_1, value_2);
@@ -2331,32 +2349,32 @@ START_TEST(negative_s21_is_greater_03) {
 END_TEST
 
 START_TEST(negative_s21_is_greater_04) {
-  s21_decimal value_1 = {{1, 0, 1, 0}};
-  s21_decimal value_2 = {{1, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{1, 0, 1, 0}};
   bool result = s21_is_greater(value_1, value_2);
   ck_assert(result == 0);
 }
 END_TEST
 
 START_TEST(positive_s21_is_greater_00) {
-  s21_decimal value_1 = {{0, 0, 1, 0}};
-  s21_decimal value_2 = {{0, 1, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 1, 0, 0}};
   bool result = s21_is_greater(value_1, value_2);
   ck_assert(result == 1);
 }
 END_TEST
 
 START_TEST(positive_s21_is_greater_01) {
-  s21_decimal value_1 = {{0, 0, 1, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
   bool result = s21_is_greater(value_1, value_2);
   ck_assert(result == 1);
 }
 END_TEST
 
 START_TEST(positive_s21_is_greater_02) {
-  s21_decimal value_1 = {{0, 0, 1, 0}};
-  s21_decimal value_2 = {{0, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 1, 0}};
   set_sign(&value_2, minus);
   bool result = s21_is_greater(value_1, value_2);
   ck_assert(result == 1);
@@ -2364,8 +2382,8 @@ START_TEST(positive_s21_is_greater_02) {
 END_TEST
 
 START_TEST(positive_s21_is_greater_03) {
-  s21_decimal value_1 = {{1, 0, 1, 0}};
-  s21_decimal value_2 = {{1, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{1, 0, 1, 0}};
   set_scale(&value_1, 25);
   set_scale(&value_2, 26);
   bool result = s21_is_greater(value_1, value_2);
@@ -2374,32 +2392,32 @@ START_TEST(positive_s21_is_greater_03) {
 END_TEST
 
 START_TEST(positive_s21_is_less_or_equal_000) {
-  s21_decimal value_1 = {{1, 0, 1, 0}};
-  s21_decimal value_2 = {{1, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{1, 0, 1, 0}};
   bool result = s21_is_less_or_equal(value_1, value_2);
   ck_assert(result == 1);
 }
 END_TEST
 
 START_TEST(positive_s21_is_less_or_equal_00) {
-  s21_decimal value_1 = {{0, 1, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 1, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 1, 0}};
   bool result = s21_is_less_or_equal(value_1, value_2);
   ck_assert(result == 1);
 }
 END_TEST
 
 START_TEST(positive_s21_is_less_or_equal_01) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 1, 0}};
   bool result = s21_is_less_or_equal(value_1, value_2);
   ck_assert(result == 1);
 }
 END_TEST
 
 START_TEST(positive_s21_is_less_or_equal_02) {
-  s21_decimal value_1 = {{0, 0, 1, 0}};
-  s21_decimal value_2 = {{0, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 1, 0}};
   set_sign(&value_1, minus);
   bool result = s21_is_less_or_equal(value_1, value_2);
   ck_assert(result == 1);
@@ -2407,8 +2425,8 @@ START_TEST(positive_s21_is_less_or_equal_02) {
 END_TEST
 
 START_TEST(positive_s21_is_less_or_equal_03) {
-  s21_decimal value_1 = {{1, 0, 1, 0}};
-  s21_decimal value_2 = {{1, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{1, 0, 1, 0}};
   set_scale(&value_1, 27);
   set_scale(&value_2, 26);
   bool result = s21_is_less_or_equal(value_1, value_2);
@@ -2417,24 +2435,24 @@ START_TEST(positive_s21_is_less_or_equal_03) {
 END_TEST
 
 START_TEST(negative_s21_is_less_or_equal_00) {
-  s21_decimal value_1 = {{0, 0, 1, 0}};
-  s21_decimal value_2 = {{0, 1, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 1, 0, 0}};
   bool result = s21_is_less_or_equal(value_1, value_2);
   ck_assert(result == 0);
 }
 END_TEST
 
 START_TEST(negative_s21_is_less_or_equal_01) {
-  s21_decimal value_1 = {{0, 0, 1, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
   bool result = s21_is_less_or_equal(value_1, value_2);
   ck_assert(result == 0);
 }
 END_TEST
 
 START_TEST(negative_s21_is_less_or_equal_02) {
-  s21_decimal value_1 = {{0, 0, 1, 0}};
-  s21_decimal value_2 = {{0, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 1, 0}};
   set_sign(&value_2, minus);
   bool result = s21_is_less_or_equal(value_1, value_2);
   ck_assert(result == 0);
@@ -2442,8 +2460,8 @@ START_TEST(negative_s21_is_less_or_equal_02) {
 END_TEST
 
 START_TEST(negative_s21_is_less_or_equal_03) {
-  s21_decimal value_1 = {{1, 0, 1, 0}};
-  s21_decimal value_2 = {{1, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{1, 0, 1, 0}};
   set_scale(&value_1, 25);
   set_scale(&value_2, 26);
   bool result = s21_is_less_or_equal(value_1, value_2);
@@ -2452,24 +2470,24 @@ START_TEST(negative_s21_is_less_or_equal_03) {
 END_TEST
 
 START_TEST(negative_s21_is_greater_or_equal_00) {
-  s21_decimal value_1 = {{0, 1, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 1, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 1, 0}};
   bool result = s21_is_greater_or_equal(value_1, value_2);
   ck_assert(result == 0);
 }
 END_TEST
 
 START_TEST(negative_s21_is_greater__or_equal01) {
-  s21_decimal value_1 = {{0, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 1, 0}};
   bool result = s21_is_greater_or_equal(value_1, value_2);
   ck_assert(result == 0);
 }
 END_TEST
 
 START_TEST(negative_s21_is_greater__or_equal02) {
-  s21_decimal value_1 = {{0, 0, 1, 0}};
-  s21_decimal value_2 = {{0, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 1, 0}};
   set_sign(&value_1, minus);
   bool result = s21_is_greater_or_equal(value_1, value_2);
   ck_assert(result == 0);
@@ -2477,8 +2495,8 @@ START_TEST(negative_s21_is_greater__or_equal02) {
 END_TEST
 
 START_TEST(negative_s21_is_greater_or_equal_03) {
-  s21_decimal value_1 = {{1, 0, 1, 0}};
-  s21_decimal value_2 = {{1, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{1, 0, 1, 0}};
   set_scale(&value_1, 27);
   set_scale(&value_2, 26);
   bool result = s21_is_greater_or_equal(value_1, value_2);
@@ -2487,32 +2505,32 @@ START_TEST(negative_s21_is_greater_or_equal_03) {
 END_TEST
 
 START_TEST(positive_s21_is_greater_or_equal_000) {
-  s21_decimal value_1 = {{1, 0, 1, 0}};
-  s21_decimal value_2 = {{1, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{1, 0, 1, 0}};
   bool result = s21_is_greater_or_equal(value_1, value_2);
   ck_assert(result == 1);
 }
 END_TEST
 
 START_TEST(positive_s21_is_greater_or_equal_00) {
-  s21_decimal value_1 = {{0, 0, 1, 0}};
-  s21_decimal value_2 = {{0, 1, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 1, 0, 0}};
   bool result = s21_is_greater_or_equal(value_1, value_2);
   ck_assert(result == 1);
 }
 END_TEST
 
 START_TEST(positive_s21_is_greater_or_equal_01) {
-  s21_decimal value_1 = {{0, 0, 1, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
   bool result = s21_is_greater_or_equal(value_1, value_2);
   ck_assert(result == 1);
 }
 END_TEST
 
 START_TEST(positive_s21_is_greater_or_equal_02) {
-  s21_decimal value_1 = {{0, 0, 1, 0}};
-  s21_decimal value_2 = {{0, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{0, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 1, 0}};
   set_sign(&value_2, minus);
   bool result = s21_is_greater_or_equal(value_1, value_2);
   ck_assert(result == 1);
@@ -2520,8 +2538,8 @@ START_TEST(positive_s21_is_greater_or_equal_02) {
 END_TEST
 
 START_TEST(positive_s21_is_greater_or_equal_03) {
-  s21_decimal value_1 = {{1, 0, 1, 0}};
-  s21_decimal value_2 = {{1, 0, 1, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 1, 0}};
+  s21_decimal value_2 = (s21_decimal){{1, 0, 1, 0}};
   set_scale(&value_1, 25);
   set_scale(&value_2, 26);
   bool result = s21_is_greater_or_equal(value_1, value_2);
@@ -2530,9 +2548,9 @@ START_TEST(positive_s21_is_greater_or_equal_03) {
 END_TEST
 
 START_TEST(truncate_1) {
-  s21_decimal value = {{25, 0, 0, 0}};
-  s21_decimal result = {{0, 0, 0, 0}};
-  s21_decimal expected = {{2, 0, 0, 0}};
+  s21_decimal value = (s21_decimal){{25, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal expected = (s21_decimal){{2, 0, 0, 0}};
   set_scale(&value, 1);
   set_scale(&expected, 0);
   s21_truncate(value, &result);
@@ -2542,9 +2560,9 @@ START_TEST(truncate_1) {
 END_TEST
 
 START_TEST(truncate_2) {
-  s21_decimal value = {{12345, 0, 0, 0}};
-  s21_decimal result = {{0, 0, 0, 0}};
-  s21_decimal expected = {{123, 0, 0, 0}};
+  s21_decimal value = (s21_decimal){{12345, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal expected = (s21_decimal){{123, 0, 0, 0}};
   set_scale(&value, 2);
   set_scale(&expected, 0);
   s21_truncate(value, &result);
@@ -2554,9 +2572,9 @@ START_TEST(truncate_2) {
 END_TEST
 
 START_TEST(truncate_3) {
-  s21_decimal value = {{98765, 0, 0, 0}};
-  s21_decimal result = {{0, 0, 0, 0}};
-  s21_decimal expected = {{987, 0, 0, 0}};
+  s21_decimal value = (s21_decimal){{98765, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal expected = (s21_decimal){{987, 0, 0, 0}};
   set_scale(&value, 2);
   set_scale(&expected, 0);
   s21_truncate(value, &result);
@@ -2566,9 +2584,9 @@ START_TEST(truncate_3) {
 END_TEST
 
 START_TEST(truncate_4) {
-  s21_decimal value = {{1000, 0, 0, 0}};
-  s21_decimal result = {{0, 0, 0, 0}};
-  s21_decimal expected = {{10, 0, 0, 0}};
+  s21_decimal value = (s21_decimal){{1000, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal expected = (s21_decimal){{10, 0, 0, 0}};
   set_scale(&value, 2);
   set_scale(&expected, 0);
   s21_truncate(value, &result);
@@ -2578,9 +2596,9 @@ START_TEST(truncate_4) {
 END_TEST
 
 START_TEST(truncate_5) {
-  s21_decimal value = {{250, 0, 0, 0}};
-  s21_decimal result = {{0, 0, 0, 0}};
-  s21_decimal expected = {{25, 0, 0, 0}};
+  s21_decimal value = (s21_decimal){{250, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal expected = (s21_decimal){{25, 0, 0, 0}};
   set_sign(&value, minus);
   set_sign(&expected, minus);
   set_scale(&value, 1);
@@ -2592,9 +2610,9 @@ START_TEST(truncate_5) {
 END_TEST
 
 START_TEST(truncate_6) {
-  s21_decimal value = {{123456789, 0, 0, 0}};
-  s21_decimal result = {{0, 0, 0, 0}};
-  s21_decimal expected = {{1234567, 0, 0, 0}};
+  s21_decimal value = (s21_decimal){{123456789, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal expected = (s21_decimal){{1234567, 0, 0, 0}};
   set_sign(&value, minus);
   set_sign(&expected, minus);
   set_scale(&value, 2);
@@ -2606,9 +2624,9 @@ START_TEST(truncate_6) {
 END_TEST
 
 START_TEST(truncate_7) {
-  s21_decimal value = {{0, 0, 0, 0}};
-  s21_decimal result = {{0, 0, 0, 0}};
-  s21_decimal expected = {{0, 0, 0, 0}};
+  s21_decimal value = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal expected = (s21_decimal){{0, 0, 0, 0}};
   set_scale(&value, 3);
   set_scale(&expected, 0);
   s21_truncate(value, &result);
@@ -2618,9 +2636,9 @@ START_TEST(truncate_7) {
 END_TEST
 
 START_TEST(truncate_8) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-171701", &value);
   str_to_decimal("-171701", &expected);
   int err_code = s21_truncate(value, &result);
@@ -2630,9 +2648,9 @@ START_TEST(truncate_8) {
 END_TEST
 
 START_TEST(truncate_9) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-0", &value);
   str_to_decimal("-0", &expected);
   int err_code = s21_truncate(value, &result);
@@ -2642,9 +2660,9 @@ START_TEST(truncate_9) {
 END_TEST
 
 START_TEST(truncate_10) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-0.1412132131231", &value);
   str_to_decimal("-0", &expected);
   int err_code = s21_truncate(value, &result);
@@ -2654,9 +2672,9 @@ START_TEST(truncate_10) {
 END_TEST
 
 START_TEST(truncate_11) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-4213213.21312", &value);
   str_to_decimal("-4213213", &expected);
   int err_code = s21_truncate(value, &result);
@@ -2666,8 +2684,8 @@ START_TEST(truncate_11) {
 END_TEST
 
 START_TEST(truncate_12) {
-  s21_decimal value;
-  s21_decimal result;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   set_scale(&value, 29);
   int err_code = s21_truncate(value, &result);
   ck_assert(err_code == 1);
@@ -2675,9 +2693,9 @@ START_TEST(truncate_12) {
 END_TEST
 
 START_TEST(truncate_13) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("79228162514264337593543950335", &value);
   str_to_decimal("79228162514264337593543950335", &expected);
   int err_code = s21_truncate(value, &result);
@@ -2687,9 +2705,9 @@ START_TEST(truncate_13) {
 END_TEST
 
 START_TEST(truncate_14) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-79228162514264337593543950335", &value);
   str_to_decimal("-79228162514264337593543950335", &expected);
   int err_code = s21_truncate(value, &result);
@@ -2699,9 +2717,9 @@ START_TEST(truncate_14) {
 END_TEST
 
 START_TEST(round_1) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-4213213.21312", &value);
   str_to_decimal("-4213213", &expected);
   int err_code = s21_round(value, &result);
@@ -2711,9 +2729,9 @@ START_TEST(round_1) {
 END_TEST
 
 START_TEST(round_2) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-4213213.71312", &value);
   str_to_decimal("-4213214", &expected);
   int err_code = s21_round(value, &result);
@@ -2723,9 +2741,9 @@ START_TEST(round_2) {
 END_TEST
 
 START_TEST(round_3) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-4213213.51312", &value);
   str_to_decimal("-4213214", &expected);
   int err_code = s21_round(value, &result);
@@ -2735,8 +2753,8 @@ START_TEST(round_3) {
 END_TEST
 
 START_TEST(round_4) {
-  s21_decimal value;
-  s21_decimal result;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("0", &value);
   set_scale(&value, 29);
   int err_code = s21_round(value, &result);
@@ -2745,9 +2763,9 @@ START_TEST(round_4) {
 END_TEST
 
 START_TEST(round_5) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-0", &value);
   str_to_decimal("-0", &expected);
   int err_code = s21_round(value, &result);
@@ -2757,9 +2775,9 @@ START_TEST(round_5) {
 END_TEST
 
 START_TEST(round_6) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-0.4", &value);
   str_to_decimal("-0", &expected);
   int err_code = s21_round(value, &result);
@@ -2769,9 +2787,9 @@ START_TEST(round_6) {
 END_TEST
 
 START_TEST(round_7) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("79228162514264337593543950335", &value);
   str_to_decimal("79228162514264337593543950335", &expected);
   int err_code = s21_round(value, &result);
@@ -2781,9 +2799,9 @@ START_TEST(round_7) {
 END_TEST
 
 START_TEST(round_8) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-79228162514264337593543950335", &value);
   str_to_decimal("-79228162514264337593543950335", &expected);
   int err_code = s21_round(value, &result);
@@ -2793,9 +2811,9 @@ START_TEST(round_8) {
 END_TEST
 
 START_TEST(floor_1) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("4213213.21312", &value);
   str_to_decimal("4213213", &expected);
   int err_code = s21_floor(value, &result);
@@ -2805,9 +2823,9 @@ START_TEST(floor_1) {
 END_TEST
 
 START_TEST(floor_2) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-4213213.71312", &value);
   str_to_decimal("-4213214", &expected);
   int err_code = s21_floor(value, &result);
@@ -2817,9 +2835,9 @@ START_TEST(floor_2) {
 END_TEST
 
 START_TEST(floor_3) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-4213213.51312", &value);
   str_to_decimal("-4213214", &expected);
   int err_code = s21_floor(value, &result);
@@ -2829,8 +2847,8 @@ START_TEST(floor_3) {
 END_TEST
 
 START_TEST(floor_4) {
-  s21_decimal value;
-  s21_decimal result;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("0", &value);
   set_scale(&value, 29);
   int err_code = s21_floor(value, &result);
@@ -2839,9 +2857,9 @@ START_TEST(floor_4) {
 END_TEST
 
 START_TEST(floor_5) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-0", &value);
   str_to_decimal("-0", &expected);
   int err_code = s21_floor(value, &result);
@@ -2851,9 +2869,9 @@ START_TEST(floor_5) {
 END_TEST
 
 START_TEST(floor_6) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-0.4", &value);
   str_to_decimal("-1", &expected);
   int err_code = s21_floor(value, &result);
@@ -2863,9 +2881,9 @@ START_TEST(floor_6) {
 END_TEST
 
 START_TEST(floor_7) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("79228162514264337593543950335", &value);
   str_to_decimal("79228162514264337593543950335", &expected);
   int err_code = s21_floor(value, &result);
@@ -2875,9 +2893,9 @@ START_TEST(floor_7) {
 END_TEST
 
 START_TEST(floor_8) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-79228162514264337593543950335", &value);
   str_to_decimal("-79228162514264337593543950335", &expected);
   int err_code = s21_floor(value, &result);
@@ -2887,9 +2905,9 @@ START_TEST(floor_8) {
 END_TEST
 
 START_TEST(floor_9) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-7922816251426433759354395033.5", &value);
   str_to_decimal("-7922816251426433759354395034", &expected);
   int err_code = s21_floor(value, &result);
@@ -2899,9 +2917,9 @@ START_TEST(floor_9) {
 END_TEST
 
 START_TEST(floor_10) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-4213213.001", &value);
   str_to_decimal("-4213214", &expected);
   int err_code = s21_floor(value, &result);
@@ -2911,9 +2929,9 @@ START_TEST(floor_10) {
 END_TEST
 
 START_TEST(bank_round_1) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("4213213.21312", &value);
   str_to_decimal("4213213", &expected);
   int err_code = bank_round(value, &result);
@@ -2923,9 +2941,9 @@ START_TEST(bank_round_1) {
 END_TEST
 
 START_TEST(bank_round_2) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-4213213.71312", &value);
   str_to_decimal("-4213214", &expected);
   int err_code = bank_round(value, &result);
@@ -2935,9 +2953,9 @@ START_TEST(bank_round_2) {
 END_TEST
 
 START_TEST(bank_round_3) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-4213213.51312", &value);
   str_to_decimal("-4213214", &expected);
   int err_code = bank_round(value, &result);
@@ -2947,8 +2965,8 @@ START_TEST(bank_round_3) {
 END_TEST
 
 START_TEST(bank_round_4) {
-  s21_decimal value;
-  s21_decimal result;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("0", &value);
   set_scale(&value, 29);
   int err_code = bank_round(value, &result);
@@ -2957,9 +2975,9 @@ START_TEST(bank_round_4) {
 END_TEST
 
 START_TEST(bank_round_5) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-0", &value);
   str_to_decimal("-0", &expected);
   int err_code = bank_round(value, &result);
@@ -2969,9 +2987,9 @@ START_TEST(bank_round_5) {
 END_TEST
 
 START_TEST(bank_round_6) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-0.4", &value);
   str_to_decimal("-0", &expected);
   int err_code = bank_round(value, &result);
@@ -2981,9 +2999,9 @@ START_TEST(bank_round_6) {
 END_TEST
 
 START_TEST(bank_round_7) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("79228162514264337593543950335", &value);
   str_to_decimal("79228162514264337593543950335", &expected);
   int err_code = bank_round(value, &result);
@@ -2993,9 +3011,9 @@ START_TEST(bank_round_7) {
 END_TEST
 
 START_TEST(bank_round_8) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-79228162514264337593543950335", &value);
   str_to_decimal("-79228162514264337593543950335", &expected);
   int err_code = bank_round(value, &result);
@@ -3005,9 +3023,9 @@ START_TEST(bank_round_8) {
 END_TEST
 
 START_TEST(bank_round_9) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-7922816251426433759354395033.5", &value);
   str_to_decimal("-7922816251426433759354395034", &expected);
   int err_code = bank_round(value, &result);
@@ -3017,9 +3035,9 @@ START_TEST(bank_round_9) {
 END_TEST
 
 START_TEST(bank_round_10) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-4213213.001", &value);
   str_to_decimal("-4213213", &expected);
   int err_code = bank_round(value, &result);
@@ -3029,9 +3047,9 @@ START_TEST(bank_round_10) {
 END_TEST
 
 START_TEST(bank_round_11) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-4213213.51", &value);
   str_to_decimal("-4213214", &expected);
   int err_code = bank_round(value, &result);
@@ -3041,9 +3059,9 @@ START_TEST(bank_round_11) {
 END_TEST
 
 START_TEST(bank_round_12) {
-  s21_decimal value;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-4213214.5", &value);
   str_to_decimal("-4213214", &expected);
   int err_code = bank_round(value, &result);
@@ -3053,9 +3071,9 @@ START_TEST(bank_round_12) {
 END_TEST
 
 START_TEST(truncate_positive_float) {
-  s21_decimal value = {{12345, 0, 0, 0}};
-  s21_decimal result;
-  s21_decimal expected = {{123, 0, 0, 0}};
+  s21_decimal value = (s21_decimal){{12345, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{123, 0, 0, 0}};
   set_scale(&value, 2);
   set_scale(&expected, 0);
   int return_code = s21_truncate(value, &result);
@@ -3067,10 +3085,10 @@ START_TEST(truncate_positive_float) {
 END_TEST
 
 START_TEST(div_positive_float1) {
-  s21_decimal value_1 = {{100, 0, 0, 0}};
-  s21_decimal value_2 = {{25, 0, 0, 0}};
-  s21_decimal result;
-  s21_decimal expected = {{4, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{100, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{25, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{4, 0, 0, 0}};
   set_scale(&value_1, 2);
   set_scale(&value_2, 2);
   set_scale(&expected, 0);
@@ -3083,10 +3101,10 @@ START_TEST(div_positive_float1) {
 END_TEST
 
 START_TEST(div_negative_float2) {
-  s21_decimal value_1 = {{100, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{25, 0, 0, 0x80000000}};
-  s21_decimal result;
-  s21_decimal expected = {{4, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{100, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{25, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{4, 0, 0, 0}};
   set_scale(&value_1, 2);
   set_scale(&value_2, 2);
   set_scale(&expected, 0);
@@ -3099,10 +3117,10 @@ START_TEST(div_negative_float2) {
 END_TEST
 
 START_TEST(div_positive_negative3) {
-  s21_decimal value_1 = {{100, 0, 0, 0}};
-  s21_decimal value_2 = {{25, 0, 0, 0x80000000}};
-  s21_decimal result;
-  s21_decimal expected = {{4, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{100, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{25, 0, 0, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{4, 0, 0, 0}};
   set_scale(&value_1, 2);
   set_scale(&value_2, 2);
   set_scale(&expected, 0);
@@ -3116,10 +3134,10 @@ START_TEST(div_positive_negative3) {
 END_TEST
 
 START_TEST(div_negative_positive4) {
-  s21_decimal value_1 = {{100, 0, 0, 0x80000000}};
-  s21_decimal value_2 = {{25, 0, 0, 0}};
-  s21_decimal result;
-  s21_decimal expected = {{4, 0, 0, 0x80000000}};
+  s21_decimal value_1 = (s21_decimal){{100, 0, 0, 0x80000000}};
+  s21_decimal value_2 = (s21_decimal){{25, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{4, 0, 0, 0x80000000}};
   set_scale(&value_1, 2);
   set_scale(&value_2, 2);
   set_scale(&expected, 0);
@@ -3130,17 +3148,17 @@ START_TEST(div_negative_positive4) {
 END_TEST
 
 START_TEST(div_by_zero) {
-  s21_decimal value_1 = {{100, 0, 0, 0}};
-  s21_decimal value_2 = {{0, 0, 0, 0}};
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{100, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
   int return_code = s21_div(value_1, value_2, &result);
   ck_assert(return_code == 3);
 }
 END_TEST
 
 START_TEST(s21_negate1) {
-  s21_decimal value;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("171701", &value);
   str_to_decimal("-171701", &expected);
   int err_code = s21_negate(value, &value);
@@ -3153,8 +3171,8 @@ START_TEST(s21_negate1) {
 END_TEST
 
 START_TEST(s21_negate2) {
-  s21_decimal value;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-171701", &value);
   str_to_decimal("171701", &expected);
   int err_code = s21_negate(value, &value);
@@ -3167,8 +3185,8 @@ START_TEST(s21_negate2) {
 END_TEST
 
 START_TEST(s21_negate3) {
-  s21_decimal value;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-171701.31231213", &value);
   str_to_decimal("171701.31231213", &expected);
   int err_code = s21_negate(value, &value);
@@ -3182,8 +3200,8 @@ END_TEST
 
 START_TEST(s21_negate4) {
   // negate есть умножение на -1
-  s21_decimal value;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-0", &value);
   str_to_decimal("0", &expected);
   int err_code = s21_negate(value, &value);
@@ -3196,8 +3214,8 @@ START_TEST(s21_negate4) {
 END_TEST
 
 START_TEST(s21_negate5) {
-  s21_decimal value;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("0", &value);
   str_to_decimal("-0", &expected);
   int err_code = s21_negate(value, &value);
@@ -3210,8 +3228,8 @@ START_TEST(s21_negate5) {
 END_TEST
 
 START_TEST(s21_negate6) {
-  s21_decimal value;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("79228162514264337593543950335", &value);
   str_to_decimal("-79228162514264337593543950335", &expected);
   int err_code = s21_negate(value, &value);
@@ -3224,8 +3242,8 @@ START_TEST(s21_negate6) {
 END_TEST
 
 START_TEST(s21_negate7) {
-  s21_decimal value;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-79228162514264337593543950335", &value);
   str_to_decimal("79228162514264337593543950335", &expected);
   int err_code = s21_negate(value, &value);
@@ -3238,8 +3256,8 @@ START_TEST(s21_negate7) {
 END_TEST
 
 START_TEST(s21_negate8) {
-  s21_decimal value;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-7922816251426.4337593543950335", &value);
   str_to_decimal("7922816251426.4337593543950335", &expected);
   int err_code = s21_negate(value, &value);
@@ -3252,8 +3270,8 @@ START_TEST(s21_negate8) {
 END_TEST
 
 START_TEST(s21_negate9) {
-  s21_decimal value;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("79228162514264337593543950.335", &value);
   str_to_decimal("-79228162514264337593543950.335", &expected);
   int err_code = s21_negate(value, &value);
@@ -3266,10 +3284,10 @@ START_TEST(s21_negate9) {
 END_TEST
 
 START_TEST(inf_div) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("20", &value_1);
   str_to_decimal("7", &value_2);
   str_to_decimal("2.8571428571428571428571428571", &expected);
@@ -3281,10 +3299,10 @@ START_TEST(inf_div) {
 END_TEST
 
 START_TEST(neginf_div) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-20", &value_1);
   str_to_decimal("7", &value_2);
   str_to_decimal("-2.8571428571428571428571428571", &expected);
@@ -3295,10 +3313,10 @@ START_TEST(neginf_div) {
 END_TEST
 
 START_TEST(div2) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("171701", &value_1);
   str_to_decimal("200000", &value_2);
   str_to_decimal("858505", &expected);
@@ -3310,10 +3328,10 @@ START_TEST(div2) {
 END_TEST
 
 START_TEST(div3) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal(MAX_DECIMAL, &value_1);
   str_to_decimal("1000000000", &value_2);
   str_to_decimal(MAX_DECIMAL, &expected);
@@ -3325,10 +3343,10 @@ START_TEST(div3) {
 END_TEST
 
 START_TEST(div4) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("1432345362332124431467430", &value_1);
   str_to_decimal("320", &value_2);
   str_to_decimal("447607925728788884833571875", &expected);
@@ -3341,8 +3359,8 @@ END_TEST
 
 START_TEST(from_float_to_decimal_1) {
   float fvalue = -79228157791897854723898736640.f;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-79228160000000000000000000000", &expected);
   int err_code = s21_from_float_to_decimal(fvalue, &result);
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -3352,8 +3370,8 @@ END_TEST
 
 START_TEST(from_float_to_decimal_2) {
   float fvalue = 0.123456f;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("0.123456", &expected);
   int err_code = s21_from_float_to_decimal(fvalue, &result);
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -3393,8 +3411,8 @@ END_TEST
 
 START_TEST(from_float_to_decimal_6) {
   float fvalue = 12345;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("12345", &expected);
   int err_code = s21_from_float_to_decimal(fvalue, &result);
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -3404,8 +3422,8 @@ END_TEST
 
 START_TEST(from_float_to_decimal_7) {
   float fvalue = 0.12345678;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("0.1234568", &expected);
   int err_code = s21_from_float_to_decimal(fvalue, &result);
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -3415,8 +3433,8 @@ END_TEST
 
 START_TEST(from_float_to_decimal_8) {
   float fvalue = 0.12345671;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("0.1234567", &expected);
   int err_code = s21_from_float_to_decimal(fvalue, &result);
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -3426,8 +3444,8 @@ END_TEST
 
 START_TEST(from_float_to_decimal_9) {
   float fvalue = 0.12345;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("0.12345", &expected);
   int err_code = s21_from_float_to_decimal(fvalue, &result);
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -3437,8 +3455,8 @@ END_TEST
 
 START_TEST(from_float_to_decimal_10) {
   float fvalue = 0.f;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("0", &expected);
   int err_code = s21_from_float_to_decimal(fvalue, &result);
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -3448,8 +3466,8 @@ END_TEST
 
 START_TEST(from_float_to_decimal_11) {
   float fvalue = -11111111.123123;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-11111110", &expected);
   int err_code = s21_from_float_to_decimal(fvalue, &result);
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -3459,8 +3477,8 @@ END_TEST
 
 START_TEST(from_float_to_decimal_12) {
   float fvalue = 11111.123123;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("11111.12", &expected);
   int err_code = s21_from_float_to_decimal(fvalue, &result);
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -3470,8 +3488,8 @@ END_TEST
 
 START_TEST(from_float_to_decimal_13) {
   float fvalue = -11111.129123;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   str_to_decimal("-11111.13", &expected);
   int err_code = s21_from_float_to_decimal(fvalue, &result);
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -3481,7 +3499,7 @@ END_TEST
 
 START_TEST(from_float_to_decimal_14) {
   float fvalue = 79228162514264337593543950336.f;
-  s21_decimal result;
+  s21_decimal result = (s21_decimal){{0}};
   int err_code = s21_from_float_to_decimal(fvalue, &result);
   ck_assert(err_code == 1);
 }
@@ -3489,7 +3507,7 @@ END_TEST
 
 START_TEST(from_float_to_decimal_15) {
   float fvalue = 1e-29;
-  s21_decimal result;
+  s21_decimal result = (s21_decimal){{0}};
   int err_code = s21_from_float_to_decimal(fvalue, &result);
   ck_assert(err_code == 1);
 }
@@ -3497,7 +3515,7 @@ END_TEST
 
 START_TEST(from_float_to_decimal_16) {
   float fvalue = 792281625142643375935439503351.f;
-  s21_decimal result;
+  s21_decimal result = (s21_decimal){{0}};
   int err_code = s21_from_float_to_decimal(fvalue, &result);
   ck_assert(err_code == 1);
 }
@@ -3505,8 +3523,8 @@ END_TEST
 
 START_TEST(from_float_to_decimal_17) {
   float fvalue = -0.f;
-  s21_decimal result;
-  s21_decimal expected;
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   int err_code = s21_from_float_to_decimal(fvalue, &result);
   str_to_decimal("-0", &expected);
   ck_assert(s21_is_equal(result, expected) == 1);
@@ -3515,7 +3533,7 @@ START_TEST(from_float_to_decimal_17) {
 END_TEST
 
 START_TEST(from_decimal_to_float_1) {
-  s21_decimal value_1 = {{0}};
+  s21_decimal value_1 = (s21_decimal){{0}};
   float result = 0;
   str_to_decimal("78123", &value_1);
   int err_code = s21_from_decimal_to_float(value_1, &result);
@@ -3525,7 +3543,7 @@ START_TEST(from_decimal_to_float_1) {
 END_TEST
 
 START_TEST(from_decimal_to_float_2) {
-  s21_decimal value_1 = {{0}};
+  s21_decimal value_1 = (s21_decimal){{0}};
   float result = 0;
   str_to_decimal("781865", &value_1);
   set_sign(&value_1, 1);
@@ -3536,7 +3554,7 @@ START_TEST(from_decimal_to_float_2) {
 END_TEST
 
 START_TEST(from_decimal_to_float_3) {
-  s21_decimal value_1 = {{0}};
+  s21_decimal value_1 = (s21_decimal){{0}};
   float result = 0;
   str_to_decimal("6408.25", &value_1);
   set_sign(&value_1, 1);
@@ -3547,7 +3565,7 @@ START_TEST(from_decimal_to_float_3) {
 END_TEST
 
 START_TEST(from_decimal_to_float_4) {
-  s21_decimal value_1;
+  s21_decimal value_1 = (s21_decimal){{0}};
   float result = 0;
   str_to_decimal("-0", &value_1);
   int err_code = s21_from_decimal_to_float(value_1, &result);
@@ -3557,7 +3575,7 @@ START_TEST(from_decimal_to_float_4) {
 END_TEST
 
 START_TEST(from_decimal_to_float_5) {
-  s21_decimal value_1;
+  s21_decimal value_1 = (s21_decimal){{0}};
   float result = 0;
   str_to_decimal("0", &value_1);
   int err_code = s21_from_decimal_to_float(value_1, &result);
@@ -3567,7 +3585,7 @@ START_TEST(from_decimal_to_float_5) {
 END_TEST
 
 START_TEST(from_decimal_to_float_6) {
-  s21_decimal value_1;
+  s21_decimal value_1 = (s21_decimal){{0}};
   float result = 0;
   str_to_decimal("0", &value_1);
   int err_code = s21_from_decimal_to_float(value_1, &result);
@@ -3577,7 +3595,7 @@ START_TEST(from_decimal_to_float_6) {
 END_TEST
 
 START_TEST(from_decimal_to_float_7) {
-  s21_decimal value_1;
+  s21_decimal value_1 = (s21_decimal){{0}};
   float result = 0;
   str_to_decimal("0", &value_1);
   int err_code = s21_from_decimal_to_float(value_1, &result);
@@ -3588,9 +3606,9 @@ END_TEST
 
 START_TEST(from_int_to_decimal_0) {
   int src = 6418934;
-  s21_decimal value = {{0}};
+  s21_decimal value = (s21_decimal){{0}};
   int err_code = s21_from_int_to_decimal(src, &value);
-  s21_decimal expected = {{6418934, 0, 0, 0}};
+  s21_decimal expected = (s21_decimal){{6418934, 0, 0, 0}};
   ck_assert(value.bits[0] == expected.bits[0]);
   ck_assert(value.bits[1] == expected.bits[1]);
   ck_assert(value.bits[2] == expected.bits[2]);
@@ -3601,9 +3619,9 @@ END_TEST
 
 START_TEST(from_int_to_decimal_1) {
   int src = -6418934;
-  s21_decimal value = {{0}};
+  s21_decimal value = (s21_decimal){{0}};
   int err_code = s21_from_int_to_decimal(src, &value);
-  s21_decimal expected = {{6418934, 0, 0, 0}};
+  s21_decimal expected = (s21_decimal){{6418934, 0, 0, 0}};
   set_sign(&expected, 1);
   ck_assert(value.bits[0] == expected.bits[0]);
   ck_assert(value.bits[1] == expected.bits[1]);
@@ -3615,9 +3633,9 @@ END_TEST
 
 START_TEST(from_int_to_decimal_2) {
   int src = 2147483647;
-  s21_decimal value = {{0}};
+  s21_decimal value = (s21_decimal){{0}};
   int err_code = s21_from_int_to_decimal(src, &value);
-  s21_decimal expected = {{2147483647, 0, 0, 0}};
+  s21_decimal expected = (s21_decimal){{2147483647, 0, 0, 0}};
   ck_assert(value.bits[0] == expected.bits[0]);
   ck_assert(value.bits[1] == expected.bits[1]);
   ck_assert(value.bits[2] == expected.bits[2]);
@@ -3628,9 +3646,9 @@ END_TEST
 
 START_TEST(from_int_to_decimal_3) {
   int src = -2147483648;
-  s21_decimal value = {{0}};
+  s21_decimal value = (s21_decimal){{0}};
   int err_code = s21_from_int_to_decimal(src, &value);
-  s21_decimal expected = {{2147483648U, 0, 0, 0}};
+  s21_decimal expected = (s21_decimal){{2147483648U, 0, 0, 0}};
   set_sign(&expected, 1);
   ck_assert(value.bits[0] == expected.bits[0]);
   ck_assert(value.bits[1] == expected.bits[1]);
@@ -3641,8 +3659,8 @@ START_TEST(from_int_to_decimal_3) {
 END_TEST
 
 START_TEST(from_int_to_decimal_4) {
-  s21_decimal value;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   int src = 0;
   str_to_decimal("0", &expected);
   int err_code = s21_from_int_to_decimal(src, &value);
@@ -3655,8 +3673,8 @@ START_TEST(from_int_to_decimal_4) {
 END_TEST
 
 START_TEST(from_int_to_decimal_5) {
-  s21_decimal value;
-  s21_decimal expected;
+  s21_decimal value = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
   int src = -232432;
   str_to_decimal("-232432", &expected);
   int err_code = s21_from_int_to_decimal(src, &value);
@@ -3670,7 +3688,7 @@ END_TEST
 
 START_TEST(from_decimal_to_int_1) {
   int src = 0;
-  s21_decimal value = {{2147483647, 1, 0, 0}};
+  s21_decimal value = (s21_decimal){{2147483647, 1, 0, 0}};
   set_sign(&value, 1);
   int err_code = s21_from_decimal_to_int(value, &src);
   ck_assert(err_code == 1);
@@ -3679,7 +3697,7 @@ END_TEST
 
 START_TEST(from_decimal_to_int_2) {
   int src = 0;
-  s21_decimal value = {{2147483647, 1, 0, 0}};
+  s21_decimal value = (s21_decimal){{2147483647, 1, 0, 0}};
   int err_code = s21_from_decimal_to_int(value, &src);
   ck_assert(err_code == 1);
 }
@@ -3687,7 +3705,7 @@ END_TEST
 
 START_TEST(from_decimal_to_int_3) {
   int src = 0;
-  s21_decimal value;
+  s21_decimal value = (s21_decimal){{0}};
   set_scale(&value, 3);
   str_to_decimal("0.001", &value);
   int err_code = s21_from_decimal_to_int(value, &src);
@@ -3698,7 +3716,7 @@ END_TEST
 
 START_TEST(from_decimal_to_int_4) {
   int result = 0;
-  s21_decimal value;
+  s21_decimal value = (s21_decimal){{0}};
   str_to_decimal("-21474836.4", &value);
   int err_code = s21_from_decimal_to_int(value, &result);
   ck_assert(result == -21474836);
@@ -3708,7 +3726,7 @@ END_TEST
 
 START_TEST(from_decimal_to_int_5) {
   int result = 0;
-  s21_decimal value;
+  s21_decimal value = (s21_decimal){{0}};
   str_to_decimal("-21476.41212321121", &value);
   int err_code = s21_from_decimal_to_int(value, &result);
   ck_assert(result == -21476);
@@ -3718,7 +3736,7 @@ END_TEST
 
 START_TEST(from_decimal_to_int_6) {
   int result = 0;
-  s21_decimal value;
+  s21_decimal value = (s21_decimal){{0}};
   str_to_decimal("-214761312312", &value);
   int err_code = s21_from_decimal_to_int(value, &result);
   ck_assert(err_code == 1);
@@ -3727,7 +3745,7 @@ END_TEST
 
 START_TEST(from_decimal_to_int_7) {
   int result = 0;
-  s21_decimal value;
+  s21_decimal value = (s21_decimal){{0}};
   str_to_decimal("214761312312", &value);
   int err_code = s21_from_decimal_to_int(value, &result);
   ck_assert(err_code == 1);
@@ -3736,7 +3754,7 @@ END_TEST
 
 START_TEST(from_decimal_to_int_8) {
   int result = 0;
-  s21_decimal value;
+  s21_decimal value = (s21_decimal){{0}};
   str_to_decimal("-2.147611213123121", &value);
   int err_code = s21_from_decimal_to_int(value, &result);
   ck_assert(result == -2);
@@ -3746,35 +3764,35 @@ END_TEST
 
 START_TEST(from_decimal_to_int_9) {
   int src = 0;
-  s21_decimal value = {{0, 0, 1, 0}};
+  s21_decimal value = (s21_decimal){{0, 0, 1, 0}};
   int err_code = s21_from_decimal_to_int(value, &src);
   ck_assert(err_code == 1);
 }
 END_TEST
 
 START_TEST(big_to_decimal_0) {
-  big_decimal value = {{0, 0, 0, 1, 0, 0, 0}};
-  s21_decimal result = {{0}};
+  big_decimal value = (big_decimal){{0, 0, 0, 1, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
   int err_code = big_to_decimal(value, &result);
   ck_assert(err_code == 1);
 }
 END_TEST
 
 START_TEST(big_to_decimal_1) {
-  s21_decimal value_1 = {{1, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0}};
   set_sign(&value_1, 1);
-  big_decimal value = {{0}};
+  big_decimal value = (big_decimal){{0}};
   decimal_to_big(value_1, &value);
   value.bits[3] = 1;
-  s21_decimal result = {{0}};
+  s21_decimal result = (s21_decimal){{0}};
   int err_code = big_to_decimal(value, &result);
   ck_assert(err_code == 2);
 }
 END_TEST
 
 START_TEST(big_to_decimal_2) {
-  big_decimal value = {{0, 1, 0, 0, 0, 0, 0}};
-  s21_decimal result = {{0}};
+  big_decimal value = (big_decimal){{0, 1, 0, 0, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
   int err_code = big_to_decimal(value, &result);
   ck_assert(result.bits[1] == 1);
   ck_assert(err_code == 0);
@@ -3782,7 +3800,7 @@ START_TEST(big_to_decimal_2) {
 END_TEST
 
 START_TEST(big_to_int_1) {
-  big_decimal value = {{659865, 0, 0, 0, 0, 0, 0}};
+  big_decimal value = (big_decimal){{659865, 0, 0, 0, 0, 0, 0}};
   int result = big_to_int(value);
   int expected = 659865;
   ck_assert(result == expected);
@@ -3792,11 +3810,11 @@ START_TEST(big_to_int_1) {
 END_TEST
 
 START_TEST(add_multiplying_zeros) {
-  s21_decimal value_1 = {{100, 0, 0, 0}};
-  s21_decimal value_2 = {{1, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{100, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{1, 0, 0, 0}};
   set_scale(&value_2, 2);
-  s21_decimal result;
-  s21_decimal expected = {{10001, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{10001, 0, 0, 0}};
   set_scale(&expected, 2);
 
   int return_code = s21_add(value_1, value_2, &result);
@@ -3809,11 +3827,11 @@ START_TEST(add_multiplying_zeros) {
 END_TEST
 
 START_TEST(sub_multiplying_zeros) {
-  s21_decimal value_1 = {{100, 0, 0, 0}};
-  s21_decimal value_2 = {{1, 0, 0, 0}};
+  s21_decimal value_1 = (s21_decimal){{100, 0, 0, 0}};
+  s21_decimal value_2 = (s21_decimal){{1, 0, 0, 0}};
   set_scale(&value_2, 2);
-  s21_decimal result;
-  s21_decimal expected = {{9999, 0, 0, 0}};
+  s21_decimal result = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{9999, 0, 0, 0}};
   set_scale(&expected, 2);
 
   int return_code = s21_sub(value_1, value_2, &result);
@@ -3826,10 +3844,10 @@ START_TEST(sub_multiplying_zeros) {
 END_TEST
 
 START_TEST(sub_overflow_bank_round) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("79228162514264337593543950335", &value_1);
   str_to_decimal("0.6", &value_2);
   str_to_decimal("79228162514264337593543950334", &expected);
@@ -3844,10 +3862,10 @@ START_TEST(sub_overflow_bank_round) {
 END_TEST
 
 START_TEST(add_positive_float_big_scale_bank_round) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("7.9228162514264337593543950335", &value_1);
   str_to_decimal("79.28162514264337593543950335", &value_2);
   str_to_decimal("87.20444139406980969479389838", &expected);
@@ -3861,10 +3879,10 @@ START_TEST(add_positive_float_big_scale_bank_round) {
 END_TEST
 
 START_TEST(add_negative_float_big_scale_bank_round) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-7.9228162514264337593543950335", &value_1);
   str_to_decimal("-79.28162514264337593543950335", &value_2);
   str_to_decimal("-87.20444139406980969479389838", &expected);
@@ -3878,10 +3896,10 @@ START_TEST(add_negative_float_big_scale_bank_round) {
 END_TEST
 
 START_TEST(add_negative_and_positive_float_big_scale_bank_round) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-7.9228162514264337593543950335", &value_1);
   str_to_decimal("79.28162514264337593543950335", &value_2);
   str_to_decimal("71.358808891216942176085108316", &expected);
@@ -3895,10 +3913,10 @@ START_TEST(add_negative_and_positive_float_big_scale_bank_round) {
 END_TEST
 
 START_TEST(add_positive_and_negative_float_big_scale_bank_round) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("7.9228162514264337593543950335", &value_1);
   str_to_decimal("-79.28162514264337593543950335", &value_2);
   str_to_decimal("-71.358808891216942176085108316", &expected);
@@ -3912,10 +3930,10 @@ START_TEST(add_positive_and_negative_float_big_scale_bank_round) {
 END_TEST
 
 START_TEST(sub_positive_float_big_scale_bank_round) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("7.9228162514264337593543950335", &value_1);
   str_to_decimal("79.28162514264337593543950335", &value_2);
   str_to_decimal("-71.358808891216942176085108316", &expected);
@@ -3929,10 +3947,10 @@ START_TEST(sub_positive_float_big_scale_bank_round) {
 END_TEST
 
 START_TEST(sub_negative_float_big_scale_bank_round) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-7.9228162514264337593543950335", &value_1);
   str_to_decimal("-79.28162514264337593543950335", &value_2);
   str_to_decimal("71.358808891216942176085108316", &expected);
@@ -3946,10 +3964,10 @@ START_TEST(sub_negative_float_big_scale_bank_round) {
 END_TEST
 
 START_TEST(sub_negative_and_positive_float_big_scale_bank_round) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-7.9228162514264337593543950335", &value_1);
   str_to_decimal("79.28162514264337593543950335", &value_2);
   str_to_decimal("-87.20444139406980969479389838", &expected);
@@ -3963,10 +3981,10 @@ START_TEST(sub_negative_and_positive_float_big_scale_bank_round) {
 END_TEST
 
 START_TEST(sub_positive_and_negative_float_big_scale_bank_round) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("7.9228162514264337593543950335", &value_1);
   str_to_decimal("-79.28162514264337593543950335", &value_2);
   str_to_decimal("87.20444139406980969479389838", &expected);
@@ -3980,9 +3998,9 @@ START_TEST(sub_positive_and_negative_float_big_scale_bank_round) {
 END_TEST
 
 START_TEST(mul_positive_float_big_scale_bank_round) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("7.9228162514264337593543950335", &value_1);
   str_to_decimal("79.28162514264337593543950335", &value_2);
   int return_code = s21_mul(value_1, value_2, &result);
@@ -3994,9 +4012,9 @@ START_TEST(mul_positive_float_big_scale_bank_round) {
 END_TEST
 
 START_TEST(mul_negative_float_big_scale_bank_round) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-7.9228162514264337593543950335", &value_1);
   str_to_decimal("-79.28162514264337593543950335", &value_2);
   int return_code = s21_mul(value_1, value_2, &result);
@@ -4008,9 +4026,9 @@ START_TEST(mul_negative_float_big_scale_bank_round) {
 END_TEST
 
 START_TEST(mul_negative_and_positive_float_big_scale_bank_round) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-7.9228162514264337593543950335", &value_1);
   str_to_decimal("79.28162514264337593543950335", &value_2);
   int return_code = s21_mul(value_1, value_2, &result);
@@ -4022,9 +4040,9 @@ START_TEST(mul_negative_and_positive_float_big_scale_bank_round) {
 END_TEST
 
 START_TEST(mul_positive_and_negative_float_big_scale_bank_round) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("7.9228162514264337593543950335", &value_1);
   str_to_decimal("-79.28162514264337593543950335", &value_2);
   int return_code = s21_mul(value_1, value_2, &result);
@@ -4036,9 +4054,9 @@ START_TEST(mul_positive_and_negative_float_big_scale_bank_round) {
 END_TEST
 
 START_TEST(div_positive_float_big_scale_bank_round) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("7.9228162514264337593543950335", &value_1);
   str_to_decimal("79.28162514264337593543950335", &value_2);
   int return_code = s21_div(value_1, value_2, &result);
@@ -4050,9 +4068,9 @@ START_TEST(div_positive_float_big_scale_bank_round) {
 END_TEST
 
 START_TEST(div_negative_float_big_scale_bank_round) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-7.9228162514264337593543950335", &value_1);
   str_to_decimal("-79.28162514264337593543950335", &value_2);
   int return_code = s21_div(value_1, value_2, &result);
@@ -4064,9 +4082,9 @@ START_TEST(div_negative_float_big_scale_bank_round) {
 END_TEST
 
 START_TEST(div_negative_and_positive_float_big_scale_bank_round) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-7.9228162514264337593543950335", &value_1);
   str_to_decimal("79.28162514264337593543950335", &value_2);
   int return_code = s21_div(value_1, value_2, &result);
@@ -4078,9 +4096,9 @@ START_TEST(div_negative_and_positive_float_big_scale_bank_round) {
 END_TEST
 
 START_TEST(div_positive_and_negative_float_big_scale_bank_round) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("7.9228162514264337593543950335", &value_1);
   str_to_decimal("-79.28162514264337593543950335", &value_2);
   int return_code = s21_div(value_1, value_2, &result);
@@ -4095,10 +4113,10 @@ START_TEST(div_positive_and_negative_float_big_scale_bank_round) {
 END_TEST
 
 START_TEST(div_positive_numbers) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("100", &value_1);
   str_to_decimal("20", &value_2);
   str_to_decimal("5", &expected);
@@ -4111,10 +4129,10 @@ START_TEST(div_positive_numbers) {
 END_TEST
 
 START_TEST(div_big_positive_numbers) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("79228162514264337593543950335", &value_1);
   str_to_decimal("7928162514264337593543950335", &value_2);
   str_to_decimal("9.993256618001605231407880075", &expected);
@@ -4127,10 +4145,10 @@ START_TEST(div_big_positive_numbers) {
 END_TEST
 
 START_TEST(div_big_negative_numbers) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-79228162514264337593543950335", &value_1);
   str_to_decimal("-7928162514264337593543950335", &value_2);
   str_to_decimal("9.993256618001605231407880075", &expected);
@@ -4144,10 +4162,10 @@ START_TEST(div_big_negative_numbers) {
 END_TEST
 
 START_TEST(div_big_negative_positive_numbers) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-79228162514264337593543950335", &value_1);
   str_to_decimal("7928162514264337593543950335", &value_2);
   str_to_decimal("-9.993256618001605231407880075", &expected);
@@ -4161,10 +4179,10 @@ START_TEST(div_big_negative_positive_numbers) {
 END_TEST
 
 START_TEST(div_big_positive_negative_numbers) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("79228162514264337593543950335", &value_1);
   str_to_decimal("-7928162514264337593543950335", &value_2);
   str_to_decimal("-9.993256618001605231407880075", &expected);
@@ -4177,10 +4195,10 @@ START_TEST(div_big_positive_negative_numbers) {
 END_TEST
 
 START_TEST(div_big_positive_numbers_the_one) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("79228162514264337593543950335", &value_1);
   str_to_decimal("79228162514264337593543950335", &value_2);
   str_to_decimal("1", &expected);
@@ -4193,10 +4211,10 @@ START_TEST(div_big_positive_numbers_the_one) {
 END_TEST
 
 START_TEST(div_big_positive_numbers_the_one_minus) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-79228162514264337593543950335", &value_1);
   str_to_decimal("-79228162514264337593543950335", &value_2);
   str_to_decimal("1", &expected);
@@ -4209,10 +4227,10 @@ START_TEST(div_big_positive_numbers_the_one_minus) {
 END_TEST
 
 START_TEST(div_big_positive_numbers_the_one_minus_plus) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-79228162514264337593543950335", &value_1);
   str_to_decimal("79228162514264337593543950335", &value_2);
   str_to_decimal("-1", &expected);
@@ -4225,10 +4243,10 @@ START_TEST(div_big_positive_numbers_the_one_minus_plus) {
 END_TEST
 
 START_TEST(div_big_positive_numbers_the_one_plus_minus) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("79228162514264337593543950335", &value_1);
   str_to_decimal("-79228162514264337593543950335", &value_2);
   str_to_decimal("-1", &expected);
@@ -4241,10 +4259,10 @@ START_TEST(div_big_positive_numbers_the_one_plus_minus) {
 END_TEST
 
 START_TEST(div_negative_numbers) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-100", &value_1);
   str_to_decimal("-20", &value_2);
   str_to_decimal("5", &expected);
@@ -4257,10 +4275,10 @@ START_TEST(div_negative_numbers) {
 END_TEST
 
 START_TEST(div_positive_and_negative) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("100", &value_1);
   str_to_decimal("-20", &value_2);
   str_to_decimal("-5", &expected);
@@ -4273,10 +4291,10 @@ START_TEST(div_positive_and_negative) {
 END_TEST
 
 START_TEST(div_negative_and_positive) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-100", &value_1);
   str_to_decimal("20", &value_2);
   str_to_decimal("-5", &expected);
@@ -4289,10 +4307,10 @@ START_TEST(div_negative_and_positive) {
 END_TEST
 
 START_TEST(div_positive_float) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("150.18", &value_1);
   str_to_decimal("1.2", &value_2);
   str_to_decimal("125.15", &expected);
@@ -4305,10 +4323,10 @@ START_TEST(div_positive_float) {
 END_TEST
 
 START_TEST(div_negative_float) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-150.18", &value_1);
   str_to_decimal("-1.2", &value_2);
   str_to_decimal("125.15", &expected);
@@ -4321,10 +4339,10 @@ START_TEST(div_negative_float) {
 END_TEST
 
 START_TEST(div_negative_positive_float) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-150.18", &value_1);
   str_to_decimal("1.2", &value_2);
   str_to_decimal("-125.15", &expected);
@@ -4337,10 +4355,10 @@ START_TEST(div_negative_positive_float) {
 END_TEST
 
 START_TEST(div_positive_negative_float) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("150.18", &value_1);
   str_to_decimal("-1.2", &value_2);
   str_to_decimal("-125.15", &expected);
@@ -4353,10 +4371,10 @@ START_TEST(div_positive_negative_float) {
 END_TEST
 
 START_TEST(div_positive_float_int) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("150.18", &value_1);
   str_to_decimal("2", &value_2);
   str_to_decimal("75.09", &expected);
@@ -4369,10 +4387,10 @@ START_TEST(div_positive_float_int) {
 END_TEST
 
 START_TEST(div_negative_float_int) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-150.18", &value_1);
   str_to_decimal("2", &value_2);
   str_to_decimal("-75.09", &expected);
@@ -4385,10 +4403,10 @@ START_TEST(div_negative_float_int) {
 END_TEST
 
 START_TEST(div_negative_float_positive_int) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("150.18", &value_1);
   str_to_decimal("-2", &value_2);
   str_to_decimal("-75.09", &expected);
@@ -4401,10 +4419,10 @@ START_TEST(div_negative_float_positive_int) {
 END_TEST
 
 START_TEST(div_positive_int_negative_float) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("150", &value_1);
   str_to_decimal("-2.56", &value_2);
   str_to_decimal("-58.59375", &expected);
@@ -4417,10 +4435,10 @@ START_TEST(div_positive_int_negative_float) {
 END_TEST
 
 START_TEST(div_negative_int_positive_float) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-150", &value_1);
   str_to_decimal("2.56", &value_2);
   str_to_decimal("-58.59375", &expected);
@@ -4433,10 +4451,10 @@ START_TEST(div_negative_int_positive_float) {
 END_TEST
 
 START_TEST(div_max_and_min) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("79228162514264337593543950335", &value_1);
   str_to_decimal("2", &value_2);
   str_to_decimal("39614081257132168796771975168", &expected);
@@ -4449,10 +4467,10 @@ START_TEST(div_max_and_min) {
 END_TEST
 
 START_TEST(div_max_and_min2) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-79228162514264337593543950335", &value_1);
   str_to_decimal("-2", &value_2);
   str_to_decimal("39614081257132168796771975168", &expected);
@@ -4466,10 +4484,10 @@ START_TEST(div_max_and_min2) {
 END_TEST
 
 START_TEST(div_max_and_min3) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-79228162514264337593543950335", &value_1);
   str_to_decimal("2", &value_2);
   str_to_decimal("-39614081257132168796771975168", &expected);
@@ -4483,10 +4501,10 @@ START_TEST(div_max_and_min3) {
 END_TEST
 
 START_TEST(div_max_and_min4) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("79228162514264337593543950335", &value_1);
   str_to_decimal("-2", &value_2);
   str_to_decimal("-39614081257132168796771975168", &expected);
@@ -4499,10 +4517,10 @@ START_TEST(div_max_and_min4) {
 END_TEST
 
 START_TEST(div_min_and_max) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("2", &value_1);
   str_to_decimal("79228162514264337593543950335", &value_2);
   str_to_decimal("0", &expected);
@@ -4516,10 +4534,10 @@ START_TEST(div_min_and_max) {
 END_TEST
 
 START_TEST(div_min_and_max2) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-2", &value_1);
   str_to_decimal("-79228162514264337593543950335", &value_2);
   str_to_decimal("0", &expected);
@@ -4534,10 +4552,10 @@ START_TEST(div_min_and_max2) {
 END_TEST
 
 START_TEST(div_min_and_max3) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("2", &value_1);
   str_to_decimal("-79228162514264337593543950335", &value_2);
   str_to_decimal("-0", &expected);
@@ -4552,10 +4570,10 @@ START_TEST(div_min_and_max3) {
 END_TEST
 
 START_TEST(div_min_and_max4) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-2", &value_1);
   str_to_decimal("79228162514264337593543950335", &value_2);
   str_to_decimal("-0", &expected);
@@ -4569,9 +4587,9 @@ START_TEST(div_min_and_max4) {
 END_TEST
 
 START_TEST(div_positive_numbers_zero) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("0", &value_1);
   str_to_decimal("0", &value_2);
   int return_code = s21_div(value_1, value_2, &result);
@@ -4582,9 +4600,9 @@ START_TEST(div_positive_numbers_zero) {
 END_TEST
 
 START_TEST(div_positive_and_negative_zero) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("0", &value_1);
   str_to_decimal("-0", &value_2);
   int return_code = s21_div(value_1, value_2, &result);
@@ -4595,9 +4613,9 @@ START_TEST(div_positive_and_negative_zero) {
 END_TEST
 
 START_TEST(div_negative_and_positive_zero) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-0", &value_1);
   str_to_decimal("0", &value_2);
   int return_code = s21_div(value_1, value_2, &result);
@@ -4608,9 +4626,9 @@ START_TEST(div_negative_and_positive_zero) {
 END_TEST
 
 START_TEST(div_negative_numbers_zero) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("79228162514264337593543950335", &value_1);
   str_to_decimal("0", &value_2);
   int return_code = s21_div(value_1, value_2, &result);
@@ -4621,9 +4639,9 @@ START_TEST(div_negative_numbers_zero) {
 END_TEST
 
 START_TEST(div_positive_numbers_and_zero) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("79228162514264337593543950335", &value_1);
   str_to_decimal("0", &value_2);
   int return_code = s21_div(value_1, value_2, &result);
@@ -4634,10 +4652,10 @@ START_TEST(div_positive_numbers_and_zero) {
 END_TEST
 
 START_TEST(div_zero_and_positive_numbers) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("0", &value_1);
   str_to_decimal("79228162514264337593543950335", &value_2);
   str_to_decimal("0", &expected);
@@ -4650,9 +4668,9 @@ START_TEST(div_zero_and_positive_numbers) {
 END_TEST
 
 START_TEST(div_positive_float_and_zero) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("792281625142643375.93543950335", &value_1);
   str_to_decimal("0", &value_2);
   int return_code = s21_div(value_1, value_2, &result);
@@ -4663,10 +4681,10 @@ START_TEST(div_positive_float_and_zero) {
 END_TEST
 
 START_TEST(div_zero_and_positive_float) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("0", &value_1);
   str_to_decimal("7922816251426.4337593543950335", &value_2);
   str_to_decimal("0", &expected);
@@ -4679,9 +4697,9 @@ START_TEST(div_zero_and_positive_float) {
 END_TEST
 
 START_TEST(div_negative_numbers_and_zero) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-79228162514264337593543950335", &value_1);
   str_to_decimal("0", &value_2);
   int return_code = s21_div(value_1, value_2, &result);
@@ -4692,10 +4710,10 @@ START_TEST(div_negative_numbers_and_zero) {
 END_TEST
 
 START_TEST(div_zero_and_negative_numbers) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("0", &value_1);
   str_to_decimal("-79228162514264337593543950335", &value_2);
   str_to_decimal("-0", &expected);
@@ -4708,9 +4726,9 @@ START_TEST(div_zero_and_negative_numbers) {
 END_TEST
 
 START_TEST(div_negative_float_and_zero) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-792281625142643375.93543950335", &value_1);
   str_to_decimal("0", &value_2);
   int return_code = s21_div(value_1, value_2, &result);
@@ -4721,10 +4739,10 @@ START_TEST(div_negative_float_and_zero) {
 END_TEST
 
 START_TEST(div_zero_and_negative_float) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("0", &value_1);
   str_to_decimal("-792281625142643.37593543950335", &value_2);
   str_to_decimal("-0", &expected);
@@ -4737,10 +4755,10 @@ START_TEST(div_zero_and_negative_float) {
 END_TEST
 
 START_TEST(div_positive_float_big_scale) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("0.0000000000000000000000000001", &value_1);
   str_to_decimal("0.0000000000000000000000000002", &value_2);
   str_to_decimal("0.5", &expected);
@@ -4753,10 +4771,10 @@ START_TEST(div_positive_float_big_scale) {
 END_TEST
 
 START_TEST(div_negative_float_big_scale_) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-0.0000000000000000000000000001", &value_1);
   str_to_decimal("-0.0000000000000000000000000002", &value_2);
   str_to_decimal("0.5", &expected);
@@ -4770,10 +4788,10 @@ START_TEST(div_negative_float_big_scale_) {
 END_TEST
 
 START_TEST(div_negative_and_positive_float_big_scale_) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("-0.0000000000000000000000000001", &value_1);
   str_to_decimal("0.0000000000000000000000000002", &value_2);
   str_to_decimal("-0.5", &expected);
@@ -4787,10 +4805,10 @@ START_TEST(div_negative_and_positive_float_big_scale_) {
 END_TEST
 
 START_TEST(div_positive_and_negative_float_big_scale) {
-  s21_decimal value_1;
-  s21_decimal value_2;
-  s21_decimal expected;
-  s21_decimal result;
+  s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  s21_decimal expected = (s21_decimal){{0}};
+  s21_decimal result = (s21_decimal){{0}};
   str_to_decimal("0.0000000000000000000000000001", &value_1);
   str_to_decimal("-0.0000000000000000000000000002", &value_2);
   str_to_decimal("-0.5", &expected);
