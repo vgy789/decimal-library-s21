@@ -5182,7 +5182,7 @@ int main(void) {
   tcase_add_test(tc1_1, div_negative_and_positive_float_big_scale_);
   tcase_add_test(tc1_1, div_positive_and_negative_float_big_scale);
 
-  // srunner_set_fork_status(sr, CK_NOFORK);
+  srunner_set_fork_status(sr, CK_FORK);
   srunner_run_all(sr, CK_ENV);
   nf = srunner_ntests_failed(sr);
   srunner_free(sr);
