@@ -13,7 +13,7 @@ all: s21_decimal.a
 rebuild: clean s21_decimal.a
 
 test: clean s21_decimal.a
-	# checkmk clean_mode=1 test/in > test/test.c
+	checkmk clean_mode=1 test/in > test/test.c && make fmt
 	$(CC) $(CFLAGS) --coverage -o $(TEST_EXEC) test/debug_helper.c test/test.c $(SRCMODULES) $(LDFLAGS)
 	./$(TEST_EXEC)
 
