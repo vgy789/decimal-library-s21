@@ -13,7 +13,7 @@ all: s21_decimal.a
 rebuild: clean s21_decimal.a
 
 test: clean s21_decimal.a
-	checkmk clean_mode=1 test/in > test/test.c
+	# checkmk clean_mode=1 test/in > test/test.c
 	$(CC) $(FLAGS) --coverage -o $(TEST_EXEC) test/debug_helper.c test/test.c $(SRCMODULES) $(LDFLAGS)
 	./$(TEST_EXEC)
 
@@ -38,7 +38,7 @@ fmt:
 
 clean:
 	find . -name "*.out" -or -name "*.o" -or -name "*.gch" -or -name "*.gcno" -or -name "*.gcda" | xargs rm -f
-	rm -f report.info $(TEST_EXEC) test/test.c s21_decimal.a
+	rm -f report.info $(TEST_EXEC) s21_decimal.a
 	rm -rf $(REPORT_DIR)/
 
 valgrind:
