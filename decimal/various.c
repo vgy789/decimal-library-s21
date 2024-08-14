@@ -1,5 +1,5 @@
 #include "../s21_decimal.h"
-
+#define minus_bit (0x80000000)
 err_t check_scale(s21_decimal value) {
   const scale_t scale = get_scale(value);
   if (scale > 28 || scale < 0) { /* max scale test */
@@ -50,7 +50,6 @@ void set_sign(s21_decimal *value, bool sign) {
 }
 
 err_t s21_negate(s21_decimal value, s21_decimal *result) {
-  enum { minus_bit = 0x80000000 };
   err_t err_code = check_scale(value);
 
   if (err_code == 0) {

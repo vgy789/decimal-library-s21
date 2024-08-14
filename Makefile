@@ -2,7 +2,8 @@ CC = gcc
 
 SRCMODULES = ./decimal/alignment.c ./decimal/arithmetic.c ./decimal/comparison.c ./decimal/converter.c ./decimal/rounding.c ./decimal/various.c ./big_decimal/Balignment.c ./big_decimal/Barithmetic.c ./big_decimal/Bcomparison.c ./big_decimal/Brounding.c ./big_decimal/Bvarious.c
 OBJMODULES = $(SRCMODULES:.c=.o)
-CFLAGS = -O2 -flto -Wall -Werror -Wextra -std=c11 -Wunused-function
+CFLAGS = -Wall -Werror -Wextra -std=c11 -Wunused-function -pedantic
+CFLAGS_OPT = -O2 -flto
 LDFLAGS = `pkg-config --cflags --libs check`
 
 TEST_EXEC = run_test.out
@@ -14,7 +15,7 @@ rebuild: clean s21_decimal.a
 
 test: clean s21_decimal.a
 	# checkmk clean_mode=1 test/in > test/test.c
-	$(CC) $(FLAGS) --coverage -o $(TEST_EXEC) test/debug_helper.c test/test.c $(SRCMODULES) $(LDFLAGS)
+	$(CC) $(CFLAGS) --coverage -o $(TEST_EXEC) test/debug_helper.c test/test.c $(SRCMODULES) $(LDFLAGS)
 	./$(TEST_EXEC)
 
 gcov_report: test
@@ -22,7 +23,7 @@ gcov_report: test
 	genhtml -o $(REPORT_DIR) report.info
 
 %.o: %.c %.h
-	$(CC) $(CFLAGS) -c $< -o $@ 
+	$(CC) $(CFLAGS) $(CFLAGS_OPT) -c $< -o $@ 
 
 s21_decimal.a: $(OBJMODULES)
 	ar rcs $@ $^

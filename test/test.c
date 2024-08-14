@@ -301,7 +301,7 @@ START_TEST(add_positive_float_int) {
   s21_decimal value_2 = {{20, 0, 0, 0}};
   set_scale(&value_1, 10);
   s21_decimal result;
-  s21_decimal expected = {{2820130817, 4, 0, 0}};
+  s21_decimal expected = {{2820130817U, 4, 0, 0}};
   set_scale(&expected, 9);
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -317,7 +317,7 @@ START_TEST(add_negative_float_int) {
   s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
   set_scale(&value_1, 10);
   s21_decimal result;
-  s21_decimal expected = {{2820130817, 4, 0, 0x80000000}};
+  s21_decimal expected = {{2820130817U, 4, 0, 0x80000000}};
   set_scale(&expected, 9);
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -333,7 +333,7 @@ START_TEST(add_negative_float_positive_int) {
   s21_decimal value_2 = {{20, 0, 0, 0}};
   set_scale(&value_1, 10);
   s21_decimal result;
-  s21_decimal expected = {{2820130815, 4, 0, 0}};
+  s21_decimal expected = {{2820130815U, 4, 0, 0}};
   set_scale(&expected, 9);
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -349,7 +349,7 @@ START_TEST(add_positive_float_negative_int) {
   s21_decimal value_2 = {{20, 0, 0, 0x80000000}};
   set_scale(&value_1, 10);
   s21_decimal result;
-  s21_decimal expected = {{2820130815, 4, 0, 0x80000000}};
+  s21_decimal expected = {{2820130815U, 4, 0, 0x80000000}};
   set_scale(&expected, 9);
   int return_code = s21_add(value_1, value_2, &result);
 
@@ -859,7 +859,7 @@ START_TEST(sub_positive_float_int) {
   s21_decimal value_2 = {{20, 0, 0, 0}};
   set_scale(&value_1, 10);
   s21_decimal result;
-  s21_decimal expected = {{2820130815, 4, 0, 0x80000000}};
+  s21_decimal expected = {{2820130815U, 4, 0, 0x80000000}};
   set_scale(&expected, 9);
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -877,7 +877,7 @@ START_TEST(sub_negative_float_int) {
   set_sign(&value_2, minus);
   set_scale(&value_1, 10);
   s21_decimal result;
-  s21_decimal expected = {{2820130815, 4, 0, 0}};
+  s21_decimal expected = {{2820130815U, 4, 0, 0}};
   set_scale(&expected, 9);
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -894,7 +894,7 @@ START_TEST(sub_negative_float_positive_int) {
   set_sign(&value_1, minus);
   set_scale(&value_1, 10);
   s21_decimal result;
-  s21_decimal expected = {{2820130817, 4, 0, 0x80000000}};
+  s21_decimal expected = {{2820130817U, 4, 0, 0x80000000}};
   set_scale(&expected, 9);
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -911,7 +911,7 @@ START_TEST(sub_positive_float_negative_int) {
   set_scale(&value_1, 10);
   set_sign(&value_2, minus);
   s21_decimal result;
-  s21_decimal expected = {{2820130817, 4, 0, 0}};
+  s21_decimal expected = {{2820130817U, 4, 0, 0}};
   set_scale(&expected, 9);
   int return_code = s21_sub(value_1, value_2, &result);
 
@@ -2737,7 +2737,6 @@ END_TEST
 START_TEST(round_4) {
   s21_decimal value;
   s21_decimal result;
-  s21_decimal expected;
   str_to_decimal("0", &value);
   set_scale(&value, 29);
   int err_code = s21_round(value, &result);
@@ -2832,7 +2831,6 @@ END_TEST
 START_TEST(floor_4) {
   s21_decimal value;
   s21_decimal result;
-  s21_decimal expected;
   str_to_decimal("0", &value);
   set_scale(&value, 29);
   int err_code = s21_floor(value, &result);
@@ -2951,7 +2949,6 @@ END_TEST
 START_TEST(bank_round_4) {
   s21_decimal value;
   s21_decimal result;
-  s21_decimal expected;
   str_to_decimal("0", &value);
   set_scale(&value, 29);
   int err_code = bank_round(value, &result);
@@ -3593,7 +3590,7 @@ START_TEST(from_int_to_decimal_0) {
   int src = 6418934;
   s21_decimal value = {{0}};
   int err_code = s21_from_int_to_decimal(src, &value);
-  s21_decimal expected = {6418934, 0, 0, 0};
+  s21_decimal expected = {{6418934, 0, 0, 0}};
   ck_assert(value.bits[0] == expected.bits[0]);
   ck_assert(value.bits[1] == expected.bits[1]);
   ck_assert(value.bits[2] == expected.bits[2]);
@@ -3606,7 +3603,7 @@ START_TEST(from_int_to_decimal_1) {
   int src = -6418934;
   s21_decimal value = {{0}};
   int err_code = s21_from_int_to_decimal(src, &value);
-  s21_decimal expected = {6418934, 0, 0, 0};
+  s21_decimal expected = {{6418934, 0, 0, 0}};
   set_sign(&expected, 1);
   ck_assert(value.bits[0] == expected.bits[0]);
   ck_assert(value.bits[1] == expected.bits[1]);
@@ -3620,7 +3617,7 @@ START_TEST(from_int_to_decimal_2) {
   int src = 2147483647;
   s21_decimal value = {{0}};
   int err_code = s21_from_int_to_decimal(src, &value);
-  s21_decimal expected = {2147483647, 0, 0, 0};
+  s21_decimal expected = {{2147483647, 0, 0, 0}};
   ck_assert(value.bits[0] == expected.bits[0]);
   ck_assert(value.bits[1] == expected.bits[1]);
   ck_assert(value.bits[2] == expected.bits[2]);
@@ -3633,7 +3630,7 @@ START_TEST(from_int_to_decimal_3) {
   int src = -2147483648;
   s21_decimal value = {{0}};
   int err_code = s21_from_int_to_decimal(src, &value);
-  s21_decimal expected = {2147483648, 0, 0, 0};
+  s21_decimal expected = {{2147483648U, 0, 0, 0}};
   set_sign(&expected, 1);
   ck_assert(value.bits[0] == expected.bits[0]);
   ck_assert(value.bits[1] == expected.bits[1]);
@@ -3673,7 +3670,7 @@ END_TEST
 
 START_TEST(from_decimal_to_int_1) {
   int src = 0;
-  s21_decimal value = {2147483647, 1, 0, 0};
+  s21_decimal value = {{2147483647, 1, 0, 0}};
   set_sign(&value, 1);
   int err_code = s21_from_decimal_to_int(value, &src);
   ck_assert(err_code == 1);
@@ -3682,7 +3679,7 @@ END_TEST
 
 START_TEST(from_decimal_to_int_2) {
   int src = 0;
-  s21_decimal value = {2147483647, 1, 0, 0};
+  s21_decimal value = {{2147483647, 1, 0, 0}};
   int err_code = s21_from_decimal_to_int(value, &src);
   ck_assert(err_code == 1);
 }
@@ -3749,14 +3746,14 @@ END_TEST
 
 START_TEST(from_decimal_to_int_9) {
   int src = 0;
-  s21_decimal value = {0, 0, 1, 0};
+  s21_decimal value = {{0, 0, 1, 0}};
   int err_code = s21_from_decimal_to_int(value, &src);
   ck_assert(err_code == 1);
 }
 END_TEST
 
 START_TEST(big_to_decimal_0) {
-  big_decimal value = {0, 0, 0, 1, 0, 0, 0};
+  big_decimal value = {{0, 0, 0, 1, 0, 0, 0}};
   s21_decimal result = {{0}};
   int err_code = big_to_decimal(value, &result);
   ck_assert(err_code == 1);
@@ -3764,7 +3761,7 @@ START_TEST(big_to_decimal_0) {
 END_TEST
 
 START_TEST(big_to_decimal_1) {
-  s21_decimal value_1 = {1, 0, 0, 0};
+  s21_decimal value_1 = {{1, 0, 0, 0}};
   set_sign(&value_1, 1);
   big_decimal value = {{0}};
   decimal_to_big(value_1, &value);
@@ -3776,15 +3773,16 @@ START_TEST(big_to_decimal_1) {
 END_TEST
 
 START_TEST(big_to_decimal_2) {
-  big_decimal value = {0, 1, 0, 0, 0, 0, 0};
+  big_decimal value = {{0, 1, 0, 0, 0, 0, 0}};
   s21_decimal result = {{0}};
   int err_code = big_to_decimal(value, &result);
   ck_assert(result.bits[1] == 1);
+  ck_assert(err_code == 0);
 }
 END_TEST
 
 START_TEST(big_to_int_1) {
-  big_decimal value = {659865, 0, 0, 0, 0, 0, 0};
+  big_decimal value = {{659865, 0, 0, 0, 0, 0, 0}};
   int result = big_to_int(value);
   int expected = 659865;
   ck_assert(result == expected);
@@ -5166,6 +5164,7 @@ int main(void) {
   tcase_add_test(tc1_1, div_negative_and_positive_float_big_scale_);
   tcase_add_test(tc1_1, div_positive_and_negative_float_big_scale);
 
+  srunner_set_fork_status(sr, CK_NOFORK);
   srunner_run_all(sr, CK_ENV);
   nf = srunner_ntests_failed(sr);
   srunner_free(sr);

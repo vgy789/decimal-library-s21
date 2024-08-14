@@ -24,12 +24,12 @@ void Bset_bit(big_decimal *value, uint8_t bit_pos, bool state) {
 }
 
 uint8_t Bget_scale(big_decimal value) {
-  return (value.bits[6] & (0b11111111 << 16)) >> 16;
+  return (value.bits[6] & (255U << 16)) >> 16;
 }
 
 void Bset_scale(big_decimal *value, scale_t scale) {
   const bool sign = Bget_sign(*value);
-  value->bits[6] = (0b11111111 << 16) & scale << 16;
+  value->bits[6] = (255U << 16) & scale << 16;
   Bset_sign(value, sign);
 }
 
