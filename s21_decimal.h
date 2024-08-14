@@ -23,8 +23,6 @@ typedef struct {
   int bits[4];
 } s21_decimal;
 
-void alignment(s21_decimal *value1, s21_decimal *value2, bool for_add);
-
 /**
  * Возвращает значение scale в s21_decimal.
  *

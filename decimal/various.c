@@ -1,5 +1,7 @@
 #include "../s21_decimal.h"
+
 #define minus_bit (0x80000000)
+
 err_t check_scale(s21_decimal value) {
   const scale_t scale = get_scale(value);
   if (scale > 28 || scale < 0) { /* max scale test */

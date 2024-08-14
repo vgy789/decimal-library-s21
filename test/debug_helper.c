@@ -8,6 +8,16 @@
 #define STRINGIZER(x) #x
 #define TO_STRING(x) STRINGIZER(x)
 
+void alignment(s21_decimal *value_1, s21_decimal *value_2, bool for_add) {
+  big_decimal big_1 = (big_decimal){{0}};
+  big_decimal big_2 = (big_decimal){{0}};
+  decimal_to_big(*value_1, &big_1);
+  decimal_to_big(*value_2, &big_2);
+  Balignment(&big_1, &big_2, for_add);
+  big_to_decimal(big_1, value_1);
+  big_to_decimal(big_2, value_2);
+}
+
 void str_to_decimal(const char *number, s21_decimal *result) {
   *result = (s21_decimal){{0}};
   bool sign = plus;
