@@ -3039,24 +3039,32 @@
 
 #test from_decimal_to_float_5
   s21_decimal value_1 = (s21_decimal){{0}};
-  float result = 0;
-  str_to_decimal("0", &value_1);
+  float result = 0.1234678f;
+  str_to_decimal("0.1234678", &value_1);
   int err_code = s21_from_decimal_to_float(value_1, &result);
   ck_assert(0 == err_code);
   ck_assert(0.f == result);
 
 #test from_decimal_to_float_6
   s21_decimal value_1 = (s21_decimal){{0}};
-  float result = 0;
-  str_to_decimal("0", &value_1);
+  float result = 12345.12f;
+  str_to_decimal("12345.1234678", &value_1);
   int err_code = s21_from_decimal_to_float(value_1, &result);
   ck_assert(0 == err_code);
   ck_assert(0.f == result);
 
 #test from_decimal_to_float_7
   s21_decimal value_1 = (s21_decimal){{0}};
-  float result = 0;
-  str_to_decimal("0", &value_1);
+  float result = 12345.68f;
+  str_to_decimal("12345.677734", &value_1);
+  int err_code = s21_from_decimal_to_float(value_1, &result);
+  ck_assert(0 == err_code);
+  ck_assert(0.f == result);
+
+  #test from_decimal_to_float_8
+  s21_decimal value_1 = (s21_decimal){{0}};
+  float result = -0.1234679;
+  str_to_decimal("-0.123467812345675432", &value_1);
   int err_code = s21_from_decimal_to_float(value_1, &result);
   ck_assert(0 == err_code);
   ck_assert(0.f == result);

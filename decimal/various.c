@@ -51,12 +51,16 @@ void set_sign(s21_decimal *value, bool sign) {
   big_to_decimal(big, value);
 }
 
+#define NULL (void *)0
 err_t s21_negate(s21_decimal value, s21_decimal *result) {
-  err_t err_code = check_scale(value);
-
+  err_t err_code = (result == NULL);
   if (err_code == 0) {
-    err_code = s21_mul(value, (s21_decimal){{1, 0, 0, minus_bit}}, result);
+    err_code = check_scale(value);
   }
-
+  if (err_code == 0) {
+    *result = value;
+    set_sign(result, !get_sign(*result));
+  }
   return err_code;
 }
+#undef NULL
