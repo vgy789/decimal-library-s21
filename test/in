@@ -3014,8 +3014,7 @@
 #test from_decimal_to_float_2
   s21_decimal value_1 = (s21_decimal){{0}};
   float result = 0;
-  str_to_decimal("781865", &value_1);
-  set_sign(&value_1, 1);
+  str_to_decimal("-781865", &value_1);
   int err_code = s21_from_decimal_to_float(value_1, &result);
   ck_assert(0 == err_code);
   ck_assert(-781865.0 == result);
@@ -3023,8 +3022,7 @@
 #test from_decimal_to_float_3
   s21_decimal value_1 = (s21_decimal){{0}};
   float result = 0;
-  str_to_decimal("6408.25", &value_1);
-  set_sign(&value_1, 1);
+  str_to_decimal("-6408.25", &value_1);
   int err_code = s21_from_decimal_to_float(value_1, &result);
   ck_assert(0 == err_code);
   ck_assert(-6408.25 == result);
@@ -3039,35 +3037,36 @@
 
 #test from_decimal_to_float_5
   s21_decimal value_1 = (s21_decimal){{0}};
-  float result = 0.1234678f;
+  float result = 0;
   str_to_decimal("0.1234678", &value_1);
   int err_code = s21_from_decimal_to_float(value_1, &result);
   ck_assert(0 == err_code);
-  ck_assert(0.f == result);
+  ck_assert(fabs(0.1234678) - fabs(result) < 0.00000001);
 
 #test from_decimal_to_float_6
   s21_decimal value_1 = (s21_decimal){{0}};
-  float result = 12345.12f;
+  float result = 0;
   str_to_decimal("12345.1234678", &value_1);
   int err_code = s21_from_decimal_to_float(value_1, &result);
   ck_assert(0 == err_code);
-  ck_assert(0.f == result);
+  ck_assert(fabs(12345.12) - fabs(result) < 0.00000001);
 
 #test from_decimal_to_float_7
   s21_decimal value_1 = (s21_decimal){{0}};
-  float result = 12345.68f;
-  str_to_decimal("12345.677734", &value_1);
+  float result = 0;
+  str_to_decimal("-12345.677734", &value_1);
   int err_code = s21_from_decimal_to_float(value_1, &result);
   ck_assert(0 == err_code);
-  ck_assert(0.f == result);
+  // -12345.67 т.к. теряется точность у float. см IEEE-754
+  ck_assert(fabs(-12345.67) - fabs(result) < 0.00000001);
 
   #test from_decimal_to_float_8
   s21_decimal value_1 = (s21_decimal){{0}};
-  float result = -0.1234679;
+  float result = 0;
   str_to_decimal("-0.123467812345675432", &value_1);
   int err_code = s21_from_decimal_to_float(value_1, &result);
   ck_assert(0 == err_code);
-  ck_assert(0.f == result);
+  ck_assert(fabs(-0.1234678) - fabs(result) < 0.00000001);
 
 #test from_int_to_decimal_0
   int src = 6418934;

@@ -101,49 +101,51 @@ err_t s21_from_decimal_to_float(s21_decimal src, float *dst) {
   s21_decimal buf = (s21_decimal){{0}};
   scale_t scale = get_scale(src);
 
-  char digits[33] = {'\0'};
+  char str_num[33] = {'\0'};
   int digit = 0;
-
   uint8_t i = 0;
+
   do {
-    if (scale == 0) {
-      digits[i] = '.';
-      i += 1;
-    }
     modulus10(src, &buf);
+    divide10(src, &src);
+
     s21_from_decimal_to_int(buf, &digit);
-    digits[i] = (char)(digit + '0');
+    str_num[i] = (char)(digit + '0');
     i += 1;
     scale -= 1;
-    divide10(src, &src);
+    if (scale == 0) {
+      str_num[i] = '.';
+      i += 1;
+    }
   } while (s21_is_not_equal(src, (s21_decimal){{0}}));
+  s21_strrev(str_num);
 
-  char *err;
-  s21_strrev(digits);
   bool is_first_zero = 0;
   bool has_point = false;   /* найдена . */
   bool significant = false; /* пройдено 7 значимых знаков */
-  for (int i = 0; digits[i] != '\0'; ++i) {
-    if (digits[i] == '.') {
+  for (int i = 0; str_num[i] != '\0'; ++i) {
+    if (str_num[i] == '.') {
       has_point = true;
       continue;
     }
     if (significant) {
-      digits[i] = '0';
+      str_num[i] = '0';
       continue;
     }
-    if (i + 1 - has_point - is_first_zero == 7) {
+    if (i + 1 - has_point - is_first_zero == 8) {
+      // отсеиваем 8 значимых чисел, т.к. нужно будет округлить седьмую цифру по
+      // значению восьмой
       significant = true;
-      if (digits[i + 1] != '\0') {
-        const uint8_t curr_value = digits[i] - '0';
-        const uint8_t next_value = digits[i + 1] - '0';
-        digits[i] =
-            (roundf((float)(curr_value * 10 + next_value) / 10.f)) + '0';
-      }
+      const uint8_t prev_value = str_num[i - 1] - '0';
+      const uint8_t current_value = str_num[i] - '0';
+      str_num[i - 1] =
+          (roundf((float)(prev_value * 10 + current_value) / 10.f)) + '0';
+      str_num[i] = '0';
     }
   }
 
-  *dst = strtof(digits, &err);
+  char *err;
+  *dst = strtof(str_num, &err);
   if (sign == minus) {
     *dst = -*dst;
   }
@@ -160,8 +162,8 @@ err_t s21_from_float_to_decimal(float src, s21_decimal *dst) {
     return 1;
   }
 
-  char digits[50] = {'\0'};
-  sprintf(digits, "%.7f", src);
+  char str_num[50] = {'\0'};
+  sprintf(str_num, "%.7f", src);
   big_decimal Bdst = (big_decimal){{0}};
   big_decimal Bdst_for_test = (big_decimal){{0}};
   bool has_point = false;
@@ -171,16 +173,16 @@ err_t s21_from_float_to_decimal(float src, s21_decimal *dst) {
   bool significant = false;
   bool is_first_zero = 0;
   bool make_round = false;
-  for (int i = 0; digits[i] != '\0'; ++i) {
-    if ((digits[i] == '.')) {
+  for (int i = 0; str_num[i] != '\0'; ++i) {
+    if ((str_num[i] == '.')) {
       has_point = true;
       continue;
     }
     if (significant) {
-      digits[i] = '0';
+      str_num[i] = '0';
     }
 
-    if (first_zero_check == false && digits[i] == '0') {
+    if (first_zero_check == false && str_num[i] == '0') {
       /* первый нуль в целой части не является значимым 0.0456 */
       is_first_zero = true;
       first_zero_check = true;
@@ -198,14 +200,14 @@ err_t s21_from_float_to_decimal(float src, s21_decimal *dst) {
     }
     Bdigits_mul10(&Bdst);
     Bdigits_mul10(&Bdst_for_test);
-    const uint8_t curr_value = digits[i] - '0';
+    const uint8_t curr_value = str_num[i] - '0';
     Bdigits_add(Bdst_for_test, (big_decimal){{curr_value}}, &Bdst_for_test);
 
     if (!make_round) {
       Bdigits_add(Bdst, (big_decimal){{curr_value}}, &Bdst);
     } else {
-      const uint8_t next_value = digits[i + 1] - '0';
-      if (digits[i + 1] != '\0') {
+      const uint8_t next_value = str_num[i + 1] - '0';
+      if (str_num[i + 1] != '\0') {
         Bdigits_add(Bdst,
                     (big_decimal){
                         {roundf((float)(curr_value * 10 + next_value) / 10.f)}},
