@@ -26,6 +26,18 @@ static int Bcomparison_digits(big_decimal value_1, big_decimal value_2) {
 
 // сравнивает числа с учетом знака и scale
 static int Bcomparison(big_decimal a, big_decimal b) {
+  bool is_zero = true;
+  for (uint8_t i = 0; i < 6; ++i) {
+    if (a.bits[i] != 0 || b.bits[i] != 0) {
+      is_zero = false;
+      break;
+    }
+  }
+  if (is_zero == true) {
+    Bset_sign(&a, plus);
+    Bset_sign(&b, plus);
+  }
+
   uint8_t result = 0;
   bool sign_a = Bget_sign(a);
   bool sign_b = Bget_sign(b);
@@ -44,8 +56,11 @@ static int Bcomparison(big_decimal a, big_decimal b) {
       result = Bcomparison_digits(a, b);
     }
 
-    if (sign_a == minus && result == lt) result = gt;
-    if (sign_a == minus && result == gt) result = lt;
+    if (sign_a == minus && (result == lt)) {
+      result = gt;
+    } else if (sign_a == minus && result == gt) {
+      result = lt;
+    }
   }
 
   return result;

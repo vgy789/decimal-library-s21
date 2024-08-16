@@ -1896,7 +1896,7 @@
   str_to_decimal("0", &value_1);
   str_to_decimal("-0", &value_2);
   bool result = s21_is_equal(value_1, value_2);
-  ck_assert(result == 0);
+  ck_assert(result == 1);
 
 #test negative_s21_is_not_equal_00
   s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
