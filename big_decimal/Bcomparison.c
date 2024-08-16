@@ -43,7 +43,9 @@ static int Bcomparison(big_decimal a, big_decimal b) {
       Balignment(&a, &b, 0);
       result = Bcomparison_digits(a, b);
     }
-    if (scale_a == 1) result = -result;
+
+    if (sign_a == minus && result == lt) result = gt;
+    if (sign_a == minus && result == gt) result = lt;
   }
 
   return result;

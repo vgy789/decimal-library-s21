@@ -4115,3 +4115,47 @@
   int return_code = s21_div(value_1, value_2, &result);
   ck_assert(s21_is_equal(result, expected) == 1);
   ck_assert(return_code == 0);
+
+#test is_less_two_negative_numbers_2
+ s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  str_to_decimal("-0.000000000000000000000000005", &value_1);
+  str_to_decimal("-0.000000000000000000000000004", &value_2);
+  int result = s21_is_less(value_1, value_2);
+  ck_assert(result == 1);
+
+#test is_greater_two_negative_numbers_0
+ s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  str_to_decimal("-12", &value_1);
+  str_to_decimal("-11", &value_2);
+  int result = s21_is_greater(value_1, value_2);
+  ck_assert(result == 0);
+
+#test is_greater_two_negative_numbers_1
+ s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  str_to_decimal("-12.4652948675", &value_1);
+  str_to_decimal("-11.46548", &value_2);
+  int result = s21_is_greater(value_1, value_2);
+  ck_assert(result == 0);
+
+#test is_less_two_negative_numbers_1
+ s21_decimal value_1 = (s21_decimal){{0}};
+  s21_decimal value_2 = (s21_decimal){{0}};
+  str_to_decimal("-12.4652948675", &value_1);
+  str_to_decimal("-11.46548", &value_2);
+  int result = s21_is_less(value_1, value_2);
+  ck_assert(result == 1);
+
+// #test div
+//   s21_decimal value_1 = (s21_decimal){{0}};
+//   s21_decimal value_2 = (s21_decimal){{0}};
+//   s21_decimal expected = (s21_decimal){{0}};
+//   s21_decimal result = (s21_decimal){{0}};
+//   str_to_decimal("+184467440822994.86213", &value_1);
+//   str_to_decimal("-128849018.9", &value_2);
+//   str_to_decimal("-1431655.7657777777780968419931", &expected);
+//   int return_code = s21_div(value_1, value_2, &result);
+//   ck_assert(s21_is_equal(result, expected) == 1);
+//   ck_assert(return_code == 0);
