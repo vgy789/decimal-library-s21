@@ -42,28 +42,6 @@ void decimal_to_big(s21_decimal value, big_decimal *result) {
   result->bits[6] = value.bits[3];
 }
 
-static size_t s21_strlen(const char *str) {
-  const char *end = str;
-  while (*end != '\0') end += 1;
-  return end - str;
-}
-
-static void s21_strrev(char *str) {
-  if (!str) {
-    return;
-  }
-  int i = 0;
-  int j = s21_strlen(str) - 1;
-
-  while (i < j) {
-    char c = str[i];
-    str[i] = str[j];
-    str[j] = c;
-    i++;
-    j--;
-  }
-}
-
 err_t s21_from_decimal_to_int(s21_decimal src, int *dst) {
   const bool sign = get_sign(src);
   s21_truncate(src, &src);
@@ -118,6 +96,7 @@ err_t s21_from_decimal_to_float(s21_decimal src, float *dst) {
       i += 1;
     }
   } while (s21_is_not_equal(src, (s21_decimal){{0}}));
+
   s21_strrev(str_num);
 
   bool is_first_zero = 0;

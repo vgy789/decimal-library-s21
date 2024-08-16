@@ -621,6 +621,18 @@
   // s21_sub
   // Функция s21_sub вычитание двух положительных целых чисел
 
+#test test_add_1
+  // -7922816251426433759354395033.5
+  s21_decimal value_1 = (s21_decimal){{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x80010000}};
+  // -1.0000000000000000000000000001
+  s21_decimal value_2 = (s21_decimal){{0x10000001, 0x3E250261, 0x204FCE5E, 0x801C0000}};
+  // -7922816251426433759354395035
+  s21_decimal expected = (s21_decimal){{0x9999999B, 0x99999999, 0x19999999, 0x80000000}};
+  s21_decimal result = (s21_decimal){{0}};
+  int return_code = s21_add(value_1, value_2, &result);
+  ck_assert(s21_is_equal(result, expected) == 1);
+  ck_assert(return_code == 0);
+  
 #test sub_positive_numbers
   s21_decimal value_1 = (s21_decimal){{10, 0, 0, 0}};
   s21_decimal value_2 = (s21_decimal){{20, 0, 0, 0}};

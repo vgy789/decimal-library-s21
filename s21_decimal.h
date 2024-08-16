@@ -288,4 +288,6 @@ err_t s21_truncate(s21_decimal value, s21_decimal *result);
  */
 err_t bank_round(s21_decimal value, s21_decimal *result);
 
+void s21_strrev(char *str);
+
 #endif  // S21_DECIMAL_H

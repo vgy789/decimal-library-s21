@@ -1,6 +1,6 @@
-#include "../s21_decimal.h"
+#include <stddef.h>
 
-#define minus_bit (0x80000000)
+#include "../s21_decimal.h"
 
 err_t check_scale(s21_decimal value) {
   const scale_t scale = get_scale(value);
@@ -51,7 +51,6 @@ void set_sign(s21_decimal *value, bool sign) {
   big_to_decimal(big, value);
 }
 
-#define NULL (void *)0
 err_t s21_negate(s21_decimal value, s21_decimal *result) {
   err_t err_code = (result == NULL);
   if (err_code == 0) {
@@ -63,4 +62,25 @@ err_t s21_negate(s21_decimal value, s21_decimal *result) {
   }
   return err_code;
 }
-#undef NULL
+
+static size_t s21_strlen(const char *str) {
+  const char *end = str;
+  while (*end != '\0') end += 1;
+  return end - str;
+}
+
+void s21_strrev(char *str) {
+  if (!str) {
+    return;
+  }
+  int i = 0;
+  int j = s21_strlen(str) - 1;
+
+  while (i < j) {
+    char c = str[i];
+    str[i] = str[j];
+    str[j] = c;
+    i++;
+    j--;
+  }
+}

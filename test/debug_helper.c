@@ -74,7 +74,33 @@ void str_to_bigdecimal(const char *number, big_decimal *result) {
   Bset_sign(result, sign);
 }
 
-// func for dec_to_bin()
+void print_Bdec(big_decimal value) {
+  char str[50] = {'\0'};
+  big_decimal Bdigit = (big_decimal){{0}};
+  scale_t scale = Bget_scale(value);
+  const scale_t scale_buf = scale;
+  if (Bget_sign(value) == plus) {
+    printf("+");
+  } else {
+    printf("-");
+  }
+
+  Bset_sign(&value, plus);
+
+  for (int i = 0; Bdigits_ne(value, (big_decimal){{0}}) == 1; ++i) {
+    Bmodulus10(value, &Bdigit);
+    const uint8_t last_digit = Bdigit.bits[0] % 10;
+    Bdivide10(value, &value);
+    str[i] = last_digit + '0';
+    --scale;
+  }
+
+  s21_strrev(str);
+  printf("%s", str);
+  printf("(%d)", scale_buf);
+}
+
+// func for print_dec_bin()
 static void uint_to_bin(uint32_t value) {
   int8_t bits = 31;
 
@@ -121,7 +147,7 @@ static __uint128_t pow_uint128(__uint128_t x, __uint128_t y) {
   return result;
 }
 
-void dec_2int(s21_decimal value) {
+void print_dec(s21_decimal value) {
   __uint128_t number = 0u;
 
   for (int bit_i = 0; bit_i < 96; ++bit_i) {
@@ -132,7 +158,7 @@ void dec_2int(s21_decimal value) {
   print_u128_u(number);
 }
 
-void Bdec_to_bin(big_decimal value, bool print_scale, bool print_separate) {
+void print_Bdec_bin(big_decimal value, bool print_scale, bool print_separate) {
   if (Bget_sign(value))
     printf("(-)");
   else
@@ -149,7 +175,7 @@ void Bdec_to_bin(big_decimal value, bool print_scale, bool print_separate) {
   printf("(scale=%d)", Bget_scale(value));
 }
 
-void dec_to_bin(s21_decimal value, bool print_scale, bool print_separate) {
+void print_dec_bin(s21_decimal value, bool print_scale, bool print_separate) {
   if (get_sign(value))
     printf("(-)");
   else
