@@ -58,10 +58,12 @@ void Bbank_round(big_decimal value, big_decimal *result) {
 
     const int is_odd = Bget_bit(temp, 0) == 1;
     const int mod = Bmod(last_digit, (big_decimal){{10}});
-    if ((mod == 5 && is_odd) || mod > 5) {
+    if (mod > 5 || (mod == 5 && is_odd)) {
       Bdigits_add(temp, (big_decimal){{1}}, result);
     } else {
       *result = temp;
     }
+  } else {
+    *result = value;
   }
 }

@@ -31,7 +31,10 @@ enum sign { plus, minus };
 enum { divide, whole, reside };
 
 void Bnormalize(big_decimal *value);
-
+err_t NEWBdigits_div(big_decimal value_1, big_decimal value_2,
+                     big_decimal *result);
+err_t NEWBdigits_division(big_decimal value_1, big_decimal value_2,
+                          big_decimal *result, uint8_t mode);
 void Bfix_bank_overflow(big_decimal *value);
 
 /**
@@ -93,7 +96,7 @@ void Bset_bit(big_decimal *value, uint8_t bit_pos, bool status);
 /**
  * Возвращает десятичную точку числа big_decimal.
  */
-uint8_t Bget_scale(big_decimal value);
+scale_t Bget_scale(big_decimal value);
 
 /**
  * Устанавливает десятичную точку в числе big_decimal.
@@ -110,7 +113,7 @@ bool Bget_sign(big_decimal value);
  */
 void Bset_sign(big_decimal *value, bool sign);
 
-void Balignment(big_decimal *value_1, big_decimal *value_2, bool for_add);
+void Balignment(big_decimal *value_1, big_decimal *value_2);
 
 /**
  * Перевод мантиссы в дополнительный код (дополнение до двух).

@@ -1,4 +1,5 @@
 #include "../s21_decimal.h"
+#include "../test/debug_helper.h"
 #include "big_decimal.h"
 
 static bool Badd_word(uint32_t *result, uint32_t value_1, uint32_t value_2,
@@ -13,21 +14,31 @@ void Bfix_bank_overflow(big_decimal *value) {
   const bool sign = Bget_sign(*value);  // сохранить знак, т.к. в процессе
                                         // вычислений он станет невалидным
 
-  uint8_t scale = Bget_scale(*value);
-  const uint8_t scale_orig = scale;
+  scale_t scale = Bget_scale(*value);
+  const scale_t scale_orig = scale;
   big_decimal Blast_digit = (big_decimal){{0}};
   int8_t last_digit = -1;
   uint8_t counter = 0;
+  bool prev_nezero = false;
 
-  while ((value->bits[3] != 0 || value->bits[4] != 0 || value->bits[5] != 0) &&
-         scale > 0) {
+  while (((value->bits[3] != 0 || value->bits[4] != 0 || value->bits[5] != 0) &&
+          scale > 0) ||
+         scale > MAX_SCALE) {
+    if (last_digit > 0) {
+      prev_nezero = true;
+    }
+
     Bmodulus10(*value, &Blast_digit);
     last_digit = Blast_digit.bits[0] % 10;
     Bdivide10(*value, value);
     scale -= 1;
     ++counter;
   }
+
   if (last_digit > -1) {
+    if (last_digit == 5 && prev_nezero) {
+      last_digit += 1;
+    }
     Bdigits_mul10(value);
     Bdigits_add(*value, (big_decimal){{last_digit}}, value);
     Bset_scale(value, 1);
@@ -175,6 +186,72 @@ err_t Bdigits_mul(big_decimal value_1, big_decimal value_2,
 err_t Bdigits_div(big_decimal value_1, big_decimal value_2,
                   big_decimal *result) {
   const err_t err_code = Bdigits_division(value_1, value_2, result, divide);
+  return err_code;
+}
+
+err_t NEWBdigits_div(big_decimal value_1, big_decimal value_2,
+                     big_decimal *result) {
+  const err_t err_code = NEWBdigits_division(value_1, value_2, result, divide);
+  return err_code;
+}
+
+err_t NEWBdigits_division(big_decimal value_1, big_decimal value_2,
+                          big_decimal *result, uint8_t mode) {
+  if (Bdigits_eq(value_2, (big_decimal){{0}})) /* если делим на 0 */
+    return 3;
+
+  err_t err_code = 0;
+  const bool sign_1 = Bget_sign(value_1);
+  const bool sign_2 = Bget_sign(value_2);
+  const bool result_sign = (sign_1 == minus || sign_2 == minus) &&
+                           !(sign_1 == minus && sign_2 == minus);
+  Bset_sign(&value_1, plus);
+  Bset_sign(&value_2, plus);
+
+  big_decimal Q = (big_decimal){{0}};  // частное quotient
+  big_decimal R;                       // остаток reside
+  big_decimal prev;
+  scale_t new_scale = 0;
+  bool overflow = false;
+  uint8_t mul10_counter = 0;
+
+  while (1) {
+    for (uint8_t i = 0; i < 6; ++i) { /* сбрасывает значение Q */
+      Q.bits[i] = 0;
+    }
+    R = (big_decimal){{0}};
+
+    for (int i = BDIGITS_BIT_COUNT - 1; i >= 0; i--) {
+      Bleft_shift(&R);
+      Bset_bit(&R, 0, Bget_bit(value_1, i));
+      if (Bdigits_ge(R, value_2)) {
+        (void)Bdigits_sub(R, value_2, &R);
+        Bset_bit(&Q, i, 1);
+      }
+    }
+    if (mode == reside) {
+      *result = R;
+      return 0;
+    }
+    *result = Q;
+    if (mode == whole) {
+      return 0;
+    }
+
+    if ((mul10_counter >= 54) || (overflow)) {
+      *result = prev;
+      break;
+    }
+
+    if (!overflow) {
+      prev = *result;
+      overflow = (bool)Bdigits_mul10(&value_1);
+      new_scale = Bget_scale(Q) + 1;
+      Bset_scale(&Q, new_scale);
+      mul10_counter += 1;
+    }
+  }
+  Bset_sign(result, result_sign);
   return err_code;
 }
 

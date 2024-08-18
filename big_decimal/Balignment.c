@@ -50,26 +50,13 @@ void Bnormalize(big_decimal *value) {
   Bnormalize_recursive(value, scale);
 }
 
-void Balignment(big_decimal *value_1, big_decimal *value_2, bool for_add) {
+void Balignment(big_decimal *value_1, big_decimal *value_2) {
   scale_t scale_1 = Bget_scale(*value_1);
   scale_t scale_2 = Bget_scale(*value_2);
 
-  if (for_add) {
-    if (Bdigits_eq(*value_1, *value_2)) {
-      if (scale_1 > scale_2) {
-        scale_2 = scale_1;
-      } else {
-        scale_1 = scale_2;
-      }
-      Bset_scale(value_1, scale_1);
-      Bset_scale(value_2, scale_2);
-      return;
-    }
-  }
-
   if (scale_1 == scale_2) return;
   if (scale_1 > scale_2) {
-    Balignment(value_2, value_1, for_add);
+    Balignment(value_2, value_1);
     return;
   }
 

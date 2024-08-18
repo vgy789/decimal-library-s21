@@ -5,15 +5,61 @@
 #define P10_UINT64 10000000000000000000ULL /* 19 zeroes */
 #define E10_UINT64 19
 
-#define STRINGIZER(x) #x
-#define TO_STRING(x) STRINGIZER(x)
+void Bdebug_info(big_decimal big_1, big_decimal *big_2, big_decimal *big_3) {
+  fprintf(stderr, "\tbig1\n");
+  print_Bdec_bin(big_1, 1, 1);
+  fprintf(stderr, "\n");
+  print_Bdec(big_1);
+  fprintf(stderr, "\n");
 
-void alignment(s21_decimal *value_1, s21_decimal *value_2, bool for_add) {
+  if (big_2 != NULL) {
+    fprintf(stderr, "\tbig2\n");
+    print_Bdec_bin(*big_2, 1, 1);
+    fprintf(stderr, "\n");
+    print_Bdec(*big_2);
+    fprintf(stderr, "\n");
+  }
+
+  if (big_3 != NULL) {
+    fprintf(stderr, "\nresult\n");
+    print_Bdec_bin(*big_3, 1, 1);
+    fprintf(stderr, "\n");
+    print_Bdec(*big_3);
+    fprintf(stderr, "\n");
+  }
+}
+
+void debug_info(s21_decimal dec_1, s21_decimal *dec_2, s21_decimal *dec_3) {
+  fprintf(stderr, "dec_1\n");
+  print_dec_bin(dec_1, 1, 1);
+  fprintf(stderr, "\n");
+  print_dec(dec_1);
+  fprintf(stderr, "\n");
+
+  if (dec_2 != NULL) {
+    fprintf(stderr, "dec_2\n");
+    print_dec_bin(*dec_2, 1, 1);
+    fprintf(stderr, "\n");
+    print_dec(*dec_2);
+    fprintf(stderr, "\n");
+  }
+
+  if (dec_3 != NULL) {
+    fprintf(stderr, "\nresult\n");
+    print_dec_bin(*dec_3, 1, 1);
+    fprintf(stderr, "\n");
+    print_dec(*dec_3);
+    fprintf(stderr, "\n");
+  }
+  fprintf(stderr, "\n");
+}
+
+void alignment(s21_decimal *value_1, s21_decimal *value_2) {
   big_decimal big_1 = (big_decimal){{0}};
   big_decimal big_2 = (big_decimal){{0}};
   decimal_to_big(*value_1, &big_1);
   decimal_to_big(*value_2, &big_2);
-  Balignment(&big_1, &big_2, for_add);
+  Balignment(&big_1, &big_2);
   big_to_decimal(big_1, value_1);
   big_to_decimal(big_2, value_2);
 }
@@ -74,15 +120,41 @@ void str_to_bigdecimal(const char *number, big_decimal *result) {
   Bset_sign(result, sign);
 }
 
-void print_Bdec(big_decimal value) {
+void print_dec(s21_decimal value) {
   char str[50] = {'\0'};
+  s21_decimal dec_digit = (s21_decimal){{0}};
+  scale_t scale = get_scale(value);
+  const scale_t scale_buf = scale;
+  if (get_sign(value) == plus) {
+    fprintf(stderr, "+");
+  } else {
+    fprintf(stderr, "-");
+  }
+
+  set_sign(&value, plus);
+
+  for (int i = 0; s21_is_not_equal(value, (s21_decimal){{0}}) == 1; ++i) {
+    modulus10(value, &dec_digit);
+    const uint8_t last_digit = dec_digit.bits[0] % 10;
+    divide10(value, &value);
+    str[i] = last_digit + '0';
+    --scale;
+  }
+
+  s21_strrev(str);
+  fprintf(stderr, "%s", str);
+  fprintf(stderr, "(%d)", scale_buf);
+}
+
+void print_Bdec(big_decimal value) {
+  char str[100] = {'\0'};
   big_decimal Bdigit = (big_decimal){{0}};
   scale_t scale = Bget_scale(value);
   const scale_t scale_buf = scale;
   if (Bget_sign(value) == plus) {
-    printf("+");
+    fprintf(stderr, "+");
   } else {
-    printf("-");
+    fprintf(stderr, "-");
   }
 
   Bset_sign(&value, plus);
@@ -96,8 +168,8 @@ void print_Bdec(big_decimal value) {
   }
 
   s21_strrev(str);
-  printf("%s", str);
-  printf("(%d)", scale_buf);
+  fprintf(stderr, "%s", str);
+  fprintf(stderr, "(%d)", scale_buf);
 }
 
 // func for print_dec_bin()
@@ -109,83 +181,46 @@ static void uint_to_bin(uint32_t value) {
 
     if (buf >= 0) {
       value = buf;
-      printf("1");
+      fprintf(stderr, "1");
     } else {
-      printf("0");
+      fprintf(stderr, "0");
     }
     --bits;
   }
   while (bits >= 0) {
-    printf("0");
+    fprintf(stderr, "0");
     --bits;
   }
 }
 
-static int print_u128_u(__uint128_t u128) {
-  int rc;
-  if (u128 > UINT64_MAX) {
-    __uint128_t leading = u128 / P10_UINT64;
-    uint64_t trailing = u128 % P10_UINT64;
-    rc = print_u128_u(leading);
-    rc += printf("%." TO_STRING(E10_UINT64) PRIu64, trailing);
-  } else {
-    uint64_t u64 = u128;
-    rc = printf("%" PRIu64, u64);
-  }
-  return rc;
-}
-
-static __uint128_t pow_uint128(__uint128_t x, __uint128_t y) {
-  __uint128_t result = 1;
-  while (y) {
-    if (y & 1) {
-      result *= x;
-    }
-    y >>= 1;
-    x *= x;
-  }
-  return result;
-}
-
-void print_dec(s21_decimal value) {
-  __uint128_t number = 0u;
-
-  for (int bit_i = 0; bit_i < 96; ++bit_i) {
-    const bool bit = get_bit(value, bit_i);
-    if (bit) number += pow_uint128(2, bit_i);
-  }
-
-  print_u128_u(number);
-}
-
 void print_Bdec_bin(big_decimal value, bool print_scale, bool print_separate) {
   if (Bget_sign(value))
-    printf("(-)");
+    fprintf(stderr, "(-)");
   else
-    printf("(+)");
+    fprintf(stderr, "(+)");
 
   if (print_scale) {
     uint_to_bin(value.bits[6]);
-    if (print_separate) printf("\'");
+    if (print_separate) fprintf(stderr, "\'");
   }
   for (int8_t i = 5; i >= 0; --i) {
     uint_to_bin(value.bits[i]);
-    if (print_separate) printf("\'");
+    if (print_separate) fprintf(stderr, "\'");
   }
-  printf("(scale=%d)", Bget_scale(value));
+  fprintf(stderr, "(scale=%d)", Bget_scale(value));
 }
 
 void print_dec_bin(s21_decimal value, bool print_scale, bool print_separate) {
   if (get_sign(value))
-    printf("(-)");
+    fprintf(stderr, "(-)");
   else
-    printf("(+)");
+    fprintf(stderr, "(+)");
   if (print_scale) {
     uint_to_bin(value.bits[3]);
   }
   for (int8_t i = 2; i >= 0; --i) {
-    if (print_separate) printf("\'");
+    if (print_separate) fprintf(stderr, "\'");
     uint_to_bin(value.bits[i]);
   }
-  printf("(scale=%d)", get_scale(value));
+  fprintf(stderr, "(scale=%d)", get_scale(value));
 }

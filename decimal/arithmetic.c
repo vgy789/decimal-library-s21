@@ -1,4 +1,5 @@
 #include "../s21_decimal.h"
+#include "../test/debug_helper.h"
 
 typedef int (*calc_func)(big_decimal, big_decimal, big_decimal *);
 
@@ -28,7 +29,7 @@ static scale_t calculate_scale(big_decimal value_1, big_decimal value_2,
     scale_result = Bget_scale(value_1);
   } else if (calc == Bdigits_mul) {
     scale_result = Bget_scale(value_1) + Bget_scale(value_2);
-  } else if (calc == Bdigits_div) {
+  } else if (calc == NEWBdigits_div) {
     scale_result =
         Bget_scale(value_1) - Bget_scale(value_2) + Bget_scale(result);
   }
@@ -55,23 +56,21 @@ static err_t calculate(s21_decimal value_1, s21_decimal value_2,
   decimal_to_big(value_2, &big_2);
 
   if (calc == Bdigits_add) {
-    Balignment(&big_1, &big_2, 1);
+    Balignment(&big_1, &big_2);
   }
   err_code = calc(big_1, big_2, &big_result);
   scale_result = calculate_scale(big_1, big_2, big_result, calc);
 
-  if (calc == Bdigits_div) {
+  if (calc == NEWBdigits_div) {
     if (err_code) return err_code;
   }
   Bset_scale(&big_result, scale_result);
   Bnormalize(&big_result);
 
-  if (Bget_scale(big_result) > MAX_SCALE) { /* слишком большой scale */
-    err_code = Bget_sign(big_result) + 1;
-  }
-
   if (err_code == 0) {
     Bfix_bank_overflow(&big_result);
+    Bnormalize(&big_result);  // исправляет scale если после округления
+                              // получилось 0.0000000…
     err_code = big_to_decimal(big_result, result);
   }
 
@@ -95,6 +94,6 @@ err_t s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 }
 
 err_t s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
-  const err_t err_code = calculate(value_1, value_2, result, Bdigits_div);
+  const err_t err_code = calculate(value_1, value_2, result, NEWBdigits_div);
   return err_code;
 }

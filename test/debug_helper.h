@@ -12,7 +12,11 @@
 
 #define MAX_DECIMAL "79228162514264337593543950335"
 
-void alignment(s21_decimal *value1, s21_decimal *value2, bool for_add);
+void Bdebug_info(big_decimal big_1, big_decimal *big_2, big_decimal *big_3);
+
+void debug_info(s21_decimal dec_1, s21_decimal *dec_2, s21_decimal *dec_3);
+
+void alignment(s21_decimal *value1, s21_decimal *value2);
 
 /**
  * Конвертирует число из строкового литерала в s21_decimal.

@@ -52,7 +52,7 @@ static int Bcomparison(big_decimal a, big_decimal b) {
     if (scale_a == scale_b)
       result = Bcomparison_digits(a, b);  // если экспоненты равны
     else {
-      Balignment(&a, &b, 0);
+      Balignment(&a, &b);
       result = Bcomparison_digits(a, b);
     }
 

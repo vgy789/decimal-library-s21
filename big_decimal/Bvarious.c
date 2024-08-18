@@ -23,7 +23,7 @@ void Bset_bit(big_decimal *value, uint8_t bit_pos, bool state) {
     value->bits[int_part] |= (1U << bit_pos);
 }
 
-uint8_t Bget_scale(big_decimal value) {
+scale_t Bget_scale(big_decimal value) {
   return (value.bits[6] & (255U << 16)) >> 16;
 }
 

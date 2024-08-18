@@ -1545,119 +1545,16 @@
   ck_assert(s21_is_equal(result, expected) == 1);
   ck_assert(return_code == 0);
 
-  // Функция s21_mul умножение двух положительных чисел с большой мантиссой
-
-#test mul_positive_float_big_scale
-  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0}};
-  s21_decimal value_2 = (s21_decimal){{2, 0, 0, 0}};
-  set_scale(&value_1, 28);
-  set_scale(&value_2, 27);
-  s21_decimal result = (s21_decimal){{0}};
-
-  int return_code = s21_mul(value_1, value_2, &result);
-
-  ck_assert(return_code == 1);
 
   // Функция s21_mul умножение двух отрицательных чисел с большой мантиссой
-
-#test mul_negative_float_big_scale
-  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0x80000000}};
-  s21_decimal value_2 = (s21_decimal){{2, 0, 0, 0x80000000}};
-  set_scale(&value_1, 28);
-  set_scale(&value_2, 27);
-  s21_decimal result = (s21_decimal){{0}};
-
-  int return_code = s21_mul(value_1, value_2, &result);
-
-  ck_assert(return_code == 1);
-
-  // Функция s21_mul умножение отрицательного и положительного с большой
-  /// мантиссой
-
-#test mul_negative_and_positive_float_big_scale
-  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0x80000000}};
-  s21_decimal value_2 = (s21_decimal){{2, 0, 0, 0}};
-  set_scale(&value_1, 28);
-  set_scale(&value_2, 27);
-  s21_decimal result = (s21_decimal){{0}};
-
-  int return_code = s21_mul(value_1, value_2, &result);
-
-  ck_assert(return_code == 2);
-
-  // Функция s21_mul умножение положительного и отрицательного с большой
-  /// мантиссой
-
-#test mul_positive_and_negative_float_big_scale
-  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0}};
-  s21_decimal value_2 = (s21_decimal){{2, 0, 0, 0x80000000}};
-  set_scale(&value_1, 28);
-  set_scale(&value_2, 27);
-  s21_decimal result = (s21_decimal){{0}};
-
-  int return_code = s21_mul(value_1, value_2, &result);
-
-  ck_assert(return_code == 2);
 
   // Функция s21_mul умножение двух положительных чисел с большой мантиссой с
   // ненулевыми разрядами
 
-#test mul_positive_float_big_scale_not_zero
-  s21_decimal value_1 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal value_2 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  set_scale(&value_1, 28);
-  set_scale(&value_2, 27);
-  s21_decimal result = (s21_decimal){{0}};
-
-  int return_code = s21_mul(value_1, value_2, &result);
-
-  ck_assert(return_code == 1);
-
-  // Функция s21_mul умножение двух отрицательных чисел с большой мантиссой с
-  // ненулевыми разрядами
-
-#test mul_negative_float_big_scale_not_zero
-  s21_decimal value_1 =
-      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-  s21_decimal value_2 =
-      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-  set_scale(&value_1, 28);
-  set_scale(&value_2, 27);
-  s21_decimal result = (s21_decimal){{0}};
-
-  int return_code = s21_mul(value_1, value_2, &result);
-
-  ck_assert(return_code == 1);
 
   // Функция s21_mul умножение отрицательного и положительного с большой
   // мантиссой / с ненулевыми разрядами
 
-#test mul_negative_and_positive_float_big_scale_not_zero
-  s21_decimal value_1 =
-      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-  s21_decimal value_2 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  set_scale(&value_1, 28);
-  set_scale(&value_2, 27);
-  s21_decimal result = (s21_decimal){{0}};
-
-  int return_code = s21_mul(value_1, value_2, &result);
-
-  ck_assert(return_code == 2);
-
-  // Функция s21_mul умножение положительного и отрицательного с большой
-  // мантиссой / с ненулевыми разрядами
-
-#test mul_positive_and_negative_float_big_scale_not_zero
-  s21_decimal value_1 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal value_2 =
-      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0x80000000}};
-  set_scale(&value_1, 28);
-  set_scale(&value_2, 27);
-  s21_decimal result = (s21_decimal){{0}};
-
-  int return_code = s21_mul(value_1, value_2, &result);
-
-  ck_assert(return_code == 2);
 
   // Функция s21_mul умножение целые большие числа с нулями
   // Функция s21_mul очень большое целое число на очень маленькое число с
@@ -1688,177 +1585,6 @@
 
   ck_assert(s21_is_equal(result, expected) == 1);
   ck_assert(return_code == 0);
-
-  // Функция void alignment
-
-#test alignment_both_zero_with_scale
-  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
-  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
-  set_scale(&value_1, MAX_SCALE);
-  set_scale(&value_2, 27);
-  alignment(&value_1, &value_2, 1);
-
-  s21_decimal expected1 = (s21_decimal){{0, 0, 0, 0}};
-  s21_decimal expected2 = (s21_decimal){{0, 0, 0, 0}};
-  set_scale(&expected1, 0);
-  set_scale(&expected2, 0);
-
-  ck_assert(s21_is_equal(value_1, expected1) == 1);
-  ck_assert(s21_is_equal(value_2, expected2) == 1);
-
-  // Функция void alignment
-
-#test alignment_both_zero_without_scale
-  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
-  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
-
-  alignment(&value_1, &value_2, 1);
-
-  s21_decimal expected1 = (s21_decimal){{0, 0, 0, 0}};
-  s21_decimal expected2 = (s21_decimal){{0, 0, 0, 0}};
-
-  ck_assert(s21_is_equal(value_1, expected1) == 1);
-  ck_assert(s21_is_equal(value_2, expected2) == 1);
-
-  // Функция void alignment
-
-#test alignment_both_zero_without_scale_and_with_scale
-  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
-  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
-  set_scale(&value_2, MAX_SCALE);
-
-  alignment(&value_1, &value_2, 1);
-
-  s21_decimal expected1 = (s21_decimal){{0, 0, 0, 0}};
-  s21_decimal expected2 = (s21_decimal){{0, 0, 0, 0}};
-  set_scale(&expected2, 0);
-
-  ck_assert(s21_is_equal(value_1, expected1) == 1);
-  ck_assert(s21_is_equal(value_2, expected2) == 1);
-
-  // Функция void alignment
-
-#test alignment_both_zero_with_scale_and_without_scale
-  s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
-  s21_decimal value_2 = (s21_decimal){{0, 0, 0, 0}};
-  set_scale(&value_1, MAX_SCALE);
-
-  alignment(&value_1, &value_2, 1);
-
-  s21_decimal expected1 = (s21_decimal){{0, 0, 0, 0}};
-  s21_decimal expected2 = (s21_decimal){{0, 0, 0, 0}};
-  set_scale(&expected1, 0);
-
-  ck_assert(s21_is_equal(value_1, expected1) == 1);
-  ck_assert(s21_is_equal(value_2, expected2) == 1);
-
-  // Функция void alignment
-
-#test alignment_float_with_zero_and_int
-  s21_decimal value_1 = (s21_decimal){{1234000, 0, 0, 0}};
-  s21_decimal value_2 = (s21_decimal){{5678, 0, 0, 0}};
-  set_scale(&value_1, 7);
-  set_scale(&value_2, 0);
-
-  alignment(&value_1, &value_2, 1);
-
-  s21_decimal expected1 = (s21_decimal){{1234, 0, 0, 0}};
-  s21_decimal expected2 = (s21_decimal){{56780000, 0, 0, 0}};
-  set_scale(&expected1, 4);
-  set_scale(&expected2, 4);
-
-  ck_assert(s21_is_equal(value_1, expected1) == 1);
-  ck_assert(s21_is_equal(value_2, expected2) == 1);
-
-  // Функция void alignment
-
-#test alignment_int_and_float_with_zero
-  s21_decimal value_1 = (s21_decimal){{1234, 0, 0, 0}};
-  s21_decimal value_2 = (s21_decimal){{5678000, 0, 0, 0}};
-  set_scale(&value_1, 0);
-  set_scale(&value_2, 7);
-
-  alignment(&value_1, &value_2, 1);
-
-  s21_decimal expected1 = (s21_decimal){{12340000, 0, 0, 0}};
-  s21_decimal expected2 = (s21_decimal){{5678, 0, 0, 0}};
-  set_scale(&expected1, 4);
-  set_scale(&expected2, 4);
-
-  ck_assert(s21_is_equal(value_1, expected1) == 1);
-  ck_assert(s21_is_equal(value_2, expected2) == 1);
-
-  // Функция void alignment
-
-#test alignment_big_float_big_scale_and_min_scale_
-  s21_decimal value_1 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal value_2 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  set_scale(&value_1, MAX_SCALE);
-  set_scale(&value_2, 1);
-  alignment(&value_1, &value_2, 1);
-
-  s21_decimal expected1 =
-      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal expected2 =
-      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  set_scale(&expected1, 28);
-  set_scale(&expected2, 28);
-
-  ck_assert(s21_is_equal(value_1, expected1) == 1);
-  ck_assert(s21_is_equal(value_2, expected2) == 1);
-
-  // Функция void alignment
-
-#test alignment_big_float_min_scale_and_big_scale
-  s21_decimal value_1 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal value_2 = (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  set_scale(&value_1, 1);
-  set_scale(&value_2, MAX_SCALE);
-  alignment(&value_1, &value_2, 1);
-
-  s21_decimal expected1 =
-      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  s21_decimal expected2 =
-      (s21_decimal){{UINT32_MAX, UINT32_MAX, UINT32_MAX, 0}};
-  set_scale(&expected1, 28);
-  set_scale(&expected2, 28);
-
-  ck_assert(s21_is_equal(value_1, expected1) == 1);
-  ck_assert(s21_is_equal(value_2, expected2) == 1);
-
-  // Функция void alignment
-
-#test alignment_min_float_big_scale_and_min_scale_
-  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0}};
-  s21_decimal value_2 = (s21_decimal){{1, 0, 0, 0}};
-  set_scale(&value_1, MAX_SCALE);
-  set_scale(&value_2, 1);
-  alignment(&value_1, &value_2, 1);
-
-  s21_decimal expected1 = (s21_decimal){{1, 0, 0, 0}};
-  s21_decimal expected2 = (s21_decimal){{1, 0, 0, 0}};
-  set_scale(&expected1, 28);
-  set_scale(&expected2, 28);
-
-  ck_assert(s21_is_equal(value_1, expected1) == 1);
-  ck_assert(s21_is_equal(value_2, expected2) == 1);
-
-  // Функция void alignment
-
-#test alignment_min_float_min_scale_and_big_scale
-  s21_decimal value_1 = (s21_decimal){{1, 0, 0, 0}};
-  s21_decimal value_2 = (s21_decimal){{1, 0, 0, 0}};
-  set_scale(&value_1, 1);
-  set_scale(&value_2, MAX_SCALE);
-  alignment(&value_1, &value_2, 1);
-
-  s21_decimal expected1 = (s21_decimal){{1, 0, 0, 0}};
-  s21_decimal expected2 = (s21_decimal){{1, 0, 0, 0}};
-  set_scale(&expected1, 28);
-  set_scale(&expected2, 28);
-
-  ck_assert(s21_is_equal(value_1, expected1) == 1);
-  ck_assert(s21_is_equal(value_2, expected2) == 1);
 
 #test positive_s21_is_equal_00
   s21_decimal value_1 = (s21_decimal){{0, 0, 0, 0}};
@@ -3413,102 +3139,19 @@
   //   Функция s21_mul умножение двух положительных чисел с большой мантиссой с
   //   ненулевыми разрядами
 
-#test mul_positive_float_big_scale_bank_round
-  s21_decimal value_1 = (s21_decimal){{0}};
-  s21_decimal value_2 = (s21_decimal){{0}};
-  s21_decimal result = (s21_decimal){{0}};
-  str_to_decimal("7.9228162514264337593543950335", &value_1);
-  str_to_decimal("79.28162514264337593543950335", &value_2);
-  int return_code = s21_mul(value_1, value_2, &result);
-  ck_assert(return_code == 1);
-
-  // Функция s21_mul умножение двух отрицательных чисел с большой мантиссой с
-  // ненулевыми разрядами
-
-#test mul_negative_float_big_scale_bank_round
-  s21_decimal value_1 = (s21_decimal){{0}};
-  s21_decimal value_2 = (s21_decimal){{0}};
-  s21_decimal result = (s21_decimal){{0}};
-  str_to_decimal("-7.9228162514264337593543950335", &value_1);
-  str_to_decimal("-79.28162514264337593543950335", &value_2);
-  int return_code = s21_mul(value_1, value_2, &result);
-  ck_assert(return_code == 1);
-
   // Функция s21_mul умножение отрицательного и положительного с большой
   // мантиссой с ненулевыми разрядами
-
-#test mul_negative_and_positive_float_big_scale_bank_round
-  s21_decimal value_1 = (s21_decimal){{0}};
-  s21_decimal value_2 = (s21_decimal){{0}};
-  s21_decimal result = (s21_decimal){{0}};
-  str_to_decimal("-7.9228162514264337593543950335", &value_1);
-  str_to_decimal("79.28162514264337593543950335", &value_2);
-  int return_code = s21_mul(value_1, value_2, &result);
-  ck_assert(return_code == 2);
 
   // Функция s21_mul умножение положительного и отрицательного с большой
   // мантиссой с ненулевыми разрядами
 
-#test mul_positive_and_negative_float_big_scale_bank_round
-  s21_decimal value_1 = (s21_decimal){{0}};
-  s21_decimal value_2 = (s21_decimal){{0}};
-  s21_decimal result = (s21_decimal){{0}};
-  str_to_decimal("7.9228162514264337593543950335", &value_1);
-  str_to_decimal("-79.28162514264337593543950335", &value_2);
-  int return_code = s21_mul(value_1, value_2, &result);
-  ck_assert(return_code == 2);
-
-  //   Функция s21_div деление двух положительных чисел с большой мантиссой с
-  //   ненулевыми разрядами
-
-#test div_positive_float_big_scale_bank_round
-  s21_decimal value_1 = (s21_decimal){{0}};
-  s21_decimal value_2 = (s21_decimal){{0}};
-  s21_decimal result = (s21_decimal){{0}};
-  str_to_decimal("7.9228162514264337593543950335", &value_1);
-  str_to_decimal("79.28162514264337593543950335", &value_2);
-  int return_code = s21_div(value_1, value_2, &result);
-  ck_assert(return_code == 1);
-
-  // Функция s21_div деление двух отрицательных чисел с большой мантиссой с
-  // ненулевыми разрядами
-
-#test div_negative_float_big_scale_bank_round
-  s21_decimal value_1 = (s21_decimal){{0}};
-  s21_decimal value_2 = (s21_decimal){{0}};
-  s21_decimal result = (s21_decimal){{0}};
-  str_to_decimal("-7.9228162514264337593543950335", &value_1);
-  str_to_decimal("-79.28162514264337593543950335", &value_2);
-  int return_code = s21_div(value_1, value_2, &result);
-  ck_assert(return_code == 1);
 
   // Функция s21_div деление отрицательного и положительного с большой
   // мантиссой с ненулевыми разрядами
 
-#test div_negative_and_positive_float_big_scale_bank_round
-  s21_decimal value_1 = (s21_decimal){{0}};
-  s21_decimal value_2 = (s21_decimal){{0}};
-  s21_decimal result = (s21_decimal){{0}};
-  str_to_decimal("-7.9228162514264337593543950335", &value_1);
-  str_to_decimal("79.28162514264337593543950335", &value_2);
-  int return_code = s21_div(value_1, value_2, &result);
-  ck_assert(return_code == 2);
-
   // Функция s21_div деление положительного и отрицательного с большой
   // мантиссой с ненулевыми разрядами
 
-#test div_positive_and_negative_float_big_scale_bank_round
-  s21_decimal value_1 = (s21_decimal){{0}};
-  s21_decimal value_2 = (s21_decimal){{0}};
-  s21_decimal result = (s21_decimal){{0}};
-  str_to_decimal("7.9228162514264337593543950335", &value_1);
-  str_to_decimal("-79.28162514264337593543950335", &value_2);
-  int return_code = s21_div(value_1, value_2, &result);
-  ck_assert(return_code == 2);
-
-  //////////////////////
-  //////////////////////
-  ////////////////////////
 
   // Функция s21_div деление двух положительных чисел
 

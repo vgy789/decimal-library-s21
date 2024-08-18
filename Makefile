@@ -1,7 +1,7 @@
 CC = gcc
 SRCMODULES = ./decimal/arithmetic.c ./decimal/comparison.c ./decimal/converter.c ./decimal/rounding.c ./decimal/various.c ./big_decimal/Balignment.c ./big_decimal/Barithmetic.c ./big_decimal/Bcomparison.c ./big_decimal/Brounding.c ./big_decimal/Bvarious.c
 OBJMODULES = $(SRCMODULES:.c=.o)
-CFLAGS = -Wall -Werror -Wextra -std=c11 -Wunused-function -pedantic
+CFLAGS = -Wall -Werror -Wextra -std=c11 -pedantic
 OPTFLAGS = -O2 -flto
 LDFLAGS = `pkg-config --cflags --libs check`
 
@@ -44,18 +44,20 @@ fmt:
 
 
 valgrind leaks: OPTFLAGS =
-valgrind leaks: CFLAGS += -g
+valgrind leaks: CFLAGS = $(CFLAGS) -g
 
+# For Linux
 valgrind:
 	sed -i 's/CK_FORK/CK_NOFORK/g' test/test.c
 	make test; \
 	sed -i 's/CK_NOFORK/CK_FORK/g' test/test.c
 	valgrind --tool=memcheck --leak-check=yes ./$(TEST_EXEC)
 
+# For BSD Unix
 leaks:
-	sed -i 's/CK_FORK/CK_NOFORK/g' test/test.c
+	sed -i '' 's/CK_FORK/CK_NOFORK/g' test/test.c
 	make test; \
-	sed -i 's/CK_NOFORK/CK_FORK/g' test/test.c
+	sed -i '' 's/CK_NOFORK/CK_FORK/g' test/test.c
 	leaks --atExit -- ./$(TEST_EXEC)
 
 cppcheck:
