@@ -4,6 +4,7 @@ OBJMODULES = $(SRCMODULES:.c=.o)
 CFLAGS = -Wall -Werror -Wextra -std=c11 -pedantic
 OPTFLAGS = -O2 -flto
 LDFLAGS = `pkg-config --cflags --libs check`
+CFLAGS += $(OPTFLAGS)
 
 TEST_EXEC = run_test.out
 REPORT_DIR = ./report
