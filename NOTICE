@@ -1,0 +1,10 @@
+Decimal Library
+Copyright 2024
+
+This project was created as part of the School 21 curriculum.
+
+This project implements a decimal library that handles decimal numbers with up to 
+96 bits of precision. It includes basic arithmetic operations, comparison operations,
+and conversions between different numeric types.
+
+This product is licensed under the Apache License, Version 2.0.
