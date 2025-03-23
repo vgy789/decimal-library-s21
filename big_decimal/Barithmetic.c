@@ -1,4 +1,4 @@
-#include "../s21_decimal.h"
+#include "../decimal/s21_decimal.h"
 #include "../test/debug_helper.h"
 #include "big_decimal.h"
 

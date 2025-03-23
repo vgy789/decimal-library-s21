@@ -1,6 +1,6 @@
 #include <stddef.h>
 
-#include "../s21_decimal.h"
+#include "s21_decimal.h"
 
 err_t check_scale(s21_decimal value) {
   const scale_t scale = get_scale(value);

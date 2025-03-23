@@ -8,7 +8,7 @@
 #include <stdio.h>
 
 #include "../big_decimal/big_decimal.h"
-#include "../s21_decimal.h"
+#include "../decimal/s21_decimal.h"
 
 #define MAX_DECIMAL "79228162514264337593543950335"
 

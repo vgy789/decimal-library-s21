@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #include "../big_decimal/big_decimal.h"
-#include "../s21_decimal.h"
+#include "s21_decimal.h"
 
 int big_to_int(big_decimal value) {
   s21_decimal dec_result = (s21_decimal){{0}};

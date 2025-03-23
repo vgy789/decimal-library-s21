@@ -1,5 +1,5 @@
-#include "../s21_decimal.h"
 #include "../test/debug_helper.h"
+#include "s21_decimal.h"
 
 typedef int (*calc_func)(big_decimal, big_decimal, big_decimal *);
 
