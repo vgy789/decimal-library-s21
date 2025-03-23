@@ -1,0 +1,8 @@
+*.out
+*.o
+
+s21_decimal.a
+test.c
+
+*gcda
+*gcno
