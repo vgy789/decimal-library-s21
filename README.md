@@ -4,16 +4,6 @@
 
 Implementation of a decimal library in C that provides operations for working with custom decimal type numbers.
 
-## Table of Contents
-- [Decimal Operations](#decimal-operations)
-- [Building the Library](#building-the-library)
-- [Using in Your Project](#using-in-your-project)
-- [Running Tests](#running-tests)
-- [Implementation Details](#implementation-details)
-  - [Decimal Structure](#decimal-structure)
-  - [Binary Representation](#binary-representation)
-  - [Value Range](#value-range)
-
 ## Features
 
 ### Decimal Operations
@@ -22,41 +12,6 @@ Implementation of a decimal library in C that provides operations for working wi
 - Type conversions (from/to int, float)
 - Rounding operations (floor, round, truncate)
 - Negate operation
-
-## Build and usage
-
-### Building the Library
-
-```bash
-make s21_decimal.a
-```
-
-### Using
-
-1. Include the header file:
-```c
-#include "s21_decimal.h"
-```
-
-2. Compile your project with the library:
-```bash
-gcc your_file.c s21_decimal.a -o your_program
-```
-
-## Testing
-
-The project includes unit tests written using the check library.
-
-### Running Tests
-
-```bash
-make test
-```
-
-For test coverage report:
-```bash
-make gcov_report
-```
 
 ## Implementation Details
 
@@ -85,3 +40,39 @@ Supports numbers from:
 - Maximum: +79,228,162,514,264,337,593,543,950,335
 
 With decimal places controlled by the scale factor (up to 28 decimal places).
+
+## Build and usage
+
+### Building the Library
+
+```bash
+make s21_decimal.a
+```
+
+### Using
+
+1. Include the header file:
+```c
+#include "s21_decimal.h"
+```
+
+2. Compile your project with the library:
+```bash
+gcc your_file.c s21_decimal.a -o your_program
+```
+
+## Testing
+
+The project includes unit tests written using the check library.
+
+```bash
+make test
+```
+
+For test coverage report:
+```bash
+make gcov_report
+```
+
+## License
+This project is licensed under the Apache License, Version 2.0. See LICENSE file for details.
